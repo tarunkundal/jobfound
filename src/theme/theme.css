@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ====================
+   🌞 Light Theme
+   ==================== */
+@theme  {
+  --color-brand: hsl(var(--orange-600));
+  --color-brand-hover: hsl(var(--orange-700));
+
+  --color-background-body: var(--white-1000);
+  --color-background: var(--white-975);
+  --color-background-secondary: var(--white-400);
+  --color-background-card: var(--white-900);
+  --color-background-popover: var(--white-800);
+  --color-background-small: var(--white-700);
+  --color-background-hover: var(--white-600);
+  --color-background-hover-secondary: var(--white-500);
+  --color-background-card-hover: var(--white-400);
+  --color-background-popover-hover: var(--white-300);
+  --color-background-destructive: var(--red-500);
+  --color-background-success: var(--green-600);
+
+  --color-text-brand-foreground: hsl(var(--black-950));
+  --color-text-destructive: var(--red-700);
+  --color-text-tertiary: var(--black-400);
+  --color-text-primary: var(--black-900);
+  --color-text-secondary: var(--black-700);
+  --color-text-icon: var(--black-700);
+  --color-text-helper: var(--black-500);
+  --color-text-placeholder: var(--black-400);
+
+  --color-border: var(--white-800);
+  --color-border-card: var(--white-700);
+  --color-border-brand: hsl(var(--orange-300));
+  --color-ring: var(--orange-300);
+  --color-caret: var(--orange-400);
+}
+
+/* ====================
+   🌙 Dark Theme
+   ==================== */
+/* @theme dark {
+  --color-brand: hsl(var(--orange-600));
+  --color-brand-hover: hsl(var(--orange-700));
+
+  --color-background-body: var(--black-100);
+  --color-background: var(--black-200);
+  --color-background-secondary: var(--black-300);
+  --color-background-card: var(--black-300);
+  --color-background-popover: var(--black-400);
+  --color-background-small: var(--black-500);
+  --color-background-hover: var(--black-400);
+  --color-background-hover-secondary: var(--black-600);
+  --color-background-card-hover: var(--black-500);
+  --color-background-popover-hover: var(--black-600);
+  --color-background-destructive: var(--red-500);
+  --color-background-success: var(--green-600);
+
+  --color-text-brand-foreground: hsl(var(--white-1000));
+  --color-text-destructive: var(--white-600);
+  --color-text-tertiary: var(--white-500);
+  --color-text-primary: var(--white-900);
+  --color-text-secondary: var(--white-100);
+  --color-text-icon: var(--white-100);
+  --color-text-helper: var(--white-100);
+  --color-text-placeholder: var(--white-50);
+
+  --color-border: var(--black-600);
+  --color-border-card: var(--black-500);
+  --color-border-brand: hsl(var(--orange-300));
+  --color-ring: var(--black-700);
+  --color-caret: var(--black-800);
+} */
