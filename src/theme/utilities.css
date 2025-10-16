@@ -1,0 +1,197 @@
+@import "tailwindcss/utilities";
+@import "./tokens.css";
+@import "./design-tokens.css";
+@layer utilities;
+
+/* ================================
+   🎨 Background Colors
+   ================================ */
+@utility bg-default {
+    background-color: hsl(var(--color-background));
+}
+
+@utility bg-primary {
+    background-color: hsl(var(--color-background));
+}
+
+@utility bg-secondary {
+    background-color: hsl(var(--color-background-secondary));
+}
+
+@utility bg-body {
+    background-color: hsl(var(--color-background-body));
+}
+
+@utility bg-card {
+    background-color: hsl(var(--color-background-card));
+}
+
+@utility bg-popover {
+    background-color: hsl(var(--color-background-popover));
+}
+
+@utility bg-small {
+    background-color: hsl(var(--color-background-small));
+}
+
+@utility bg-destructive {
+    background-color: hsl(var(--color-background-destructive));
+}
+
+@utility bg-brand {
+    background-color: hsl(var(--color-brand));
+}
+
+@utility bg-hover {
+    background-color: hsl(var(--color-background-hover));
+}
+
+@utility bg-brand-hover {
+    background-color: hsl(var(--color-brand-hover));
+}
+
+@utility bg-popover-hover {
+    background-color: hsl(var(--color-background-popover-hover));
+}
+
+@utility bg-card-hover {
+    background-color: hsl(var(--color-background-card-hover));
+}
+
+@utility bg-hover-secondary {
+    background-color: hsl(var(--color-background-hover-secondary));
+}
+
+
+/* ================================
+   🖋️ Text Colors
+   ================================ */
+@utility text-primary {
+    color: hsl(var(--color-text-primary));
+}
+
+@utility text-secondary {
+    color: hsl(var(--color-text-secondary));
+}
+
+@utility text-tertiary {
+    color: hsl(var(--color-text-tertiary));
+}
+
+@utility text-icon {
+    color: hsl(var(--color-text-icon));
+}
+
+@utility text-destructive {
+    color: hsl(var(--color-text-destructive));
+}
+
+@utility text-brand-foreground {
+    color: hsl(var(--color-text-brand-foreground));
+}
+
+@utility text-helper {
+    color: hsl(var(--color-text-helper));
+}
+
+@utility text-brand {
+    color: hsl(var(--color-brand));
+}
+
+@utility text-placeholder {
+    color: hsl(var(--color-text-placeholder));
+}
+
+@utility text-success {
+    color: hsl(var(--color-background-success));
+}
+
+/* ================================
+   🧱 Border Colors
+   ================================ */
+@utility border-default {
+  border-width: 1px;
+  border-color: hsl(var(--color-border));
+}
+
+@utility border-primary {
+  border-width: 1px;
+  border-color: hsl(var(--color-border));
+}
+
+@utility border-card {
+  border-width: 1px;
+  border-color: hsl(var(--color-border-card));
+}
+
+@utility border-brand {
+  border-width: 1px;
+  border-color: hsl(var(--color-border-brand));
+}
+
+@utility shadow-card {
+    box-shadow: var(--shadow-md);
+}
+
+@utility shadow-hover {
+    box-shadow: var(--shadow-lg);
+}
+
+@utility rounded-card {
+    border-radius: var(--radius-xl);
+}
+
+/* ================================
+   📐 Width Utilities
+   ================================ */
+@utility w-sidebar { width: 220px; }
+
+/* ================================
+   ✍️ Font Utilities
+   ================================ */
+@utility font-body { font-family: var(--font-sans, "Inter", sans-serif); }
+
+/* ================================
+   📏 Font Sizes
+   ================================ */
+@utility text-xxs { font-size: 12px; line-height: 14px; }
+@utility text-xs { font-size: 13px; line-height: 16px; }
+
+
+/* ================================
+   💫 Animations
+   ================================ */
+@utility animate-loading { animation: spin 850ms linear infinite; }
+
+/* ================================
+   💡 Box Shadows
+   ================================ */
+@utility shadow-focused {
+  box-shadow:
+    0px 0px 0px 2px #F37961,
+    0px 0px 0px 1px #FFF;
+}
+
+@utility shadow-linear {
+  box-shadow:
+    lch(0 0 0 / 0.15) 0px 4px 40px,
+    lch(0 0 0 / 0.188) 0px 3px 20px,
+    lch(0 0 0 / 0.188) 0px 3px 12px,
+    lch(0 0 0 / 0.188) 0px 2px 8px,
+    lch(0 0 0 / 0.188) 0px 1px 1px;
+}
+
+@utility shadow-toast {
+  box-shadow:
+    lch(0 0 0 / 0.188) 0px 3px 8px,
+    lch(0 0 0 / 0.188) 0px 2px 5px,
+    lch(0 0 0 / 0.188) 0px 1px 1px;
+}
+
+/* ================================
+   🌀 Ring & Caret Colors
+   ================================ */
+@utility ring-primary { --tw-ring-color: hsl(var(--color-ring)); }
+@utility ring-brand { --tw-ring-color: hsl(var(--color-brand)); }
+
+@utility caret-brand { caret-color: hsl(var(--color-brand)); }
