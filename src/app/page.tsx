@@ -4,6 +4,7 @@ import { Button } from "@/theme/ui/components/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Carousel from "./components/carousel";
+import { trpc } from "@/utils/trpc";
 
 const companies = [
   { name: "Google", logo: "/google.svg" },
@@ -40,6 +41,9 @@ const data = [
 ]
 
 export default function Home() {
+  const { data: usersData, isLoading } = trpc.user.list.useQuery()
+  console.log(usersData);
+
   return (
     <div className="flex flex-col items-center text-center">
       <h1 className="text-primary text-3xl my-3 font-bold">Turn your ideas into apps</h1>

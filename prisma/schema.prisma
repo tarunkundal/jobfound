@@ -21,12 +21,3 @@ model User {
   name      String?
   createdAt DateTime @default(now())
 }
-
-model Job {
-  id          String   @id @default(cuid())
-  title       String
-  company     String
-  description String
-  url         String
-  createdAt   DateTime @default(now())
-}

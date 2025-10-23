@@ -2,27 +2,20 @@ import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { prisma } from '@/db';
 
-export const jobRouter = router({
-    create: publicProcedure
-        .input(
-            z.object({
-                title: z.string(),
-                company: z.string(),
-                description: z.string(),
-                url: z.string().url(),
-            }),
-        )
-        .mutation(async ({ input }) => {
-            return prisma.job.create({ data: input });
-        }),
+export const userRouter = router({
 
-    list: publicProcedure.query(() => prisma.job.findMany()),
+    list: publicProcedure.query(async () => {
+        const users = await prisma.user.findMany()
+        console.log('users', users);
+        return users;
+
+    }),
 
     get: publicProcedure
         .input(z.string())
-        .query(({ input }) => prisma.job.findUnique({ where: { id: input } })),
+        .query(({ input }) => prisma.user.findUnique({ where: { id: input } })),
 
     delete: publicProcedure
         .input(z.string())
-        .mutation(({ input }) => prisma.job.delete({ where: { id: input } })),
+        .mutation(({ input }) => prisma.user.delete({ where: { id: input } })),
 });

@@ -1,6 +1,4 @@
-import * as PrismaClientPkg from '@prisma/client';
-
-const PrismaClient = (PrismaClientPkg as any).PrismaClient ?? (PrismaClientPkg as any).default;
+import { PrismaClient } from "@/generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma: any };
 
@@ -9,7 +7,7 @@ export const prisma =
     new PrismaClient({
         datasources: {
             db: {
-                url: process.env.DATABASE_URL, // uses the env variable here
+                url: process.env.DATABASE_URL,
             },
         },
     });
