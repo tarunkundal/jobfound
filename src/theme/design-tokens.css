@@ -2,9 +2,6 @@
 @import "./tokens.css";
 
 @theme {
-    /* === Font Family === */
-    --font-sans: "Inter", system-ui, sans-serif;
-    --font-display: "Poppins", sans-serif;
 
     /* === Font Sizes === */
     --text-xs: 0.75rem;

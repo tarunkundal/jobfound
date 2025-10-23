@@ -10,7 +10,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, type, prefixNode, suffixNode, ...props }, ref) => {
         return (
-            <div className="w-fit relative">
+            <div className="w-full relative">
                 {prefixNode && (
                     <div className="absolute left-2 top-1/2 transform -translate-y-1/2 [&>svg]:size-4">
                         {prefixNode}
@@ -19,7 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <input
                     type={type}
                     className={cn(
-                        'flex h-8 w-full text-xs text-primary rounded-md border bg-transparent px-3 placeholder:text-placeholder focus:outline-none focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50 hover:ring-1 hover:ring-primary',
+                        'flex h-8 w-full text-xs text-primary rounded-md border-brand bg-transparent px-3 placeholder:text-placeholder focus:outline-brand-hover focus:border-brand focus:ring-brand disabled:cursor-not-allowed disabled:opacity-50 hover:ring-1 hover:ring-brand',
                         prefixNode && 'pl-8',
                         suffixNode && 'pr-8',
                         className,

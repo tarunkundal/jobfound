@@ -1,9 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { Button } from '@/theme/ui/components/button';
+import Image from 'next/image';
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
+const ibmPlexMono = IBM_Plex_Mono({ weight: '400', variable: '--font-mono', subsets: ['latin'] });
+const ibmPlexSans = IBM_Plex_Sans({ variable: '--font-plex', subsets: ['latin'] });
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const [darkMode, setDarkMode] = useState(false);
@@ -14,13 +16,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }, [darkMode]);
 
     return (
-        <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-            <button
-                className="m-4 p-2 rounded bg-brand text-primary"
-                onClick={() => setDarkMode(!darkMode)}
-            >
-                {darkMode ? 'Switch to Light' : 'Switch to Dark'}
-            </button>
+        <div className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-primary h-full`}>
+            <header className='flex justify-between items-center p-2' >
+                <Image src="/logo2.png" alt="Logo" width={70} height={70} title="dchvd jhsjbh" />
+
+                <Button
+                    onClick={() => setDarkMode(!darkMode)}
+                >{darkMode ? 'Switch to Light' : 'Switch to Dark'}</Button>
+            </header>
             {children}
         </div>
     );

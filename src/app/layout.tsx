@@ -1,5 +1,6 @@
 import ClientLayout from './ClientLayout';
 import './globals.css';
+import { TRPCProvider } from './providers';
 
 export const metadata = {
   title: 'Create Next App',
@@ -10,7 +11,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <ClientLayout>{children}</ClientLayout>
+        <TRPCProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </TRPCProvider>
       </body>
     </html>
   );
