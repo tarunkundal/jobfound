@@ -25,7 +25,7 @@ export default function Carousel() {
     }, []);
 
     return (
-        <div className="relative w-[50%] mx-auto overflow-hidden rounded-lg">
+        <div className="relative w-[50%] mx-auto overflow-hidden rounded-lg my-5">
             <div className="flex transition-transform duration-700" style={{ transform: `translateX(-${current * 100}%)` }}>
                 {slides.map((slide, i) => (
                     <div key={i} className="w-full flex justify-around flex-shrink-0">

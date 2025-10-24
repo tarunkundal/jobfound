@@ -1,42 +1,126 @@
-"use client";
+"use client";;
+import useCustomToast from '@/app/hooks/useCustomToast';
+import { createClient } from '@/lib/supabseClient';
 import { Button } from '@/theme/ui/components/button';
 import { Icon } from '@/theme/ui/components/icon';
 import { Input } from '@/theme/ui/components/input';
 import { Separator } from '@/theme/ui/components/separator';
-import { AppleIcon, Github, Mail, } from 'lucide-react';
-import Image from 'next/image';
+import { Mail } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { z } from 'zod';
+import OAuthProviders from '../components/OAuthProviders';
+
+export const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(7, 'To short password').max(32, 'To long password'),
+})
 
 const RegisterPage = () => {
-    const [registerWithEmailPassword, setRegisterWithEmailPassword] = useState(false);
+    const supabase = createClient();
+    const router = useRouter();
+    const toast = useCustomToast();
+
+    const [registerWithEmailPassword, setRegisterWithEmailPassword] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const result = schema.safeParse({ email, password });
+        if (!result.success) {
+            toast({
+                title: 'Invalid input',
+                description: result.error?.issues.map((issue: { message: any; }) => issue.message).join(', '),
+                status: 'error',
+            })
+            return;
+        }
+        setLoading(true);
+        try {
+            // Check if the user already exists
+            const { data: existingUser } = await supabase
+                .from('users') // assuming you have a users table
+                .select('id')
+                .eq('email', email)
+                .single();
+
+            if (existingUser) {
+                toast({
+                    title: 'User already registered',
+                    description: 'You already have an account. Please login.',
+                    status: 'warning',
+                });
+                setLoading(false);
+                return;
+            }
+
+            // Sign up new user
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+            });
+
+            setLoading(false);
+
+            if (error) {
+                // Handle other signUp errors
+                toast({
+                    title: 'Error registering',
+                    description: error.message,
+                    status: 'error',
+                });
+            } else {
+                toast({
+                    title: 'Registration successful',
+                    description: 'Please check your email to verify your account.',
+                    status: 'success',
+                });
+                router.push('/auth/login');
+                // router.push('/auth/check-email?email=' + encodeURIComponent(email))
+            }
+        } catch (err: any) {
+            setLoading(false);
+            toast({
+                title: 'Error',
+                description: err.message || 'Something went wrong',
+                status: 'error',
+            });
+        }
+    };
+
     return (
         <div className="w-[60%] flex flex-col my-auto">
             <h1 className='text-2xl font-medium text-center my-4 text-primary'>Create a JobFound account</h1>
             <div className=' flex flex-col items-center gap-2 p-4'>
-                <Button prefixNode={<Image src={'/google.svg'} alt='sso image' width={15} height={15} />} variant='secondary' className='w-full'>Continue with Google</Button>
-                <Button size='lg' prefixNode={<Icon icon={AppleIcon} />} variant='secondary' className='w-full'>Continue with Apple</Button>
-                <Button prefixNode={<Icon icon={Github} />} variant='secondary' className='w-full'>Continue with Google</Button>
+                <OAuthProviders />
                 <span className='text-primary'>or</span>
                 <Button size='lg' prefixNode={<Icon icon={Mail} />} variant='ghost' className='w-full'
                     onClick={() => setRegisterWithEmailPassword(!registerWithEmailPassword)}
                 >Email & Password</Button>
 
-                {registerWithEmailPassword && <form className='w-full flex flex-col items-center gap-4 p-4' >
+                {registerWithEmailPassword && <form className='w-full flex flex-col items-center gap-4 p-4' onSubmit={handleRegister} >
                     <Input
                         type="email"
                         placeholder="Email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
                     />
                     <Input
                         type="password"
                         placeholder="Password"
-
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
                     />
                     <Button
                         variant='default'
                         type="submit"
                         className='w-full'
                         size='lg'
+                        isLoading={loading}
                     >
                         Register
                     </Button>

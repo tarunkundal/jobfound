@@ -1,19 +1,13 @@
 
 'use client';;
-import { Button } from "@/theme/ui/components/button";
-import { motion } from "framer-motion";
 import Image from "next/image";
-import Carousel from "./components/carousel";
-import { trpc } from "@/utils/trpc";
-
-const companies = [
-  { name: "Google", logo: "/google.svg" },
-  { name: "Amazon", logo: "/google.svg" },
-  { name: "Meta", logo: "/google.svg" },
-  { name: "Netflix", logo: "/google.svg" },
-  { name: "Airbnb", logo: "/google.svg" },
-  { name: "Figma", logo: "/globe.svg" },
-];
+import Carousel from "./auth/components/carousel";
+import AutoSliding from "./auth/components/autoSliding";
+import { Button } from "@/theme/ui/components/button";
+import Link from "next/link";
+import { createClient } from "@/lib/supabseClient";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const data = [
   {
@@ -41,8 +35,23 @@ const data = [
 ]
 
 export default function Home() {
-  const { data: usersData, isLoading } = trpc.user.list.useQuery()
-  console.log(usersData);
+  const router = useRouter();
+  const supabase = createClient();
+
+  // User is already logged in → redirect to dashboard
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session) {
+        router.replace("/protected/dashboard");
+      }
+      // else, do nothing → show landing page
+    };
+    checkSession();
+  }, [router, supabase]);
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -50,6 +59,7 @@ export default function Home() {
       <h2 className="text-secondary text-2xl">What will you create? The possibilities are endless.</h2>
       <br />
       {/* section 2 */}
+
 
       <div className="w-[80%] flex flex-col md:flex-row items-center justify-center gap-8 my-16">
         <div className="w-[50%] md:w-[80%]">
@@ -75,7 +85,15 @@ export default function Home() {
         </div>
       </div>
 
+      <div className="w-full h-full space-y-4 text-center">
+        <h1 className="text-primary text-6xl">What are you waiting for?</h1>
+        <Button variant="default" size="lg" className="mt-6">
+          <Link href={'/auth/register'}> Get Started Now </Link>
+        </Button>
+      </div>
 
+      {/* auto sliding effect */}
+      <AutoSliding />
       {/* section 3 */}
       <div className="w-[50%] text-center">
         <h1 className="text-primary text-6xl py-4">The safest place for vibe coding</h1>
@@ -83,39 +101,6 @@ export default function Home() {
         </h2>
       </div>
 
-      {/* auto sliding effect */}
-      <div className="relative w-[80%] overflow-hidden py-8 my-16">
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-brand to-transparent z-10 rounded-3xl" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-brand to-transparent z-10 rounded-3xl" />
-
-        <motion.div
-          className="flex w-max space-x-16"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            duration: 25, // slower = smoother
-            ease: "linear",
-            repeat: Infinity,
-          }}
-        >
-          {[...companies, ...companies].map((c, i) => (
-            <div key={i} className="flex items-center space-x-2">
-              <Image
-                src={c.logo}
-                alt={c.name}
-                width={80}
-                height={80}
-                className="object-contain"
-              />
-              <span className="text-gray-600 font-medium">{c.name}</span>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-
-      <div className="w-full h-full space-y-4 text-center">
-        <h1 className="text-primary text-6xl">What are you waiting for?</h1>
-        <Button variant="default" size="lg" className="mt-6">Get Started Now</Button>
-      </div>
 
       {/* section 4 */}
       <div className="w-[60%] my-20 grid grid-cols-2 gap-8  p-4">
