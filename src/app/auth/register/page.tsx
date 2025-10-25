@@ -66,7 +66,7 @@ const RegisterPage = () => {
 
             setLoading(false);
 
-            if (error) {
+            if (error && !data?.user) {
                 // Handle other signUp errors
                 toast({
                     title: 'Error registering',

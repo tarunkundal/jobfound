@@ -42,6 +42,10 @@
     background-color: hsl(var(--color-brand));
 }
 
+@utility bg-success {
+    background-color: hsl(var(--color-background-success));
+}
+
 @utility bg-hover {
     background-color: hsl(var(--color-background-hover));
 }

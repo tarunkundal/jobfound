@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabseClient";
+import { Spinner } from "@/theme/ui/components/spinner";
 
 export default function AuthCallback() {
     const supabase = createClient();
@@ -24,5 +25,5 @@ export default function AuthCallback() {
         checkSession();
     }, [router, searchParams, supabase]);
 
-    return <p>Signing you in...</p>;
+    return <Spinner />;
 }

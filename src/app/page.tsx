@@ -1,13 +1,14 @@
 
 'use client';;
-import Image from "next/image";
-import Carousel from "./auth/components/carousel";
-import AutoSliding from "./auth/components/autoSliding";
 import { Button } from "@/theme/ui/components/button";
+import { Spinner } from "@/theme/ui/components/spinner";
+import Image from "next/image";
 import Link from "next/link";
-import { createClient } from "@/lib/supabseClient";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import AutoSliding from "./auth/components/autoSliding";
+import Carousel from "./auth/components/carousel";
+import { useUser } from "./auth/hooks/useUser";
 
 const data = [
   {
@@ -36,23 +37,16 @@ const data = [
 
 export default function Home() {
   const router = useRouter();
-  const supabase = createClient();
+  const { loading, user } = useUser()
 
-  // User is already logged in → redirect to dashboard
+  // User is already logged in → redirect to dashboard this is client side check only to avoid flicker on page load otherwise we handle this in middleware
   useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    if (!loading && user) {
+      router.replace("/protected/dashboard");
+    }
+  }, [router, loading, user]);
 
-      if (session) {
-        router.replace("/protected/dashboard");
-      }
-      // else, do nothing → show landing page
-    };
-    checkSession();
-  }, [router, supabase]);
-
+  if (loading) return <Spinner isFullPage={true} />
   return (
     <div className="flex flex-col items-center text-center">
       <h1 className="text-primary text-3xl my-3 font-bold">Turn your ideas into apps</h1>

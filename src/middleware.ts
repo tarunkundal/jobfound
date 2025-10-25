@@ -1,6 +1,5 @@
-// middleware.ts
-import { NextResponse, type NextRequest } from "next/server"
 import { createServerClient } from "@supabase/ssr"
+import { NextResponse, type NextRequest } from "next/server"
 
 export async function middleware(req: NextRequest) {
     const res = NextResponse.next()
@@ -23,15 +22,21 @@ export async function middleware(req: NextRequest) {
         }
     )
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
+    const { data: { user }, } = await supabase.auth.getUser()
+    const path = req.nextUrl.pathname
 
     // Example: Protect protected routes
-    if (!user && req.nextUrl.pathname.startsWith("/protected")) {
+    if (!user && path.startsWith("/protected")) {
         const redirectUrl = req.nextUrl.clone()
         redirectUrl.pathname = "/auth/login"
-        redirectUrl.searchParams.set("redirectedFrom", req.nextUrl.pathname)
+        redirectUrl.searchParams.set("redirectedFrom", path)
+        return NextResponse.redirect(redirectUrl)
+    }
+
+    // 🚀 Redirect logged-in users away from landing page
+    if (user && (path === "/auth/login" || path === "/auth/register" || path === "/")) {
+        const redirectUrl = req.nextUrl.clone()
+        redirectUrl.pathname = "/protected/dashboard"
         return NextResponse.redirect(redirectUrl)
     }
 
@@ -40,5 +45,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/protected/:path*"], // Protects everything under /proteceted folder
+    matcher: ["/", "/protected/:path*", "/auth/:path"], // Protects everything under /proteceted folder
 }

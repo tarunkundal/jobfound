@@ -48,7 +48,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
                             animate={{ opacity: 1, translateY: 0 }}
                             exit={{ opacity: 0, translateY: -10 }}
                             className={`p-4 rounded-lg shadow-md border-l-4 text-white w-80
-                ${toast.status === 'success' && 'bg-background-success border-background-success'}
+                ${toast.status === 'success' && 'bg-success border-background-success'}
                 ${toast.status === 'error' && 'bg-destructive border-background-destructive'}
                 ${toast.status === 'info' && 'bg-blue-500 border-blue-700'}
                 ${toast.status === 'warning' && 'bg-yellow-500 border-yellow-700'}
