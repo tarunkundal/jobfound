@@ -95,7 +95,11 @@ const LoginPage = () => {
                     Log In
                 </Button>
             </form>
-            <Button variant='link' className='mt-2'>Forget Password</Button>
+            <Button variant='link' className='mt-2'>
+                <Link href={"/auth/password/forget"}>
+                    Forget Password
+                </Link>
+            </Button>
             <div className='flex flex-col items-center gap-2 p-4'>
                 <OAuthProviders />
                 <Separator />
