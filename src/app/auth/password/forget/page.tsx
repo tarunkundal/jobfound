@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabseClient";
 import useCustomToast from "@/app/hooks/useCustomToast";
 import { Button } from "@/theme/ui/components/button";
 import { Input } from "@/theme/ui/components/input";
+import { ROUTES } from "@/constants/routes";
 
 const schema = {
     email: (email: string) => {
@@ -32,7 +33,7 @@ const ForgotPasswordPage = () => {
         setLoading(true);
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}/auth/password/reset`,
+            redirectTo: `${window.location.origin}${ROUTES.AUTH.RESET_PASSWORD}`,
         });
 
         setLoading(false);

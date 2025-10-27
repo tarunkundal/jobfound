@@ -1,4 +1,4 @@
-'use client';
+'use client';;
 import { useState, useEffect } from 'react';
 import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import { Button } from '@/theme/ui/components/button';

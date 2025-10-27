@@ -13,6 +13,8 @@ const OAuthProviders = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const loginUpWithGoogle = async () => {
+        console.log('button clicked');
+
         setIsLoading(true);
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',

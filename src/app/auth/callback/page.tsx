@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 import { createClient } from "@/lib/supabseClient";
 import { Spinner } from "@/theme/ui/components/spinner";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
-export default function AuthCallback() {
+const AuthCallback = () => {
     const supabase = createClient();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -17,9 +18,10 @@ export default function AuthCallback() {
 
             if (data.session) {
                 // ✅ Redirect to previous page or dashboard
-                router.replace(redirectedFrom || "/protected/dashboard");
-            } else {
-                router.replace("/auth/login");
+                router.replace(redirectedFrom || ROUTES.PROTECTED.DASHBOARD.ROOT);
+            }
+            else {
+                router.replace(ROUTES.AUTH.LOGIN);
             }
         };
         checkSession();
@@ -27,3 +29,5 @@ export default function AuthCallback() {
 
     return <Spinner />;
 }
+
+export default AuthCallback;

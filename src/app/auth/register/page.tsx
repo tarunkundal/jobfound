@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
 import OAuthProviders from '../components/OAuthProviders';
+import { ROUTES } from '@/constants/routes';
 
 export const schema = z.object({
     email: z.string().email(),
@@ -79,7 +80,7 @@ const RegisterPage = () => {
                     description: 'Please check your email to verify your account.',
                     status: 'success',
                 });
-                router.push('/auth/login');
+                router.push(ROUTES.AUTH.LOGIN);
                 // router.push('/auth/check-email?email=' + encodeURIComponent(email))
             }
         } catch (err: any) {
@@ -121,6 +122,7 @@ const RegisterPage = () => {
                         className='w-full'
                         size='lg'
                         isLoading={loading}
+                        disabled={loading}
                     >
                         Register
                     </Button>
@@ -130,7 +132,7 @@ const RegisterPage = () => {
                     <b> Terms of Service</b> and <b>Privacy Policy</b></p>
                 <p className='text-xxs text-tertiary'>
                     Already have an account?
-                    <Link href="/auth/login">
+                    <Link href={ROUTES.AUTH.LOGIN}>
                         <Button variant='link'>Log In</Button>
                     </Link>
                 </p>

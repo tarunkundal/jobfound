@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { schema } from '../register/page';
 import OAuthProviders from '../components/OAuthProviders';
+import { ROUTES } from '@/constants/routes';
 
 const LoginPage = () => {
     const supabase = createClient();
@@ -48,7 +49,7 @@ const LoginPage = () => {
                     description: 'No account exists for this email. Please register first.',
                     status: 'warning',
                 });
-                router.push('/auth/register');
+                // router.push('/auth/register');
                 return;
             }
 
@@ -65,7 +66,7 @@ const LoginPage = () => {
                 description: 'Welcome back!',
                 status: 'success',
             });
-            router.push("/protected/dashboard");
+            router.push(ROUTES.PROTECTED.DASHBOARD.ROOT);
         }
     }
 
@@ -91,12 +92,13 @@ const LoginPage = () => {
                     className='w-full'
                     size='lg'
                     isLoading={loading}
+                    disabled={loading}
                 >
                     Log In
                 </Button>
             </form>
             <Button variant='link' className='mt-2'>
-                <Link href={"/auth/password/forget"}>
+                <Link href={ROUTES.AUTH.FORGOT_PASSWORD}>
                     Forget Password
                 </Link>
             </Button>
@@ -105,7 +107,7 @@ const LoginPage = () => {
                 <Separator />
                 <p className='text-xxs text-tertiary'>
                     New to JobFound?
-                    <Link href="/auth/register" >
+                    <Link href={ROUTES.AUTH.SIGNUP} >
                         <Button variant='link'>Register</Button>
                     </Link>
                 </p><p className='text-secondary text-xxs text-center'>This site is protected by reCAPTCHA Enterprise and the Google <span className='underline'> Privacy Policy</span> and <span className='underline' >Terms of Service</span> apply.</p>

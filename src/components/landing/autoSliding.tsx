@@ -3,19 +3,19 @@ import { motion } from "framer-motion";
 
 
 const companies = [
-    { name: "Google", logo: "/google.svg" },
-    { name: "Amazon", logo: "/google.svg" },
-    { name: "Meta", logo: "/google.svg" },
-    { name: "Netflix", logo: "/google.svg" },
-    { name: "Airbnb", logo: "/google.svg" },
-    { name: "Figma", logo: "/globe.svg" },
+    { name: "Google", logo: "/t-mobile.svg" },
+    { name: "Amazon", logo: "/ibm.svg" },
+    { name: "Meta", logo: "/logitech.svg" },
+    { name: "Netflix", logo: "/fortinet.svg" },
+    { name: "Airbnb", logo: "/spotify.svg" },
+    { name: "Figma", logo: "/netflix.svg" },
 ];
 
 const AutoSliding = () => {
     return (
-        < div className="relative w-[80%] overflow-hidden py-8 my-16" >
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-brand to-transparent z-10 rounded-3xl" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-brand to-transparent z-10 rounded-3xl" />
+        <div className="relative w-[90%] md:w-[80%] lg:w-[60%] overflow-hidden py-8 my-12 mx-auto" >
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-gray-800 to-transparent z-10 rounded-3xl" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-gray-800 to-transparent z-10 rounded-3xl" />
 
             <motion.div
                 className="flex w-max space-x-16"

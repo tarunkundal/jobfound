@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabseClient";
 import useCustomToast from "@/app/hooks/useCustomToast";
 import { Input } from "@/theme/ui/components/input";
 import { Button } from "@/theme/ui/components/button";
+import { ROUTES } from "@/constants/routes";
 
 const schema = {
     password: (password: string) => {
@@ -76,7 +77,7 @@ const ResetPasswordPage = () => {
             status: "success",
         });
 
-        router.push("/auth/login");
+        router.push(ROUTES.AUTH.LOGIN);
     };
 
     return (

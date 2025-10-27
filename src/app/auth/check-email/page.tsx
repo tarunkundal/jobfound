@@ -1,3 +1,4 @@
+import { ROUTES } from "@/constants/routes";
 import { Button } from "@/theme/ui/components/button";
 import Link from "next/link";
 
@@ -14,7 +15,7 @@ const CheckEmailPage = async ({ searchParams }: PageProps) => {
                 We sent a confirmation link to <b>{searchParams?.email}</b>. Please verify your account before logging in.
             </p>
             <Button variant="default" size="lg" className="mt-4">
-                <Link href="/auth/login">Go to Login</Link>
+                <Link href={ROUTES.AUTH.LOGIN}>Go to Login</Link>
             </Button>
         </div>
     );
