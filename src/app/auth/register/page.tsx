@@ -94,7 +94,7 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="w-[60%] flex flex-col my-auto">
+        <div className="w-[80%] my-[10%] flex flex-col">
             <h1 className='text-2xl font-medium text-center my-4 text-primary'>Create a JobFound account</h1>
             <div className=' flex flex-col items-center gap-2 p-4'>
                 <OAuthProviders />

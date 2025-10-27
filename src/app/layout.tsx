@@ -7,7 +7,7 @@ export const metadata = {
   title: 'Job Found',
   description: 'Your gateway to exciting job opportunities.',
   icons: {
-    icon: "/logo2.png",
+    icon: "/logo.png",
   },
 };
 
