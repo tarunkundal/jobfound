@@ -6,17 +6,16 @@ import * as React from 'react'
 import { cn } from '../utils/cn'
 
 const buttonVariants = cva(
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm transition-colors outline-none select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-ring] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+    'inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-lg text-sm transition-colors outline-none select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-ring] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
     {
         variants: {
             variant: {
-                default:
-                    'bg-brand text-brand-foreground border border-brand hover:bg-brand-hover [&_svg]:!text-brand-foreground',
-                secondary: 'bg-secondary text-primary border border hover:bg-hover-secondary',
-                outline: 'bg-transparent text-secondary border border hover:text-primary',
+                default: 'bg-brand text-brand-foreground border border-brand hover:bg-brand-hover [&_svg]:!text-brand-foreground',
+                secondary: 'bg-secondary text-primary border border-secondary hover:bg-hover-secondary',
+                outline: 'bg-transparent text-primary border border hover:text-tertiary',
                 destructive: 'bg-destructive text-destructive hover:bg-destructive/90',
                 ghost: 'text-secondary hover:bg-hover hover:text-foreground',
-                link: 'text-primary underline-offset-4 hover:underline',
+                link: 'text-primary underline-offset-4 hover:text-brand',
                 icon: 'bg-transparent hover:bg-hover rounded-md',
             },
             size: {
@@ -39,10 +38,11 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
     asChild?: boolean
     isLoading?: boolean
+    prefixNode?: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, isLoading = false, children, ...props }, ref) => {
+    ({ className, prefixNode, variant, size, asChild = false, isLoading = false, children, ...props }, ref) => {
         const Comp = asChild ? Slot : 'button'
         return (
             <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
@@ -52,7 +52,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         <span className={cn(isLoading && 'opacity-0')}>{children}</span>
                     </div>
                 ) : (
-                    children
+                    <>
+                        {prefixNode && (
+                            <div className="flex items-center h-full mx-2 shrink-0 [&>svg]:size-4">
+                                {prefixNode}
+                            </div>
+                        )}
+                        {children}
+                    </>
                 )}
             </Comp>
         )
@@ -61,3 +68,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button'
 export { Button, buttonVariants }
+

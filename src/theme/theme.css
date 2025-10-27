@@ -4,7 +4,10 @@
 /* ====================
    🌞 Light Theme
    ==================== */
-@theme  {
+@theme {
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+
   --color-brand: hsl(var(--orange-600));
   --color-brand-hover: hsl(var(--orange-700));
 
@@ -33,14 +36,14 @@
   --color-border: var(--white-800);
   --color-border-card: var(--white-700);
   --color-border-brand: hsl(var(--orange-300));
-  --color-ring: var(--orange-300);
+  --color-ring: hsl(var(--orange-300));
   --color-caret: var(--orange-400);
 }
 
 /* ====================
    🌙 Dark Theme
    ==================== */
-/* @theme dark {
+@theme .dark {
   --color-brand: hsl(var(--orange-600));
   --color-brand-hover: hsl(var(--orange-700));
 
@@ -57,7 +60,7 @@
   --color-background-destructive: var(--red-500);
   --color-background-success: var(--green-600);
 
-  --color-text-brand-foreground: hsl(var(--white-1000));
+  --color-text-brand-foreground: var(--white-1000);
   --color-text-destructive: var(--white-600);
   --color-text-tertiary: var(--white-500);
   --color-text-primary: var(--white-900);
@@ -71,4 +74,4 @@
   --color-border-brand: hsl(var(--orange-300));
   --color-ring: var(--black-700);
   --color-caret: var(--black-800);
-} */
+}
