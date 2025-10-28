@@ -36,6 +36,7 @@
   --color-border: var(--white-800);
   --color-border-card: var(--white-700);
   --color-border-brand: hsl(var(--orange-300));
+  --color-border-destructive: hsl(var(--red-600));
   --color-ring: hsl(var(--orange-300));
   --color-caret: var(--orange-400);
 }
@@ -61,7 +62,7 @@
   --color-background-success: var(--green-600);
 
   --color-text-brand-foreground: var(--white-1000);
-  --color-text-destructive: var(--white-600);
+  --color-text-destructive: var(--red-600);
   --color-text-tertiary: var(--white-500);
   --color-text-primary: var(--white-900);
   --color-text-secondary: var(--white-100);
@@ -72,6 +73,7 @@
   --color-border: var(--black-600);
   --color-border-card: var(--black-500);
   --color-border-brand: hsl(var(--orange-300));
+  --color-border-destructive: hsl(var(--red-600));
   --color-ring: var(--black-700);
   --color-caret: var(--black-800);
 }
