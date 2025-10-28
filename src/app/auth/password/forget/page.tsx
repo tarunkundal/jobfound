@@ -56,7 +56,7 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center m-auto shadow-card border-card rounded-card bg-card p-4 ">
+        <div className="flex my-[20%] flex-col items-center justify-center m-auto shadow-card border-card rounded-card bg-card p-4 ">
             <h1 className="text-2xl font-semibold mb-4 text-primary">Forgot Password</h1>
             <form onSubmit={handleReset} className="flex flex-col gap-3 w-80">
                 <Input

@@ -8,7 +8,7 @@ interface SpinnerProps {
 export const Spinner = ({ isFullPage, text }: SpinnerProps) => {
     return (
         <div className={`h-full w-full flex justify-center items-center ${isFullPage ? 'h-screen' : ''}`}>
-            <Loader2 className="animate-loading text-secondary" />
+            <Loader2 className="animate-loading text-brand " />
             {text && <span className="ml-2 text-secondary">{text}</span>}
         </div>
     )

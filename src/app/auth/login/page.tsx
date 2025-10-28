@@ -71,7 +71,7 @@ const LoginPage = () => {
     }
 
     return (
-        <div className="w-[60%] flex flex-col my-auto">
+        <div className="w-[80%] my-[10%] flex flex-col">
             <h1 className='text-3xl font-medium text-center my-4 text-primary'>Log in to your account</h1>
             <form className='w-full flex flex-col items-center gap-4 p-4' onSubmit={handleLogin} >
                 <Input
