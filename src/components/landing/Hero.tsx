@@ -6,11 +6,11 @@ import Link from "next/link"
 const Hero = () => {
     return (<div>
         <div className="flex flex-col items-center text-center w-[90%] md:w-[80%] lg:w-[60%] mx-auto">
-            <p className="text-primary text-6xl font-bold">Stop Applying, <span className="text-brand">
+            <p className="text-brand-foreground text-6xl font-bold">Stop Applying, <span className="text-brand">
                 Start  </span>
                 <span className="text-brand-hover">Interviewing</span>
             </p>
-            <div className="text-secondary flex flex-col gap-4 items-center mt-4">
+            <div className="text-primary flex flex-col gap-4 items-center mt-4">
                 <p className="text-3xl">We'll Get You the Interviews, You Save Countless Hours Each Week
                 </p>
                 <p className="text-2xl w-[90%]">

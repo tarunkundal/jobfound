@@ -19,7 +19,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }, [darkMode]);
 
     return (
-        <div className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-primary min-h-screen`}>
+        <div className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-body min-h-screen`}>
             <header className='flex justify-between items-center px-4 py-4 bg-secondary' >
                 <Logo />
 

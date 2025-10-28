@@ -72,7 +72,7 @@ const LoginPage = () => {
 
     return (
         <div className="w-[80%] my-[10%] flex flex-col">
-            <h1 className='text-3xl font-medium text-center my-4 text-primary'>Log in to your account</h1>
+            <h1 className='text-3xl font-medium text-center my-4 text-brand-foreground'>Log in to your account</h1>
             <form className='w-full flex flex-col items-center gap-4 p-4' onSubmit={handleLogin} >
                 <Input
                     type="email"
@@ -110,7 +110,7 @@ const LoginPage = () => {
                     <Link href={ROUTES.AUTH.SIGNUP} >
                         <Button variant='link'>Register</Button>
                     </Link>
-                </p><p className='text-secondary text-xxs text-center'>This site is protected by reCAPTCHA Enterprise and the Google <span className='underline'> Privacy Policy</span> and <span className='underline' >Terms of Service</span> apply.</p>
+                </p><p className='text-primary text-xxs text-center'>This site is protected by reCAPTCHA Enterprise and the Google <span className='underline'> Privacy Policy</span> and <span className='underline' >Terms of Service</span> apply.</p>
             </div>
         </div>
     )

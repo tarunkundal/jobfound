@@ -11,11 +11,11 @@ const FAQS = () => {
 
     return (
         <div className="w-[90%] md:w-[80%] lg:w-[70%] mx-auto">
-            <h2 className="text-primary text-4xl font-bold text-center">Frequently Asked Questions</h2>
-            <h2 className="text-2xl text-secondary text-center">Let's answer some questions!</h2>
+            <h2 className="text-brand-foreground text-4xl font-bold text-center">Frequently Asked Questions</h2>
+            <h2 className="text-2xl text-primary text-center">Let's answer some questions!</h2>
 
             <div className="space-y-4 mt-6">
-                <h2 className="text-secondary text-2xl font-semibold">General Questions</h2>
+                <h2 className="text-primary text-2xl font-semibold">General Questions</h2>
                 {faqsData.map((faq, i) => (
                     <div
                         key={i}
@@ -26,7 +26,7 @@ const FAQS = () => {
                             onClick={() => setOpenIndex(openIndex === i ? null : i)}
                             className="w-full flex justify-between items-center p-5 text-left"
                         >
-                            <span className="text-sm lg:text-lg font-semibold text-primary">
+                            <span className="text-sm lg:text-lg font-semibold text-brand-foreground">
                                 {faq.question}
                             </span>
                             <ChevronDown
@@ -43,7 +43,7 @@ const FAQS = () => {
                                 openIndex === i ? "max-h-40 pb-4" : "max-h-0"
                             )}
                         >
-                            <p className="text-secondary text-sm leading-relaxed">
+                            <p className="text-primary text-sm leading-relaxed">
                                 {faq.answer}
                             </p>
                         </div>
