@@ -16,6 +16,7 @@ interface CustomSelectProps {
     value?: string;
     onValueChange?: (value: string) => void;
     className?: string;
+    disabled?: boolean;
 }
 
 /**
@@ -30,14 +31,15 @@ const Select: React.FC<CustomSelectProps> = ({
     value,
     onValueChange,
     className,
+    disabled
 }) => {
     return (
-        <SelectPrimitive.Root value={value} onValueChange={onValueChange}>
+        <SelectPrimitive.Root value={value ?? ""} onValueChange={onValueChange}>
             {/* Trigger */}
             <SelectPrimitive.Trigger
                 className={cn(
-                    "flex h-8 w-full items-center justify-between gap-2 rounded-md border-brand bg-transparent px-3 py-2 text-sm font-semibold text-primary",
-                    "placeholder:text-placeholder focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/40 hover:ring-1 hover:ring-brand transition",
+                    "flex h-8 w-full items-center justify-between gap-2 rounded-md border-brand bg-transparent px-3 py-2 text-sm text-primary",
+                    "placeholder:text-secondary focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/40 hover:ring-1 hover:ring-brand transition",
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     className
                 )}

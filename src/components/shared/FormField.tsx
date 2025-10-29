@@ -1,16 +1,17 @@
 "use client";
 
 import { Input } from "@/theme/ui/components/input";
+import MultiSelect from "@/theme/ui/components/multiSelect";
 import Select from "@/theme/ui/components/select";
 import { Textarea } from "@/theme/ui/components/textarea";
 import { cn } from "@/theme/ui/utils/cn";
 import { useFormContext, Controller } from "react-hook-form";
+import FileUpload from "./FileUpload";
 
 interface Option {
     label: string;
     value: string;
 }
-
 interface FormFieldProps {
     name: string;
     label?: string;
@@ -18,14 +19,25 @@ interface FormFieldProps {
     type?:
     | "text"
     | "email"
+    | "tel"
     | "password"
     | "number"
     | "textarea"
     | "select"
+    | "multiSelect"
+    | "fileUpload"
     | "checkbox"
     | "radio";
     options?: Option[]; // For select or radio fields
     className?: string;
+    maxSelections?: number;
+    required?: boolean;
+    helperText?: string;
+    disabled?: boolean;
+    search?: boolean;
+    multiple?: boolean;
+    maxSizeMB?: number;
+    fileFormats?: string[]
 }
 
 /**
@@ -40,6 +52,14 @@ export const FormField: React.FC<FormFieldProps> = ({
     type = "text",
     options = [],
     className,
+    maxSelections,
+    required,
+    helperText,
+    disabled,
+    search,
+    multiple,
+    maxSizeMB,
+    fileFormats
 }) => {
     const {
         register,
@@ -56,7 +76,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     );
 
     return (
-        <div className="flex flex-col gap-1 max-w-[300px]">
+        <div className="flex flex-col gap-1">
             {label && (
                 <label
                     htmlFor={name}
@@ -65,17 +85,19 @@ export const FormField: React.FC<FormFieldProps> = ({
                     )}
                 >
                     {label}
+                    {required && <span className="ml-1">*</span>}
                 </label>
             )}
 
             {/* ---------------- TEXT / EMAIL / PASSWORD / NUMBER ---------------- */}
-            {["text", "email", "password", "number"].includes(type) && (
+            {["text", "email", "password", "number", "tel"].includes(type) && (
                 <Input
                     id={name}
                     type={type}
                     placeholder={placeholder}
                     {...register(name)}
                     className={cn(baseInputClass, className)}
+                    disabled={disabled}
                 />
             )}
 
@@ -86,6 +108,7 @@ export const FormField: React.FC<FormFieldProps> = ({
                     placeholder={placeholder}
                     {...register(name)}
                     className={cn(baseInputClass, "min-h-[80px] resize-none", className)}
+                    disabled={disabled}
                 />
             )}
 
@@ -104,18 +127,45 @@ export const FormField: React.FC<FormFieldProps> = ({
                                 error && "border-destructive",
                                 className
                             )}
+                            disabled={disabled}
                         />
                     )}
                 />
             )}
 
+            {
+                type === "multiSelect" && (
+                    <Controller
+                        control={control}
+                        name={name}
+                        render={({ field }) => (
+                            <MultiSelect
+                                options={options}
+                                value={field.value || []}
+                                onChange={field.onChange}
+                                placeholder={placeholder}
+                                maxSelections={maxSelections}
+                                disabled={disabled}
+                                search={search}
+                                className={cn(
+                                    error && "border-destructive",
+                                    className
+                                )}
+
+                            />
+                        )}
+                    />
+                )
+            }
+
             {/* ---------------- CHECKBOX ---------------- */}
             {type === "checkbox" && (
-                <label className="flex items-center gap-2">
+                <label className="grid grid-cols-[auto_1fr] items-center gap-2 w-fit">
                     <Input
                         type="checkbox"
                         {...register(name)}
-                        className="h-4 w-4 accent-brand border-brand focus:ring-brand"
+                        className="h-4 w-4 accent-brand border-brand focus:ring-brand cursor-pointer"
+                        disabled={disabled}
                     />
                     <span className="text-sm text-primary">{placeholder}</span>
                 </label>
@@ -127,19 +177,46 @@ export const FormField: React.FC<FormFieldProps> = ({
                     {options.map((opt) => (
                         <label
                             key={opt.value}
-                            className="flex items-center gap-2 cursor-pointer"
+                            className="grid grid-cols-[auto_1fr] items-center gap-2 w-fit"
                         >
                             <Input
                                 type="radio"
                                 value={opt.value}
                                 {...register(name)}
-                                className="h-4 w-4 accent-brand border-brand focus:ring-brand"
+                                className="h-4 w-4 accent-brand border-brand focus:ring-brand cursor-pointer rounded-full"
+                                disabled={disabled}
                             />
                             <span className="text-sm text-primary">{opt.label}</span>
                         </label>
                     ))}
                 </div>
             )}
+
+            {/*  file upload */}
+            {type === "fileUpload" && (
+                <Controller
+                    control={control}
+                    name={name}
+                    render={({ field }) => (
+                        <FileUpload
+                            label={placeholder}
+                            multiple={multiple}
+                            files={field.value || []}
+                            onChange={field.onChange}
+                            accept={fileFormats}
+                            maxSizeMB={maxSizeMB}
+                        />
+                    )}
+                />
+            )}
+
+
+            {/* Helper Text */}
+            {
+                helperText && (
+                    <p className="text-xs font-medium text-tertiary mt-0.5">{helperText}</p>
+                )
+            }
 
             {/* ---------------- ERROR MESSAGE ---------------- */}
             {error && (

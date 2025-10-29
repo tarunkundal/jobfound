@@ -1,0 +1,17 @@
+export const jobTitles = [
+    { label: "Frontend Developer", value: "frontend-developer" },
+    { label: "Backend Developer", value: "backend-developer" },
+    { label: "Full Stack Developer", value: "fullstack-developer" },
+    { label: "UI/UX Designer", value: "ui-ux-designer" },
+    { label: "Data Analyst", value: "data-analyst" },
+    { label: "Data Scientist", value: "data-scientist" },
+    { label: "Product Manager", value: "product-manager" },
+    { label: "DevOps Engineer", value: "devops-engineer" },
+    { label: "Mobile App Developer", value: "mobile-developer" },
+    { label: "QA Engineer", value: "qa-engineer" },
+    { label: "Machine Learning Engineer", value: "ml-engineer" },
+    { label: "Cloud Architect", value: "cloud-architect" },
+    { label: "Technical Writer", value: "technical-writer" },
+    { label: "System Administrator", value: "sysadmin" },
+    { label: "Business Analyst", value: "business-analyst" },
+];

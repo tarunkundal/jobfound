@@ -19,7 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <input
                     type={type}
                     className={cn(
-                        'flex h-8 w-full text-xs text-primary rounded-md border-brand bg-transparent px-3 placeholder:text-placeholder focus:outline-brand-hover focus:border-brand focus:ring-brand disabled:cursor-not-allowed disabled:opacity-50 hover:ring-1 hover:ring-brand',
+                        'flex h-8 w-full text-sm text-primary rounded-md border-brand bg-transparent px-3 placeholder:text-placeholder focus:outline-brand-hover focus:border-brand focus:ring-brand disabled:cursor-not-allowed disabled:opacity-50 hover:ring-1 hover:ring-brand',
                         prefixNode && 'pl-8',
                         suffixNode && 'pr-8',
                         className,
