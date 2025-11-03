@@ -34,7 +34,7 @@ const OnBoarding = () => {
     const onSubmit = (data: any) => console.log(data);
 
     return (
-        <div className="w-[90%] bg-primary my-[2%] mx-auto border-card rounded-card">
+        <div className="w-[90%] bg-secondary my-[2%] mx-auto border-card rounded-card">
             <div className="mx-auto px-6 py-6 flex flex-col gap-6">
                 <div>
                     <h2 className="text-brand-foreground text-2xl font-semibold">Set up Your Profile</h2>
@@ -206,15 +206,6 @@ const OnBoarding = () => {
                                 type="checkbox"
                                 placeholder="I agree to Terms and Conditions"
                                 className="w-full"
-                            />
-                        </FormRow>
-                        <FormRow>
-                            <FormField
-                                name="resume"
-                                type="fileUpload"
-                                placeholder="Upload Resume"
-                                className="w-full"
-                                fileFormats={['.pdf']}
                             />
                         </FormRow>
                         <Button type="submit" className="w-full">Submit</Button>

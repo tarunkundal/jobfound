@@ -47,9 +47,7 @@ export const userFormSchema = z.object({
         .or(z.literal("")), // allows empty field if not mandatory
 
     // 💰 Salary
-    minimumSalary: z
-        .string()
-        .optional(),
+    minimumSalary: z.coerce.number().optional(),
 
     // 📝 Additional Info
     additionalContext: z
@@ -59,14 +57,14 @@ export const userFormSchema = z.object({
         .or(z.literal("")), // optional text
 
     // 📄 Resume
-    resume: z
-        .array(z.instanceof(File))
-        .length(1, "Please upload your resume"),
+    resume_url: z.string().url("Invalid file URL"),
+
 
     // ⚧ Gender
     gender: z.enum(["male", "female"], {
         message: "Please select your gender",
     }),
+    photo_url: z.string().optional().or(z.literal("")),
 
     // ✅ Terms
     terms: z

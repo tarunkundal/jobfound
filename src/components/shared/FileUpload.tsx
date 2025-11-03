@@ -1,11 +1,16 @@
-"use client";
-
-import * as React from "react";
-import { useDropzone } from "react-dropzone";
-import { Slot } from "@radix-ui/react-slot";
-import { Upload, X, FileText, Eye, EyeOff } from "lucide-react";
-import { cn } from "@/theme/ui/utils/cn";
+"use client";;
+import { useUser } from "@/app/auth/_hooks/useUser";
+import useCustomToast from "@/app/hooks/useCustomToast";
+import { createClient } from "@/lib/supabseClient";
+import { folderEnum } from "@/schema/upload.schema";
 import { Button } from "@/theme/ui/components/button";
+import { cn } from "@/theme/ui/utils/cn";
+import { trpc } from "@/utils/trpc";
+import { Slot } from "@radix-ui/react-slot";
+import { Eye, EyeOff, FileText, Upload, X } from "lucide-react";
+import React, { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import z from "zod";
 
 interface FileUploadProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
@@ -17,6 +22,7 @@ interface FileUploadProps
     files?: File[];
     onChange?: (files: File[]) => void;
     asChild?: boolean;
+    folder: z.infer<typeof folderEnum>;
 }
 
 const mimeMap: Record<string, string> = {
@@ -40,27 +46,82 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             onChange,
             asChild,
             className,
+            folder,
             ...props
         },
         ref
     ) => {
         const Comp = asChild ? Slot : "div";
-        const [showFiles, setShowFiles] = React.useState(false);
+        const [showFiles, setShowFiles] = useState(false);
+        const toast = useCustomToast()
+        const supabase = createClient();
+        const { user } = useUser()
 
-        const onDrop = React.useCallback(
-            (acceptedFiles: File[]) => {
-                const validFiles = acceptedFiles.filter(
-                    (file) => file.size <= maxSizeMB * 1024 * 1024
-                );
+        const updateUserFile = trpc.upload.updateUserFile.useMutation();
 
-                if (multiple) {
-                    onChange?.([...files, ...validFiles]);
-                } else {
-                    onChange?.(validFiles.slice(0, 1));
+        const onDrop = useCallback((acceptedFiles: File[]) => {
+            void handleFiles(acceptedFiles); // run async part separately
+        }, [files, multiple, user, folder, maxSizeMB, toast, onChange, supabase, updateUserFile]);
+
+        const handleFiles = async (acceptedFiles: File[]) => {
+            if (acceptedFiles.length === 0) return;
+
+            const validFiles = acceptedFiles.filter(
+                (file) => file.size <= maxSizeMB * 1024 * 1024
+            );
+
+            if (validFiles.length === 0) {
+                toast({ title: "File too large!", status: "error" });
+                return;
+            }
+
+            const file = validFiles[0];
+            const userId = user?.id;
+            if (!userId) {
+                toast({ title: "User not authenticated", status: "error" });
+                return;
+            }
+
+            // ✅ correct path (no bucket name prefix)
+            const filePath = `${userId}/${file.name}`;
+
+            try {
+                // 1️⃣ Remove old file if single upload
+                if (files.length > 0 && !multiple) {
+                    const oldFilePath = `${userId}/${files[0].name}`;
+                    const { error: removeError } = await supabase.storage
+                        .from(folder)
+                        .remove([oldFilePath]);
+                    if (removeError) console.warn("Error removing old file:", removeError);
                 }
-            },
-            [files, onChange, multiple, maxSizeMB]
-        );
+
+                // 2️⃣ Upload new file
+                const { error: uploadError } = await supabase.storage
+                    .from(folder)
+                    .upload(filePath, file, { upsert: true });
+                if (uploadError) throw uploadError;
+
+                // 3️⃣ Get public URL
+                const { data: publicUrlData } = supabase.storage
+                    .from(folder)
+                    .getPublicUrl(filePath);
+                const publicUrl = publicUrlData?.publicUrl;
+                if (!publicUrl) throw new Error("Public URL missing");
+
+                // 4️⃣ Update DB using Prisma via tRPC mutation
+                await updateUserFile.mutateAsync?.({ folder, filePath, publicUrl });
+
+                // 5️⃣ Update UI
+                onChange?.([file]);
+                toast({
+                    title: `✅ ${folder === "resumes" ? "Resume" : "Photo"} uploaded successfully!`,
+                    status: "success",
+                });
+            } catch (err) {
+                console.error("Upload error:", err);
+                toast({ title: "Error uploading file!", status: "error" });
+            }
+        };
 
 
         const mappedAccept = accept.reduce((acc, ext) => {

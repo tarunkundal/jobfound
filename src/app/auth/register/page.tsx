@@ -1,5 +1,6 @@
 "use client";;
 import useCustomToast from '@/app/hooks/useCustomToast';
+import { ROUTES } from '@/constants/routes';
 import { createClient } from '@/lib/supabseClient';
 import { Button } from '@/theme/ui/components/button';
 import { Icon } from '@/theme/ui/components/icon';
@@ -10,8 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
-import OAuthProviders from '../components/OAuthProviders';
-import { ROUTES } from '@/constants/routes';
+import OAuthProviders from '../_components/OAuthProviders';
 
 export const schema = z.object({
     email: z.string().email(),

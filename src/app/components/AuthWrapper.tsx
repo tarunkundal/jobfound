@@ -1,9 +1,9 @@
 "use client"
 
 import { Spinner } from "@/theme/ui/components/spinner"
-import { useUser } from "../auth/hooks/useUser"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { useUser } from "../auth/_hooks/useUser"
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
     const { user, loading } = useUser()

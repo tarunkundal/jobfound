@@ -27,7 +27,7 @@ const AuthCallback = () => {
         checkSession();
     }, [router, searchParams, supabase]);
 
-    return <Spinner />;
+    return <Spinner isFullPage />;
 }
 
 export default AuthCallback;

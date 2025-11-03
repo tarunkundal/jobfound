@@ -203,6 +203,7 @@ export const FormField: React.FC<FormFieldProps> = ({
                             multiple={multiple}
                             files={field.value || []}
                             onChange={field.onChange}
+                            folder='resumes'
                             accept={fileFormats}
                             maxSizeMB={maxSizeMB}
                         />

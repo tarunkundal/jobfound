@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react";
-import { createClient } from "@/lib/supabseClient";
 import useCustomToast from "@/app/hooks/useCustomToast";
+import { ROUTES } from "@/constants/routes";
+import { createClient } from "@/lib/supabseClient";
 import { Button } from "@/theme/ui/components/button";
 import { Input } from "@/theme/ui/components/input";
-import { ROUTES } from "@/constants/routes";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const schema = {
     email: (email: string) => {
@@ -19,6 +20,8 @@ const ForgotPasswordPage = () => {
     const [loading, setLoading] = useState(false);
     const supabase = createClient();
     const toast = useCustomToast();
+    const router = useRouter();
+
 
     const handleReset = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,7 +55,9 @@ const ForgotPasswordPage = () => {
             description: "Check your inbox for password reset link.",
             status: "success",
         });
+        router.push(ROUTES.AUTH.LOGIN)
         setEmail("");
+
     };
 
     return (

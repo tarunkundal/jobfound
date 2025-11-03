@@ -13,13 +13,10 @@ const OAuthProviders = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const loginUpWithGoogle = async () => {
-        console.log('button clicked');
-
         setIsLoading(true);
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                // redirectTo: `${window.location.origin}/protected/dashboard`
                 redirectTo: `${window.location.origin}/auth/callback?redirectedFrom=/protected/dashboard`
             },
         });
