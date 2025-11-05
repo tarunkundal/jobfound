@@ -16,8 +16,8 @@ const Footer = () => {
                     </Link>
                 </Button>
             </div>
-            <h2 className="text-4xl font-bold text-primary">Contact Us</h2>
-            <h2 className="text-2xl text-secondary">Have questions? Reach out to us at
+            <h2 className="text-4xl font-bold text-brand-foreground">Contact Us</h2>
+            <h2 className="text-2xl text-primary">Have questions? Reach out to us at
                 <span className="text-brand">
 
                     <Link href={''}>

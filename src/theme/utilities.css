@@ -133,6 +133,11 @@
     border-color: hsl(var(--color-border-brand));
 }
 
+@utility border-destructive {
+    border-width: 1px;
+    border-color: hsl(var(--color-text-destructive));
+}
+
 @utility shadow-card {
     box-shadow: var(--shadow-md);
 }

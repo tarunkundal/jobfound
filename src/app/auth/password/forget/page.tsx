@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react";
-import { createClient } from "@/lib/supabseClient";
 import useCustomToast from "@/app/hooks/useCustomToast";
+import { ROUTES } from "@/constants/routes";
+import { createClient } from "@/lib/supabseClient";
 import { Button } from "@/theme/ui/components/button";
 import { Input } from "@/theme/ui/components/input";
-import { ROUTES } from "@/constants/routes";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const schema = {
     email: (email: string) => {
@@ -19,6 +20,8 @@ const ForgotPasswordPage = () => {
     const [loading, setLoading] = useState(false);
     const supabase = createClient();
     const toast = useCustomToast();
+    const router = useRouter();
+
 
     const handleReset = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,13 +55,15 @@ const ForgotPasswordPage = () => {
             description: "Check your inbox for password reset link.",
             status: "success",
         });
+        router.push(ROUTES.AUTH.LOGIN)
         setEmail("");
+
     };
 
     return (
-        <div className="flex my-[20%] flex-col items-center justify-center m-auto shadow-card border-card rounded-card bg-card p-4 ">
-            <h1 className="text-2xl font-semibold mb-4 text-primary">Forgot Password</h1>
-            <form onSubmit={handleReset} className="flex flex-col gap-3 w-80">
+        <div className="w-[80%] my-[10%] flex flex-col gap-4">
+            <h1 className="text-2xl font-semibold mb-4 text-brand-foreground text-center">Forgot Password</h1>
+            <form onSubmit={handleReset} className="flex flex-col gap-3 w-full items-center">
                 <Input
                     type="email"
                     placeholder="Enter your email"
@@ -71,6 +76,7 @@ const ForgotPasswordPage = () => {
                     disabled={loading}
                     variant="default"
                     isLoading={loading}
+                    className="w-full"
                 >
                     Send Reset Link
                 </Button>

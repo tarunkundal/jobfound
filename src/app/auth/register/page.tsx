@@ -1,5 +1,6 @@
 "use client";;
 import useCustomToast from '@/app/hooks/useCustomToast';
+import { ROUTES } from '@/constants/routes';
 import { createClient } from '@/lib/supabseClient';
 import { Button } from '@/theme/ui/components/button';
 import { Icon } from '@/theme/ui/components/icon';
@@ -10,8 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
-import OAuthProviders from '../components/OAuthProviders';
-import { ROUTES } from '@/constants/routes';
+import OAuthProviders from '../_components/OAuthProviders';
 
 export const schema = z.object({
     email: z.string().email(),
@@ -95,10 +95,10 @@ const RegisterPage = () => {
 
     return (
         <div className="w-[80%] my-[10%] flex flex-col">
-            <h1 className='text-2xl font-medium text-center my-4 text-primary'>Create a JobFound account</h1>
+            <h1 className='text-2xl font-medium text-center my-4 text-brand-foreground'>Create a JobFound account</h1>
             <div className=' flex flex-col items-center gap-2 p-4'>
                 <OAuthProviders />
-                <span className='text-primary'>or</span>
+                <span className='text-brand-foreground'>or</span>
                 <Button size='lg' prefixNode={<Icon icon={Mail} />} variant='ghost' className='w-full'
                     onClick={() => setRegisterWithEmailPassword(!registerWithEmailPassword)}
                 >Email & Password</Button>
@@ -128,7 +128,7 @@ const RegisterPage = () => {
                     </Button>
                 </form>}
                 <Separator />
-                <p className='text-secondary text-xxs text-center'>By continuing, you agree to JobFound's
+                <p className='text-primary text-xxs text-center'>By continuing, you agree to JobFound's
                     <b> Terms of Service</b> and <b>Privacy Policy</b></p>
                 <p className='text-xxs text-tertiary'>
                     Already have an account?
@@ -136,7 +136,7 @@ const RegisterPage = () => {
                         <Button variant='link'>Log In</Button>
                     </Link>
                 </p>
-                <p className='text-xxs text-tertiary'>
+                <p className='text-xxs text-primary'>
                     This site is protected by reCAPTCHA Enterprise and the Google Privacy Policy and Terms of Service apply.
                 </p>
             </div>

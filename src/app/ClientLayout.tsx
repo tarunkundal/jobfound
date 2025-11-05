@@ -6,12 +6,14 @@ import { Button } from '@/theme/ui/components/button';
 import { Separator } from '@/theme/ui/components/separator';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
+import { useUser } from './auth/_hooks/useUser';
 
 const ibmPlexMono = IBM_Plex_Mono({ weight: '400', variable: '--font-mono', subsets: ['latin'] });
 const ibmPlexSans = IBM_Plex_Sans({ variable: '--font-plex', subsets: ['latin'] });
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const [darkMode, setDarkMode] = useState(false);
+    const { user } = useUser()
 
     useEffect(() => {
         if (darkMode) document.documentElement.classList.add('dark');
@@ -19,7 +21,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }, [darkMode]);
 
     return (
-        <div className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-primary min-h-screen`}>
+        <div className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-body min-h-screen`}>
             <header className='flex justify-between items-center px-4 py-4 bg-secondary' >
                 <Logo />
 

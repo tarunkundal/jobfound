@@ -9,6 +9,7 @@ export const ROUTES = {
         RESET_PASSWORD: "/auth/password/reset",
         AUTH_CALLBACK: "/auth/callback"
     },
+    LOGOUT: '',
 
     PROTECTED: {
         DASHBOARD: {
