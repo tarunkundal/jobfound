@@ -1,45 +1,48 @@
-import { getFileUrlSchema } from "@/schema/upload.schema";
+import { folderEnum, getFileUrlSchema } from "@/schema/upload.schema";
 import { protectedProcedure, router } from "../trpc";
+import { columnMap } from "@/utils";
 
 export const uploadRouter = router({
     updateUserFile: protectedProcedure
         .input(getFileUrlSchema)
         .mutation(async ({ ctx, input }) => {
-            const { folder, filePath, publicUrl } = input;
+            const { folder, filePath } = input;
             const userId = ctx.user.id;
 
-            if (!publicUrl) throw new Error("Failed to get public URL");
+            //  Determine which field to update
+            const pathToBeUpdated = columnMap[folder];
 
-            // 2️⃣ Fetch old user record
-            const user = await ctx.prisma.user.findUnique({
-                where: { id: userId },
-                select: { resume_url: true, photo_url: true },
-            });
-            console.log(user, ctx)
-            // 3️⃣ Determine which field to update
-            const oldUrl = folder === "resumes" ? user?.resume_url : user?.photo_url;
-
-            // 4️⃣ Delete old file if it exists
-            if (oldUrl) {
-                try {
-                    const oldPath = oldUrl.split("/storage/v1/object/public/")[1];
-                    if (oldPath) {
-                        await ctx.supabase.storage.from(folder).remove([oldPath]);
-                    }
-                } catch (e) {
-                    console.error("Error deleting old file:", e);
-                }
-            }
-
-            // 5️⃣ Update user record with new URL
+            // Update user record with new URL
             await ctx.prisma.user.update({
                 where: { id: userId },
-                data:
-                    folder === "resumes"
-                        ? { resume_url: publicUrl }
-                        : { photo_url: publicUrl },
+                data: {
+                    [pathToBeUpdated]: filePath ?? ''
+                }
             });
-
-            return { success: true, publicUrl };
+            return {
+                success: true, filePath, message: filePath
+                    ? "File path updated successfully."
+                    : "File removed successfully.",
+            };
         }),
+
+    getUserFilePath: protectedProcedure.input(folderEnum).query(async ({ ctx, input }) => {
+        try {
+            if (!ctx.user) throw new Error("User not authenticated");
+            const column = columnMap[input];
+
+            if (!column) throw new Error("Invalid folder");
+            const user = await ctx.prisma.user.findUnique({
+                where: { id: ctx.user.id },
+                select: { [column]: true }
+            })
+            if (!user) {
+                throw new Error("User not found");
+            }
+
+            return { filePath: user[column] };
+        } catch (error) {
+            console.log('erroridjf', error);
+        }
+    })
 });

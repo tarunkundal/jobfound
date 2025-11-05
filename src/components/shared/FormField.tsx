@@ -5,8 +5,8 @@ import MultiSelect from "@/theme/ui/components/multiSelect";
 import Select from "@/theme/ui/components/select";
 import { Textarea } from "@/theme/ui/components/textarea";
 import { cn } from "@/theme/ui/utils/cn";
-import { useFormContext, Controller } from "react-hook-form";
-import FileUpload from "./FileUpload";
+import { Controller, useFormContext } from "react-hook-form";
+import FileUpload from "./upload/FileUpload";
 
 interface Option {
     label: string;

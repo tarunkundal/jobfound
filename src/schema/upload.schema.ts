@@ -9,9 +9,8 @@ export const uploadFileSchema = z.object({
 });
 
 export const getFileUrlSchema = z.object({
-    filePath: z.string(),
+    filePath: z.string().optional(),
     folder: folderEnum,
-    publicUrl: z.string(),
 });
 
 export const updateUserFileSchema = z.object({

@@ -24,16 +24,17 @@ export async function createContext({ req }: CreateContextOptions) {
     )
 
     const { data: { user } } = await supabase.auth.getUser()
+    console.log('conrest', user)
 
-    const dbUser = user
-        ? await prisma.user.upsert({
-            where: { id: user.id },
-            update: { email: user.email! },
-            create: { id: user.id, email: user.email! },
-        })
-        : null
+    // const dbUser = user
+    //     ? await prisma.user.upsert({
+    //         where: { id: user.id },
+    //         update: { email: user.email! },
+    //         create: { id: user.id, email: user.email! },
+    //     })
+    //     : null
 
-    return { supabase, user: dbUser, prisma }
+    return { supabase, user, prisma }
 }
 
 export type Context = inferAsyncReturnType<typeof createContext>

@@ -1,9 +1,10 @@
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from '@/generated/prisma/client';
+
 
 const globalForPrisma = globalThis as unknown as { prisma: any };
 
 export const prisma =
-    globalForPrisma.prisma ||
+    globalForPrisma.prisma ??
     new PrismaClient({
         datasources: {
             db: {
