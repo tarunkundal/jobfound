@@ -24,7 +24,6 @@ export async function createContext({ req }: CreateContextOptions) {
     )
 
     const { data: { user } } = await supabase.auth.getUser()
-    console.log('conrest', user)
 
     // const dbUser = user
     //     ? await prisma.user.upsert({

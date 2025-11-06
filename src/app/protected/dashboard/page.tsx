@@ -2,16 +2,19 @@
 import FileUpload from "@/components/shared/upload/FileUpload";
 import { createClient } from "@/lib/supabseClient";
 import { Button } from "@/theme/ui/components/button";
+import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OnBoarding from "../onboarding/page";
 
 const Dashboard = () => {
     const supabase = createClient();
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
+    const { data, isLoading, error } = trpc.upload.getUserFilePath.useQuery("resumes")
     const [files, setFiles] = useState<File[]>([]);
-    const [photos, setPhotos] = useState<File[]>([]);
+    console.log('file signed url is', data, isLoading, error);
+
 
     const handleLogout = async () => {
         setLoading(true);
@@ -20,7 +23,23 @@ const Dashboard = () => {
         router.push("/auth/login");
     };
 
-    console.log(files);
+    // 🧩 when we have a signed URL, convert it to a "File" blob for preview
+    useEffect(() => {
+        const fetchFileFromUrl = async () => {
+            if (data?.signedFileUrl) {
+                const res = await fetch(data.signedFileUrl);
+                console.log('responseis', res);
+
+                const blob = await res.blob();
+                const file = new File([blob], "uploaded_resume.pdf", { type: blob.type });
+                setFiles([file]);
+            } else {
+                setFiles([]);
+            }
+        };
+
+        fetchFileFromUrl();
+    }, [data]);
 
     return (<div>
         <div className="flex flex-col p-2 gap-4">
@@ -29,6 +48,7 @@ const Dashboard = () => {
                 description="Drag & drop or click to upload your resume"
                 folder='resumes'
                 accept={[".pdf", ".docx"]}
+                // accept={[".png", ".jpg", ".jpeg"]}
                 maxSizeMB={10}
                 files={files}
                 onChange={setFiles}
