@@ -152,6 +152,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                                         onClick={() => removeFile(file)}
                                         variant="ghost"
                                         size="sm"
+                                        disabled={isUploading}
                                     >
                                         <X className="h-4 w-4 text-destructive" />
                                     </Button>

@@ -298,6 +298,10 @@ export const citiesByState: Record<string, Option[]> = {
         { label: "Ahmedabad", value: "ahmedabad" },
         { label: "Surat", value: "surat" },
     ],
+    Haryana: [
+        { label: "Gurugram", value: "Gurugram" },
+        { label: "Faridabad", value: "Faridabad" },
+    ],
 
     // 🇮🇱 Israel
     TA: [

@@ -1,35 +1,62 @@
-import { userFormSchema } from "@/schema/user.schema";
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormField } from "@/components/shared/FormField";
-import { Button } from "@/theme/ui/components/button";
-import { jobTitles } from "@/lib/data/onboarding/jobTitles";
-import { countries } from "@/lib/data/onboarding/countriesData";
 import { useLocationOptions } from "@/app/hooks/useLocationOptions";
+import { FormField } from "@/components/shared/FormField";
+import { countries } from "@/lib/data/onboarding/countriesData";
+import { jobTitles } from "@/lib/data/onboarding/jobTitles";
+import { resumeSchema } from "@/schema/resumeParser.schema";
+import { userFormSchema } from "@/schema/user.schema";
+import { Button } from "@/theme/ui/components/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import z from "zod";
 
 const FormRow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="w-full lg:w-[48%] md:w-[48%]">{children}</div>
 );
 
-const OnBoarding = () => {
+interface OnBoardingProps {
+    parsedData?: z.infer<typeof resumeSchema>
+}
+
+const defaultValues = {
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    jobTitles: [],
+    currentEmployer: "",
+    educationLevel: "",
+    experienceYears: "",
+    experienceLevel: "",
+    workPreference: [],
+    residenceCountry: "",
+    state: "",
+    city: "",
+    linkedinUrl: "",
+    additionalContext: "",
+    terms: false,
+};
+
+const OnBoarding = ({ parsedData }: OnBoardingProps) => {
 
     const form = useForm({
-        defaultValues: {
-            fullName: "",
-            email: '',
-            terms: false,
-            gender: undefined,
-            jobTitles: [],
-            residenceCountry: ""
-        },
+        defaultValues: { ...defaultValues, ...parsedData },
         mode: "onSubmit",
         reValidateMode: "onChange",
         resolver: zodResolver(userFormSchema)
     });
 
-    const { control, setValue } = form;
+    useEffect(() => {
+        if (parsedData) {
+            form.reset({ ...defaultValues, ...parsedData });
+        }
+    }, [parsedData]);
 
+
+    const { control, setValue } = form;
     const { stateOptions, cityOptions } = useLocationOptions(control, setValue);
+
+    console.log('propsdata', parsedData);
+
 
     const onSubmit = (data: any) => console.log(data);
 
@@ -103,9 +130,9 @@ const OnBoarding = () => {
                                 placeholder="Select Experience level"
                                 required
                                 options={[
-                                    { label: "Remote", value: "remote" },
-                                    { label: "Hybrid", value: "hybrid" },
-                                    { label: "On Site", value: "onsite" },
+                                    { label: "Remote", value: "Remote" },
+                                    { label: "Hybrid", value: "Hybrid" },
+                                    { label: "On Site", value: "On-site" },
                                 ]}
                             />
                         </FormRow>
