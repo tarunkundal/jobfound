@@ -29,6 +29,9 @@ export async function parseResumeFromSupabase(fileUrl: string) {
     const rawText = docs.map((d) => d.pageContent).join("\n\n");
     const resumeText = cleanResumeText(rawText);
 
+    console.log('resume raw text', resumeText);
+
+
     /** Step 3️⃣ Prepare schema parser */
     const parser = StructuredOutputParser.fromZodSchema(resumeSchema);
     const formatInstructions = parser.getFormatInstructions();

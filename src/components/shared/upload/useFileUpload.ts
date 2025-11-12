@@ -35,12 +35,14 @@ export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files }: 
         if (!validateFileSize(file)) return;
         if (!userId) throw new Error("User not authenticated");
         const extension = getFileExtension(file)
-        const filePath = `${userId}/${filePathConstructor[folder]}.${extension}`;
+        const uniqueFileName = `${filePathConstructor[folder]}_${Date.now()}.${extension}`;
+        const filePath = `${userId}/${uniqueFileName}`
         try {
             setIsUploading(true)
-            const { success } = await updateUserFile({ folder: folder, filePath: filePath });
-            const { error: uploadError } = await supabase.storage.from(folder).upload(filePath, file, { upsert: true, cacheControl: "0", });
+            const { error: uploadError } = await supabase.storage.from(folder).upload(filePath, file, { upsert: false, });
+            if (uploadError) throw uploadError;
 
+            const { success } = await updateUserFile({ folder: folder, filePath: filePath });
             if (!success || uploadError) { throw new Error("Upload or DB update failed"); }
 
             onChange?.(multiple ? [...<[]>files, file] : [file]);
@@ -58,6 +60,7 @@ export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files }: 
     const removeFile = async (file: File) => {
         if (!userId) throw new Error("User not authenticated");
         try {
+            setIsUploading(true)
             const { success } = await updateUserFile({ folder: folder, filePath: '' });
             if (!success) throw new Error("DB update failed");
             onChange?.((files ?? []).filter(f => f !== file));

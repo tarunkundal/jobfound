@@ -13,6 +13,7 @@ const Dashboard = () => {
     const [loading, setLoading] = useState<boolean>(false);
     // const { data, isLoading, error } = trpc.upload.getUserFilePath.useQuery("resumes")
     const [files, setFiles] = useState<File[]>([]);
+    const [photos, setphotos] = useState<File[]>([]);
     const { data: parsedData, isLoading, error } = trpc.resume.parsedResume.useQuery()
     console.log('file signed url is', parsedData, isLoading, error);
 
@@ -31,10 +32,20 @@ const Dashboard = () => {
                 description="Drag & drop or click to upload your resume"
                 folder='resumes'
                 accept={[".pdf", ".docx"]}
-                // accept={[".png", ".jpg", ".jpeg"]}
                 maxSizeMB={10}
                 files={files}
                 onChange={setFiles}
+                className="w-[90%] md:w-[60%] lg:w=[50%] mx-auto"
+            />
+            <FileUpload
+                label=""
+                description="Drag & drop or click to upload your pic"
+                folder='photos'
+                // accept={[".pdf", ".docx"]}
+                accept={[".png", ".jpg", ".jpeg"]}
+                maxSizeMB={10}
+                files={photos}
+                onChange={setphotos}
                 className="w-[90%] md:w-[60%] lg:w=[50%] mx-auto"
             />
             <OnBoarding parsedData={parsedData?.parsedData ?? undefined} />

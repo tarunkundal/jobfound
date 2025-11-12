@@ -1,6 +1,7 @@
 import { folderEnum, getFileUrlSchema } from "@/schema/upload.schema";
-import { protectedProcedure, router } from "../trpc";
 import { columnMap } from "@/utils";
+import { protectedProcedure, router } from "../trpc";
+
 
 export const uploadRouter = router({
     updateUserFile: protectedProcedure
@@ -9,7 +10,6 @@ export const uploadRouter = router({
             const { folder, filePath } = input;
             const userId = ctx.user.id;
             const supabase = ctx.supabase
-            //  Determine which field to update resume_url/photo_url
             const pathToBeUpdated = columnMap[folder];
 
             // 1️⃣ Fetch old path
@@ -46,8 +46,6 @@ export const uploadRouter = router({
         .input(folderEnum)
         .query(async ({ ctx, input }) => {
             try {
-                if (!ctx.user) throw new Error("User not authenticated");
-
                 const column = columnMap[input];
                 if (!column) throw new Error("Invalid folder name");
 
@@ -55,8 +53,6 @@ export const uploadRouter = router({
                     where: { id: ctx.user.id },
                     select: { [column]: true },
                 });
-
-                if (!user) throw new Error("User not found");
 
                 const filePath = user[column];
                 if (!filePath) {
