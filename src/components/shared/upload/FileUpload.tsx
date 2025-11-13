@@ -22,6 +22,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             onChange,
             asChild,
             className,
+            onUploadSuccess,
             folder,
             ...props
         },
@@ -29,7 +30,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     ) => {
         const Comp = asChild ? Slot : "div";
         const [showFiles, setShowFiles] = useState(false);
-        const { uploadFile, isUploading, removeFile } = useFileUpload({ folder, maxSizeMB, onChange, multiple, files })
+        const { uploadFile, isUploading, removeFile } = useFileUpload({ folder, maxSizeMB, onChange, multiple, files, onUploadSuccess })
 
         const mappedAccept = accept.reduce((acc, ext) => {
             const mime = mimeMap[ext];
