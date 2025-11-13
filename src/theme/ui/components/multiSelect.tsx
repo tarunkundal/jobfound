@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Button } from "./button";
 import { Input } from "./input";
-import useCustomToast from "@/app/hooks/useCustomToast";
+import useCustomToast from "@/hooks/useCustomToast";
 
 interface SelectOption {
     label: string;

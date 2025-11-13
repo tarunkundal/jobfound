@@ -1,4 +1,4 @@
-import ClientLayout from './ClientLayout';
+import ClientLayout from './(public)/ClientLayout';
 import { ToastProvider } from './context/ToastContext';
 import './globals.css';
 import { TRPCProvider } from './providers';

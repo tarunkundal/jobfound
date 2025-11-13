@@ -20,7 +20,7 @@ export const countries = [
     { label: "Greece", value: "GR" },
     { label: "Hong Kong", value: "HK" },
     { label: "Hungary", value: "HU" },
-    { label: "India", value: "IN" },
+    { label: "India", value: "India" },
     { label: "Indonesia", value: "ID" },
     { label: "Ireland", value: "IE" },
     { label: "Israel", value: "IL" },

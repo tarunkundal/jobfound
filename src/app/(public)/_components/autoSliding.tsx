@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-
 const companies = [
     { name: "Google", logo: "/t-mobile.svg" },
     { name: "Amazon", logo: "/ibm.svg" },

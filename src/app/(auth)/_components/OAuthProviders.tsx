@@ -1,5 +1,6 @@
 "use client";
-import useCustomToast from '@/app/hooks/useCustomToast';
+import { ROUTES } from '@/constants/routes';
+import useCustomToast from '@/hooks/useCustomToast';
 import { createClient } from '@/lib/supabseClient';
 import { Button } from '@/theme/ui/components/button';
 import { Icon } from '@/theme/ui/components/icon';
@@ -17,7 +18,7 @@ const OAuthProviders = () => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${window.location.origin}/auth/callback?redirectedFrom=/protected/dashboard`
+                redirectTo: `${window.location.origin}/auth/callback?redirectedFrom=/${ROUTES.PROTECTED.DASHBOARD.ROOT}`
             },
         });
         console.log('dshfgsbds', data, error);

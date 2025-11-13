@@ -108,12 +108,13 @@ export const statesByCountry: StateMap = {
         { label: "Paraná", value: "PR" },
     ],
     // 13. India (IN)
-    IN: [
+    India: [
         { label: "Karnataka", value: "KA" },
         { label: "Maharashtra", value: "MH" },
         { label: "Telangana", value: "TG" },
         { label: "Tamil Nadu", value: "TN" },
         { label: "Gujarat", value: "GJ" },
+        { label: "Haryana", value: "Haryana" },
     ],
     // 14. Ireland (IE) – already above but note
     // 15. Israel (IL)

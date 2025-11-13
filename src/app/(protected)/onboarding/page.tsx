@@ -1,41 +1,77 @@
-import { userFormSchema } from "@/schema/user.schema";
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField } from "@/components/shared/FormField";
-import { Button } from "@/theme/ui/components/button";
-import { jobTitles } from "@/lib/data/onboarding/jobTitles";
+import { useLocationOptions } from "@/hooks/useLocationOptions";
 import { countries } from "@/lib/data/onboarding/countriesData";
-import { useLocationOptions } from "@/app/hooks/useLocationOptions";
+import { jobTitles } from "@/lib/data/onboarding/jobTitles";
+import { resumeSchema } from "@/schema/resumeParser.schema";
+import { userFormSchema } from "@/schema/user.schema";
+import { Button } from "@/theme/ui/components/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import z from "zod";
 
 const FormRow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="w-full lg:w-[48%] md:w-[48%]">{children}</div>
 );
 
-const OnBoarding = () => {
+interface OnBoardingProps {
+    parsedData?: z.infer<typeof resumeSchema>
+    parsingResume?: boolean
+}
 
+const defaultValues = {
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    jobTitles: [],
+    currentEmployer: "",
+    educationLevel: "",
+    experienceYears: "",
+    experienceLevel: "",
+    workPreference: [],
+    residenceCountry: "",
+    state: "",
+    city: "",
+    linkedinUrl: "",
+    additionalContext: "",
+    terms: false,
+};
+
+const OnBoarding = ({ parsedData, parsingResume }: OnBoardingProps) => {
     const form = useForm({
-        defaultValues: {
-            fullName: "",
-            email: '',
-            terms: false,
-            gender: undefined,
-            jobTitles: [],
-            residenceCountry: ""
-        },
+        defaultValues: { ...defaultValues, ...parsedData },
         mode: "onSubmit",
         reValidateMode: "onChange",
         resolver: zodResolver(userFormSchema)
     });
 
-    const { control, setValue } = form;
+    useEffect(() => {
+        if (parsedData) {
+            form.reset({ ...defaultValues, ...parsedData });
+        }
+    }, [parsedData]);
 
+
+    const { control, setValue } = form;
     const { stateOptions, cityOptions } = useLocationOptions(control, setValue);
+
+    console.log('propsdata', parsedData);
+
 
     const onSubmit = (data: any) => console.log(data);
 
     return (
-        <div className="w-[90%] bg-secondary my-[2%] mx-auto border-card rounded-card">
-            <div className="mx-auto px-6 py-6 flex flex-col gap-6">
+        <div className="w-[90%] bg-secondary my-[2%] mx-auto border-card rounded-card relative">
+            {/* Loading Overlay */}
+            {parsingResume && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xs rounded-card">
+                    <p className="text-xl text-primary font-semibold animate-pulse">
+                        Parsing your resume...
+                    </p>
+                </div>
+            )}
+            <div className={`mx-auto px-6 py-6 flex flex-col gap-6 ${parsingResume ? "pointer-events-none select-none" : ""
+                }`}>
                 <div>
                     <h2 className="text-brand-foreground text-2xl font-semibold">Set up Your Profile</h2>
                     <p className="text-secondary">This is the last time you'll need to enter this information! Our AI agent will use it to apply to hundreds of jobs for you!</p>
@@ -103,9 +139,9 @@ const OnBoarding = () => {
                                 placeholder="Select Experience level"
                                 required
                                 options={[
-                                    { label: "Remote", value: "remote" },
-                                    { label: "Hybrid", value: "hybrid" },
-                                    { label: "On Site", value: "onsite" },
+                                    { label: "Remote", value: "Remote" },
+                                    { label: "Hybrid", value: "Hybrid" },
+                                    { label: "On Site", value: "On-site" },
                                 ]}
                             />
                         </FormRow>

@@ -2,20 +2,20 @@ export const ROUTES = {
     HOME: "/",
 
     AUTH: {
-        ROOT: "/auth",
-        LOGIN: "/auth/login",
-        SIGNUP: "/auth/register",
-        FORGOT_PASSWORD: "/auth/password/forget",
-        RESET_PASSWORD: "/auth/password/reset",
-        AUTH_CALLBACK: "/auth/callback"
+        ROOT: "/",
+        LOGIN: "/login",
+        SIGNUP: "/register",
+        FORGOT_PASSWORD: "/password/forget",
+        RESET_PASSWORD: "/password/reset",
+        AUTH_CALLBACK: "/callback"
     },
     LOGOUT: '',
 
     PROTECTED: {
         DASHBOARD: {
-            ROOT: "/protected/dashboard",
-            PROFILE: "/protected/dashboard/profile",
-            SETTINGS: "/protected/dashboard/settings",
+            ROOT: "/dashboard",
+            PROFILE: "/dashboard/profile",
+            SETTINGS: "/dashboard/settings",
         },
         JOBS: {
             ROOT: "/jobs",

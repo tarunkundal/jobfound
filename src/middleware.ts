@@ -24,19 +24,20 @@ export async function middleware(req: NextRequest) {
 
     const { data: { user }, } = await supabase.auth.getUser()
     const path = req.nextUrl.pathname
+    const isProtectedRoute = path.startsWith("/dashboard") || path.startsWith("/settings") || path.startsWith("/onboarding")
 
     // Example: Protect protected routes
-    if (!user && path.startsWith("/protected")) {
+    if (!user && isProtectedRoute) {
         const redirectUrl = req.nextUrl.clone()
-        redirectUrl.pathname = "/auth/login"
+        redirectUrl.pathname = "/login"
         redirectUrl.searchParams.set("redirectedFrom", path)
         return NextResponse.redirect(redirectUrl)
     }
 
     // 🚀 Redirect logged-in users away from landing page
-    if (user && (path === "/auth/login" || path === "/auth/register" || path === "/")) {
+    if (user && (path === "/login" || path === "/register" || path === "/")) {
         const redirectUrl = req.nextUrl.clone()
-        redirectUrl.pathname = "/protected/dashboard"
+        redirectUrl.pathname = "/dashboard"
         return NextResponse.redirect(redirectUrl)
     }
 
@@ -45,5 +46,10 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/", "/protected/:path*", "/auth/:path"], // Protects everything under /proteceted folder
+    matcher: ["/",
+        "/login",
+        "/register",
+        "/dashboard/:path*",
+        "/settings/:path*",
+        "/onboarding/:path*",], // Protects everything under /proteceted folder
 }

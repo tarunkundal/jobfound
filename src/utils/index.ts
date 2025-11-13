@@ -14,6 +14,10 @@ export const columnMap: Record<string, string> = {
     photos: "photo_url",
 };
 
+export const getFileRelativePath = (url: string, folder: "resumes" | "photos") => {
+    const parts = url.split(`/object/public/${folder}/`);
+    return parts[1] ?? url;
+};
 
 export const mimeMap: Record<string, string> = {
     ".pdf": "application/pdf",
