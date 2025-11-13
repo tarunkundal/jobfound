@@ -3,7 +3,7 @@
 import { Spinner } from "@/theme/ui/components/spinner"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { useUser } from "../auth/_hooks/useUser"
+import { useUser } from "../_hooks/useUser"
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
     const { user, loading } = useUser()
@@ -12,7 +12,7 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
     useEffect(() => {
         // Redirect unauthenticated users to login
         if (!loading && !user) {
-            router.replace("/auth/login")
+            router.replace("/login")
         }
     }, [loading, user, router])
 

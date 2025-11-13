@@ -1,7 +1,7 @@
 "use client"
 
-import useCustomToast from "@/app/hooks/useCustomToast";
 import { ROUTES } from "@/constants/routes";
+import useCustomToast from "@/hooks/useCustomToast";
 import { createClient } from "@/lib/supabseClient";
 import { Button } from "@/theme/ui/components/button";
 import { Input } from "@/theme/ui/components/input";

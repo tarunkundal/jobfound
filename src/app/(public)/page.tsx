@@ -1,16 +1,16 @@
 
 'use client';
-import Hero from "@/components/landing/Hero";
+import Hero from "./_components/Hero";
 import { Spinner } from "@/theme/ui/components/spinner";
 import { useRouter } from "next/navigation";
 import { lazy, Suspense, useEffect } from "react";
-import { useUser } from "./auth/_hooks/useUser";
-const Features = lazy(() => import("@/components/landing/Features"));
-const Footer = lazy(() => import("@/components/landing/Footer"))
-const Info = lazy(() => import("@/components/landing/Info"))
-const Testimonials = lazy(() => import("@/components/landing/testimonials"))
-const FAQS = lazy(() => import("@/components/landing/FAQS"))
-const AutoSliding = lazy(() => import("@/components/landing/autoSliding"))
+import { useUser } from "../(auth)/_hooks/useUser";
+const Features = lazy(() => import("./_components/Features"));
+const Footer = lazy(() => import("./_components/Footer"))
+const Info = lazy(() => import("./_components/Info"))
+const Testimonials = lazy(() => import("./_components/testimonials"))
+const FAQS = lazy(() => import("./_components/FAQS"))
+const AutoSliding = lazy(() => import("./_components/autoSliding"))
 
 export default function Home() {
   const router = useRouter();

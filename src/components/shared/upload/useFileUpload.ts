@@ -1,5 +1,5 @@
-import { useUser } from "@/app/auth/_hooks/useUser";
-import useCustomToast from "@/app/hooks/useCustomToast";
+import { useUser } from "@/app/(auth)/_hooks/useUser";
+import useCustomToast from "@/hooks/useCustomToast";
 import { createClient } from "@/lib/supabseClient";
 import { useFileUploadProps } from "@/types/Upload";
 import { filePathConstructor, getFileExtension } from "@/utils";
@@ -15,6 +15,13 @@ export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files }: 
     const { mutateAsync: updateUserFile } = trpc.upload.updateUserFile.useMutation({
         onSuccess: async () => {
             await utils.upload.getUserFilePath.invalidate(folder); // ✅ cache invalidation
+            if (folder === 'resumes') {
+                // Invalidate the cache so the query knows to fetch fresh data
+                await utils.resume.parsedResume.invalidate();
+
+                // refetch the data immediately
+                await utils.resume.parsedResume.refetch();
+            }
         },
     });
 

@@ -1,12 +1,12 @@
 'use client';;
-import { useState, useEffect } from 'react';
-import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import Logo from '@/components/shared/Logo';
+import { ROUTES } from '@/constants/routes';
 import { Button } from '@/theme/ui/components/button';
 import { Separator } from '@/theme/ui/components/separator';
+import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import Link from 'next/link';
-import { ROUTES } from '@/constants/routes';
-import { useUser } from './auth/_hooks/useUser';
+import { useEffect, useState } from 'react';
+import { useUser } from '../(auth)/_hooks/useUser';
 
 const ibmPlexMono = IBM_Plex_Mono({ weight: '400', variable: '--font-mono', subsets: ['latin'] });
 const ibmPlexSans = IBM_Plex_Sans({ variable: '--font-plex', subsets: ['latin'] });

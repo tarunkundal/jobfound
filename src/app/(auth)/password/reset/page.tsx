@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabseClient";
-import useCustomToast from "@/app/hooks/useCustomToast";
 import { Input } from "@/theme/ui/components/input";
 import { Button } from "@/theme/ui/components/button";
 import { ROUTES } from "@/constants/routes";
+import useCustomToast from "@/hooks/useCustomToast";
 
 const schema = {
     password: (password: string) => {

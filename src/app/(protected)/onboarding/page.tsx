@@ -1,5 +1,5 @@
-import { useLocationOptions } from "@/app/hooks/useLocationOptions";
 import { FormField } from "@/components/shared/FormField";
+import { useLocationOptions } from "@/hooks/useLocationOptions";
 import { countries } from "@/lib/data/onboarding/countriesData";
 import { jobTitles } from "@/lib/data/onboarding/jobTitles";
 import { resumeSchema } from "@/schema/resumeParser.schema";
@@ -16,6 +16,7 @@ const FormRow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 interface OnBoardingProps {
     parsedData?: z.infer<typeof resumeSchema>
+    parsingResume?: boolean
 }
 
 const defaultValues = {
@@ -36,8 +37,7 @@ const defaultValues = {
     terms: false,
 };
 
-const OnBoarding = ({ parsedData }: OnBoardingProps) => {
-
+const OnBoarding = ({ parsedData, parsingResume }: OnBoardingProps) => {
     const form = useForm({
         defaultValues: { ...defaultValues, ...parsedData },
         mode: "onSubmit",
@@ -61,8 +61,17 @@ const OnBoarding = ({ parsedData }: OnBoardingProps) => {
     const onSubmit = (data: any) => console.log(data);
 
     return (
-        <div className="w-[90%] bg-secondary my-[2%] mx-auto border-card rounded-card">
-            <div className="mx-auto px-6 py-6 flex flex-col gap-6">
+        <div className="w-[90%] bg-secondary my-[2%] mx-auto border-card rounded-card relative">
+            {/* Loading Overlay */}
+            {parsingResume && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xs rounded-card">
+                    <p className="text-xl text-primary font-semibold animate-pulse">
+                        Parsing your resume...
+                    </p>
+                </div>
+            )}
+            <div className={`mx-auto px-6 py-6 flex flex-col gap-6 ${parsingResume ? "pointer-events-none select-none" : ""
+                }`}>
                 <div>
                     <h2 className="text-brand-foreground text-2xl font-semibold">Set up Your Profile</h2>
                     <p className="text-secondary">This is the last time you'll need to enter this information! Our AI agent will use it to apply to hundreds of jobs for you!</p>

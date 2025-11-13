@@ -1,7 +1,7 @@
 import { Button } from "@/theme/ui/components/button"
-import LazyVideoPlayerWrapper from "../shared/LazyVideoPlayer"
 import { ROUTES } from "@/constants/routes"
 import Link from "next/link"
+import LazyVideoPlayerWrapper from "@/components/shared/LazyVideoPlayer"
 
 const Hero = () => {
     return (<div>
