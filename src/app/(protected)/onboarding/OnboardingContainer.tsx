@@ -1,8 +1,8 @@
 "use client";;
 import { useState } from "react";
-import OnboardingForm from "./onboardingForm";
 import FileUpload from "@/components/shared/upload/FileUpload";
 import { trpc } from "@/utils/trpc";
+import OnboardingForm from "./OnboardingForm";
 
 interface OnboardingContainerProps {
     user: {

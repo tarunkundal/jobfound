@@ -25,7 +25,7 @@
   --color-background-success: var(--green-600);
 
   --color-text-brand-foreground: hsl(var(--black-950));
-  --color-text-destructive: var(--red-700);
+  --color-text-destructive: var(--red-500);
   --color-text-tertiary: var(--black-400);
   --color-text-primary: var(--black-900);
   --color-text-secondary: var(--black-700);
@@ -44,7 +44,7 @@
 /* ====================
    🌙 Dark Theme
    ==================== */
-@theme .dark {
+/* @theme .dark {
   --color-brand: hsl(var(--orange-600));
   --color-brand-hover: hsl(var(--orange-700));
 
@@ -62,7 +62,7 @@
   --color-background-success: var(--green-600);
 
   --color-text-brand-foreground: var(--white-1000);
-  --color-text-destructive: var(--red-600);
+  --color-text-destructive: var(--red-500);
   --color-text-tertiary: var(--white-500);
   --color-text-primary: var(--white-900);
   --color-text-secondary: var(--white-100);
@@ -76,4 +76,4 @@
   --color-border-destructive: hsl(var(--red-600));
   --color-ring: var(--black-700);
   --color-caret: var(--black-800);
-}
+} */

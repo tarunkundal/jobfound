@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { twMerge } from "tailwind-merge";
 
 interface IconProps {
     icon: LucideIcon;
@@ -6,5 +7,5 @@ interface IconProps {
 }
 
 export function Icon({ icon: IconComponent, className }: IconProps) {
-    return <IconComponent className={`w-5 h-5 ${className || ""}`} />;
+    return <IconComponent className={twMerge("w-5 h-5", className)} />;
 }

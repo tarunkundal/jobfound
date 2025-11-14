@@ -1,7 +1,7 @@
-const page = () => {
-    return (
-        <div className="text-4xl text-primary">Setting page</div>
-    )
+import SettingContainer from "./SettingContainer"
+
+const SettingPage = () => {
+    return <SettingContainer />
 }
 
-export default page
+export default SettingPage
