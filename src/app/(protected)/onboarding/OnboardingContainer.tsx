@@ -33,7 +33,7 @@ export default function OnboardingContainer() {
     return (
         <div className="flex flex-col">
             {/* Upload Resume Section */}
-            <div className="w-[90%] bg-secondary my-[2%] mx-auto px-6 py-6 flex flex-col gap-6 border-card rounded-card ">
+            <div className="w-[90%] bg-primary my-[2%] mx-auto px-6 py-6 flex flex-col gap-6 border-card rounded-card ">
                 <div>
                     <h2 className="text-brand-foreground text-2xl font-semibold">Upload Your Resume</h2>
                     <p className="text-secondary">Let our AI do the heavy lifting! Upload your resume to automatically fill out your profile details — saving you time and effort while ensuring accuracy.</p>

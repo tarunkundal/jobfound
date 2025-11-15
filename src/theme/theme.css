@@ -44,7 +44,7 @@
 /* ====================
    🌙 Dark Theme
    ==================== */
-/* @theme .dark {
+@theme .dark {
   --color-brand: hsl(var(--orange-600));
   --color-brand-hover: hsl(var(--orange-700));
 
@@ -76,4 +76,4 @@
   --color-border-destructive: hsl(var(--red-600));
   --color-ring: var(--black-700);
   --color-caret: var(--black-800);
-} */
+}

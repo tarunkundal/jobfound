@@ -61,7 +61,7 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
     const onSubmit = (data: any) => console.log(data);
 
     return (
-        <div className="w-[90%] bg-secondary my-[2%] mx-auto border-card rounded-card relative">
+        <div className="w-[90%] bg-primary my-[2%] mx-auto border-card rounded-card relative">
             {/* Loading Overlay */}
             {parsingResume && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xs rounded-card">

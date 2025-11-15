@@ -17,7 +17,7 @@ export const Logo = () => {
                 height={40}
                 priority
             />
-            <h2 className="text-primary font-extrabold text-xl tracking-tight">
+            <h2 className="text-brand-foreground font-extrabold text-xl tracking-tight">
                 JobFound
             </h2>
         </Link>

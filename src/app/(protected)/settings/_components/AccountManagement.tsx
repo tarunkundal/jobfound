@@ -1,4 +1,5 @@
 import { Button } from "@/theme/ui/components/button"
+import ChangePassword from "./ChangePassword"
 
 const AccountManagement = () => {
     return (
@@ -12,7 +13,7 @@ const AccountManagement = () => {
                     <p className="font-semibold text-brand-foreground"> Password & Security</p>
                     <p className="text-secondary text-sm">Update your password to keep your account secure.</p>
                 </div>
-                <Button variant={'secondary'}>Change Password</Button>
+                <ChangePassword />
             </div>
             <div className="flex flex-col gap-2">
                 <p className="font-semibold text-destructive"> Danger Zone</p>
