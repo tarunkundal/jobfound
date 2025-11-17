@@ -6,7 +6,7 @@ import { filePathConstructor, getFileExtension } from "@/utils";
 import { trpc } from "@/utils/trpc";
 import { useState } from 'react';
 
-export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files }: useFileUploadProps) {
+export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files, onUploadSuccess }: useFileUploadProps) {
     const supabase = createClient();
     const utils = trpc.useUtils();
     const { user } = useUser();
@@ -15,13 +15,6 @@ export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files }: 
     const { mutateAsync: updateUserFile } = trpc.upload.updateUserFile.useMutation({
         onSuccess: async () => {
             await utils.upload.getUserFilePath.invalidate(folder); // ✅ cache invalidation
-            if (folder === 'resumes') {
-                // Invalidate the cache so the query knows to fetch fresh data
-                await utils.resume.parsedResume.invalidate();
-
-                // refetch the data immediately
-                await utils.resume.parsedResume.refetch();
-            }
         },
     });
 
@@ -53,7 +46,10 @@ export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files }: 
             if (!success || uploadError) { throw new Error("Upload or DB update failed"); }
 
             onChange?.(multiple ? [...<[]>files, file] : [file]);
-            toast({ title: "Upload successful!", status: "success" });
+            if (success) {
+                onUploadSuccess?.(filePath);
+                toast({ title: "Upload successful!", status: "success" });
+            }
         } catch (error: any) {
             toast({
                 title: "Upload failed!",

@@ -10,6 +10,7 @@ export interface FileUploadProps
     maxSizeMB?: number;
     files?: File[];
     onChange?: (files: File[]) => void;
+    onUploadSuccess?: (uploadedPath: string) => void;
     asChild?: boolean;
     folder: z.infer<typeof folderEnum>;
 }
@@ -19,5 +20,6 @@ export interface useFileUploadProps {
     maxSizeMB?: number;
     files?: File[];
     onChange?: (files: File[]) => void;
+    onUploadSuccess?: (uploadedPath: string) => void;
     folder: z.infer<typeof folderEnum>;
 }

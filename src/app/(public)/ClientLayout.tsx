@@ -22,7 +22,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     return (
         <div className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-body min-h-screen`}>
-            <header className='flex justify-between items-center px-4 py-4 bg-secondary' >
+            <header className='flex justify-between items-center px-4 py-4 bg-primary' >
                 <Logo />
 
                 <div className='flex items-center gap-2'>

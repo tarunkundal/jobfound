@@ -4,7 +4,7 @@ import { protectedProcedure, router } from "../trpc";
 
 export const resumeRouter = router({
     parsedResume: protectedProcedure
-        .query(async ({ ctx }) => {
+        .mutation(async ({ ctx }) => {
             try {
                 const user = await ctx.prisma.user.findUnique({
                     where: { id: ctx.user.id },
