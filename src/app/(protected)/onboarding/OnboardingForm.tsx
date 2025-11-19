@@ -1,14 +1,16 @@
 import { FormField } from "@/components/shared/FormField";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useLocationOptions } from "@/hooks/useLocationOptions";
 import { countries } from "@/lib/data/onboarding/countriesData";
 import { jobTitles } from "@/lib/data/onboarding/jobTitles";
 import { resumeSchema } from "@/schema/resumeParser.schema";
 import { userFormSchema } from "@/schema/user.schema";
 import { Button } from "@/theme/ui/components/button";
+import { trpc } from "@/utils/trpc";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import z from "zod";
+import { z } from "zod";
 
 const FormRow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="w-full lg:w-[48%] md:w-[48%]">{children}</div>
@@ -19,46 +21,86 @@ interface OnBoardingProps {
     parsingResume?: boolean
 }
 
-const defaultValues = {
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    jobTitles: [],
-    currentEmployer: "",
-    educationLevel: "",
-    experienceYears: "",
-    experienceLevel: "",
-    workPreference: [],
-    residenceCountry: "",
-    state: "",
-    city: "",
-    linkedinUrl: "",
-    additionalContext: "",
-    terms: false,
-};
+export type UserFormValues = z.infer<typeof userFormSchema>;
+
+// const defaultValues: UserFormValues = {
+//     fullName: "",
+//     email: "",
+//     phoneNumber: "",
+//     jobTitles: [],
+//     currentEmployer: "",
+//     educationLevel: "",   // but fix schema (below)
+//     experienceYears: "",
+//     experienceLevel: "",
+//     workPreference: [],
+//     residenceCountry: "",
+//     state: "",
+//     city: "",
+//     linkedinUrl: "",
+//     additionalContext: "",
+//     terms: false,
+
+//     // missing required fields:
+//     resume_url: "",
+
+//     // these were missing but needed:
+//     minimumSalary: undefined, // since optional number
+//     gender: 'male',        // required in schema
+//     photo_url: "",
+// };
 
 const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
-    const form = useForm({
-        defaultValues: { ...defaultValues, ...parsedData },
+    const toast = useCustomToast()
+    const { data: defaultValues } = trpc.user.getUserFormData.useQuery()
+    const updateUserForm = trpc.user.updateUserForm.useMutation({
+        onSuccess: (updatedData) => {
+            toast({
+                title: 'Profile Updated',
+                description: 'Your profile has been successfully updated.',
+                status: 'success',
+            })
+            form.reset(prev => ({
+                ...prev,          // keep all current values (including resume_url)
+                ...updatedData,   // only override values returned from backend
+            }));
+        },
+    })
+    const form = useForm<UserFormValues>({
+        defaultValues: { ...defaultValues, ...parsedData } as UserFormValues,
         mode: "onSubmit",
         reValidateMode: "onChange",
-        resolver: zodResolver(userFormSchema)
+        resolver: zodResolver(userFormSchema) as any
     });
+    console.log("FORM ERRORS >>>", form.formState.errors);
+    console.log("FORM VALUES >>>", form.getValues());
+    // // When API data loads
+    useEffect(() => {
+        if (defaultValues) {
+            form.reset(prev => ({
+                ...prev,
+                ...defaultValues,
+                ...parsedData,
+            }));
 
+        }
+    }, [defaultValues, parsedData]);
+
+
+    // When resume parser updates
     useEffect(() => {
         if (parsedData) {
-            form.reset({ ...defaultValues, ...parsedData });
+            form.reset(prev => ({ ...prev, ...parsedData }));
         }
     }, [parsedData]);
-
 
     const { control, setValue } = form;
     const { stateOptions, cityOptions } = useLocationOptions(control, setValue);
 
-    console.log('propsdata', parsedData);
+    const onSubmit = (data: UserFormValues) => {
+        console.log('data of form is ', data);
 
-
-    const onSubmit = (data: any) => console.log(data);
+        // await updateUserForm.mutateAsync(data);
+    }
 
     return (
         <div className="w-[90%] bg-primary my-[2%] mx-auto border-card rounded-card relative">
@@ -182,6 +224,15 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
                                 search
                             />
                         </FormRow>
+                        <FormRow>
+                            <FormField
+                                name="skills"
+                                type="commaSeparatedInput"
+                                label="Skills"
+                                placeholder="e.g., React.js, Node, Python"
+                                helperText="List your key skills separated by commas."
+                            />
+                        </FormRow>
 
                         <div className="w-full">
                             <h2 className="text-brand-foreground text-2xl font-semibold">Additional Information</h2>
@@ -244,7 +295,7 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
                                 className="w-full"
                             />
                         </FormRow>
-                        <Button type="submit" className="w-full">Submit</Button>
+                        <Button type="submit" className="w-full" disabled={updateUserForm.isPending} isLoading={updateUserForm.isPending}>Submit</Button>
                     </form>
                 </FormProvider>
             </div>

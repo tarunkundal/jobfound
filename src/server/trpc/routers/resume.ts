@@ -3,15 +3,15 @@ import { getFileRelativePath } from "@/utils";
 import { protectedProcedure, router } from "../trpc";
 
 export const resumeRouter = router({
-    parsedResume: protectedProcedure
+    parseResume: protectedProcedure
         .mutation(async ({ ctx }) => {
             try {
-                const user = await ctx.prisma.user.findUnique({
-                    where: { id: ctx.user.id },
+                const userResumeData = await ctx.prisma.resume.findFirst({
+                    where: { userId: ctx.user.id },
                     select: { resume_url: true },
                 });
 
-                const fileUrl = user['resume_url'];
+                const fileUrl = userResumeData['resume_url'];
                 const relativeFilePath = fileUrl ? getFileRelativePath(fileUrl, "resumes") : null;
                 if (!relativeFilePath) {
                     return { parsedData: null };
@@ -26,7 +26,7 @@ export const resumeRouter = router({
                     console.warn("Failed to create signed URL:", signedUrlError);
                     return { parsedData: null };
                 }
-                const parsed = await parseResumeFromSupabase(signedUrlData?.signedUrl);
+                const parsed = await parseResumeFromSupabase(signedUrlData?.signedUrl, ctx);
 
                 return { parsedData: parsed };
             } catch (error) {
@@ -34,5 +34,14 @@ export const resumeRouter = router({
                 return { parsedData: null };
             }
         }),
+    getResumeIfExists: protectedProcedure
+        .query(async ({ ctx }) => {
+            const userId = ctx.user.id;
+            const resumeRecord = await ctx.prisma.resume.findUnique({
+                where: { userId },
+                select: { id: true, resume_url: true, },
+            });
 
-});
+            return { resume: resumeRecord || null };
+        }),
+})

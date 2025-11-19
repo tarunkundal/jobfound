@@ -12,69 +12,64 @@ export const uploadRouter = router({
             const supabase = ctx.supabase
             const pathToBeUpdated = columnMap[folder];
 
-            // 1️⃣ Fetch old path
-            const user = await ctx.prisma.user.findUnique({
-                where: { id: userId },
+            let table: "resume" | "profile";
+
+            if (folder === "resumes") table = "resume";
+            else if (folder === "photos") table = "profile";
+            else throw new Error("Unsupported folder type");
+
+            const oldRecord = await ctx.prisma[table].findUnique({
+                where: { userId },
                 select: { [pathToBeUpdated]: true },
             });
 
-            const oldFilePath = user?.[pathToBeUpdated];
-            // 2️⃣ Delete old file from storage (if exists)
+            const oldFilePath = oldRecord?.[pathToBeUpdated];
+
             if (oldFilePath) {
-                const { error: deleteError } = await supabase
-                    .storage
-                    .from(folder)
-                    .remove([oldFilePath]);
-                if (deleteError) console.warn("Delete old file failed:", deleteError);
+                await supabase.storage.from(folder).remove([oldFilePath]);
             }
 
-            // Update user record with new URL
-            await ctx.prisma.user.update({
-                where: { id: userId },
+            await ctx.prisma[table].update({
+                where: { userId },
                 data: {
-                    [pathToBeUpdated]: filePath ?? ''
+                    [pathToBeUpdated]: filePath ?? ""
                 }
             });
+
             return {
-                success: true, filePath, message: filePath
-                    ? "File path updated successfully."
-                    : "File removed successfully.",
+                success: true, filePath
             };
         }),
 
-    getUserFilePath: protectedProcedure
+    getUploadedFilePath: protectedProcedure
         .input(folderEnum)
         .query(async ({ ctx, input }) => {
-            try {
-                const column = columnMap[input];
-                if (!column) throw new Error("Invalid folder name");
+            const folder = input;
+            const userId = ctx.user.id;
+            const supabase = ctx.supabase;
 
-                const user = await ctx.prisma.user.findUnique({
-                    where: { id: ctx.user.id },
-                    select: { [column]: true },
-                });
+            const column = columnMap[folder];
+            if (!column) throw new Error("Invalid folder type");
 
-                const filePath = user[column];
-                if (!filePath) {
-                    // No file uploaded yet
-                    return { signedFileUrl: null };
-                }
+            const table = folder === "resumes" ? "resume" : "profile";
 
-                const { data: signedUrlData, error: signedUrlError } =
-                    await ctx.supabase.storage
-                        .from(input)
-                        .createSignedUrl(filePath, 3600);
+            const record = await ctx.prisma[table].findUnique({
+                where: { userId },
+                select: { [column]: true }
+            });
 
-                if (signedUrlError || !signedUrlData?.signedUrl) {
-                    console.warn("Failed to create signed URL:", signedUrlError);
-                    return { signedFileUrl: null };
-                }
+            const filePath = record?.[column];
+            if (!filePath) return { signedFileUrl: null };
 
-                return { signedFileUrl: signedUrlData.signedUrl };
-            } catch (error) {
-                console.error("getUserFilePath failed:", error);
-                return { signedFileUrl: null };
-            }
+            const { data, error } = await supabase.storage
+                .from(folder)
+                .createSignedUrl(filePath, 3600);
+
+            if (error) return { signedFileUrl: null };
+
+            return { signedFileUrl: data.signedUrl };
         }),
+
+
 
 });

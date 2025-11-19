@@ -5,6 +5,7 @@ import MultiSelect from "@/theme/ui/components/multiSelect";
 import Select from "@/theme/ui/components/select";
 import { Textarea } from "@/theme/ui/components/textarea";
 import { cn } from "@/theme/ui/utils/cn";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import FileUpload from "./upload/FileUpload";
 
@@ -27,6 +28,7 @@ interface FormFieldProps {
     | "multiSelect"
     | "fileUpload"
     | "checkbox"
+    | "commaSeparatedInput"
     | "radio";
     options?: Option[]; // For select or radio fields
     className?: string;
@@ -211,6 +213,59 @@ export const FormField: React.FC<FormFieldProps> = ({
                 />
             )}
 
+            {/* ---------------- SKILLS INPUT (store array, show comma string) ---------------- */}
+            {type === "commaSeparatedInput" && (
+                <Controller
+                    control={control}
+                    name={name}
+                    render={({ field }) => {
+                        const [displayValue, setDisplayValue] = useState(
+                            Array.isArray(field.value) ? field.value.join(", ") : ""
+                        );
+
+                        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                            const input = e.target.value;
+                            setDisplayValue(input);
+
+                            // If input is empty → clear the array
+                            if (input.trim() === "") {
+                                field.onChange([]);
+                                return;
+                            }
+
+                            // Convert comma-separated text → array
+                            const arr = input
+                                .split(",")
+                                .map(s => s.trim())
+                                .filter(Boolean);
+
+                            field.onChange(arr);
+                        };
+
+                        const handleBlur = () => {
+                            // Re-sync UI with form state ONLY when value exists
+                            if (Array.isArray(field.value) && field.value.length > 0) {
+                                setDisplayValue(field.value.join(", "));
+                            } else {
+                                setDisplayValue(""); // fully clear on blur if array is empty
+                            }
+                        };
+
+                        return (
+                            <Input
+                                id={name}
+                                placeholder={placeholder || "React, Node.js, Next.js"}
+                                value={displayValue}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className={cn(baseInputClass, className)}
+                                disabled={disabled}
+                                type="text"
+                            />
+                        );
+                    }}
+                />
+            )}
 
             {/* Helper Text */}
             {

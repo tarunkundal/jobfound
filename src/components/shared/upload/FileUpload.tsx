@@ -113,8 +113,8 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 {showFiles && files.length > 0 && (
                     <div className="flex flex-col gap-2 w-[90%] mx-auto my-2 max-h-[250px] overflow-y-auto border-card rounded-card bg-card p-2 shadow-card">
                         {files.map((file, index) => {
-                            const fileType = file.type;
-                            const isImage = fileType.startsWith("image/");
+                            const fileType = file?.type;
+                            const isImage = fileType?.startsWith("image/");
                             const isPDF = fileType === "application/pdf";
 
                             return (

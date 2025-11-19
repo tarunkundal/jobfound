@@ -27,3 +27,9 @@ export const mimeMap: Record<string, string> = {
     ".jpg": "image/jpeg",
     ".jpeg": "image/jpeg",
 };
+
+export const extractFileNameFromFilePath = (filePath: string) => {
+    const nameWithMeta = filePath.split("/").pop();
+    const originalBaseName = nameWithMeta?.split("_")[0];
+    return originalBaseName || "unknown";
+}

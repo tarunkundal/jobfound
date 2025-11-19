@@ -1,6 +1,7 @@
 import { prisma } from '@/db';
 import { protectedProcedure, router } from '../trpc';
 import z from 'zod';
+import { userFormSchema } from '@/schema/user.schema';
 
 export const userRouter = router({
     createUserIfNotExists: protectedProcedure
@@ -35,22 +36,20 @@ export const userRouter = router({
         }),
     me: protectedProcedure.query(({ ctx }) => ctx.user),
 
-    list: protectedProcedure.query(async () => {
-        try {
-            const users = await prisma.user.findMany();
-            console.log('users', users);
-            return users;
-        } catch (error) {
-            console.error('Error fetching users:', error);
-            throw error; // keeps tRPC 500 but logs full stack
-        }
+    getUserFormData: protectedProcedure.query(async ({ ctx }) => {
+        const userId = ctx.user.id;
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+        return user;
     }),
 
-    // get: publicProcedure
-    //     .input(z.string())
-    //     .query(({ input }) => prisma.user.findUnique({ where: { id: input } })),
+    updateUserForm: protectedProcedure.input(userFormSchema.partial()).mutation(async ({ ctx, input }) => {
+        const userId = ctx.user.id;
+        return ctx.prisma.user.update({
+            where: { id: userId },
+            data: input,
+        });
+    })
 
-    // delete: publicProcedure
-    //     .input(z.string())
-    //     .mutation(({ input }) => prisma.user.delete({ where: { id: input } })),
 });

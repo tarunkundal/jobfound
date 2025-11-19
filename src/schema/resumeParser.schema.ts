@@ -76,6 +76,11 @@ export const resumeSchema = z.object({
         .default("")
         .optional()
         .describe("URL of the candidate’s profile photo, if available."),
+    skills: z
+        .array(z.string())
+        .default([])
+        .optional()
+        .describe("Skills in which user is prefect, such as React.js, JavaScript, Node, etc."),
     summary: z
         .string()
         .default("")

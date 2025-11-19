@@ -3,6 +3,7 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatGroq } from "@langchain/groq";
+import { Context } from "../trpc/context";
 
 
 /** 🧹 Clean the extracted resume text for consistency */
@@ -13,7 +14,7 @@ function cleanResumeText(text: string): string {
         .trim();
 }
 
-export async function parseResumeFromSupabase(fileUrl: string) {
+export async function parseResumeFromSupabase(fileUrl: string, ctx: Context) {
     if (!fileUrl) throw new Error("No file URL provided");
 
     /** Step 1️⃣ Fetch file from Supabase */
@@ -29,9 +30,17 @@ export async function parseResumeFromSupabase(fileUrl: string) {
     const rawText = docs.map((d) => d.pageContent).join("\n\n");
     const resumeText = cleanResumeText(rawText);
 
-    console.log('resume raw text', resumeText);
-
-
+    // update the resume raw text in database for future use
+    if (!ctx.user || !ctx.user.id) {
+        console.warn("No authenticated user found; skipping DB update for resume raw text.");
+    } else {
+        await ctx.prisma.resume.updateMany({
+            where: { userId: ctx.user.id },
+            data: {
+                raw_extracted_text: resumeText,
+            },
+        });
+    }
     /** Step 3️⃣ Prepare schema parser */
     const parser = StructuredOutputParser.fromZodSchema(resumeSchema);
     const formatInstructions = parser.getFormatInstructions();

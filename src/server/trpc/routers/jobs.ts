@@ -2,7 +2,7 @@ import { fetchJobsForUser } from '@/lib/jobs/fetchJobsForUser';
 import { protectedProcedure, router } from '../trpc';
 
 export const jobsRouter = router({
-    fetchAllJobs: protectedProcedure.mutation(async ({ ctx }) => {
+    getAllJobs: protectedProcedure.query(async ({ ctx }) => {
         try {
             const userData = await ctx.prisma.user.findUnique({
                 where: { id: ctx.user.id }
