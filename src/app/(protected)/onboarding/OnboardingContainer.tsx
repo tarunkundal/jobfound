@@ -13,9 +13,7 @@ interface OnboardingContainerProps {
 }
 
 export default function OnboardingContainer() {
-    // trpc.user.getUserFormData.usePrefetchQuery()
     // const { data } = trpc.upload.getUploadedFilePath.useQuery('resumes')
-
 
     const [parsedData, setParsedData] = useState<any>(null);
     const [files, setFiles] = useState<File[]>([]);
@@ -57,7 +55,6 @@ export default function OnboardingContainer() {
             <OnboardingForm
                 parsedData={parsedData ?? undefined}
                 parsingResume={parseResume.isPending}
-            // user={user}
             />
         </div>
     );

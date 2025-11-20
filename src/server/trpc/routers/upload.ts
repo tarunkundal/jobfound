@@ -19,8 +19,10 @@ export const uploadRouter = router({
             else throw new Error("Unsupported folder type");
 
             const oldRecord = await ctx.prisma[table].findUnique({
-                where: { userId },
-                select: { [pathToBeUpdated]: true },
+                where: { userId: userId },
+                select: {
+                    [pathToBeUpdated]: true,
+                },
             });
 
             const oldFilePath = oldRecord?.[pathToBeUpdated];
@@ -30,7 +32,7 @@ export const uploadRouter = router({
             }
 
             await ctx.prisma[table].update({
-                where: { userId },
+                where: { userId: userId },
                 data: {
                     [pathToBeUpdated]: filePath ?? ""
                 }
@@ -54,7 +56,7 @@ export const uploadRouter = router({
             const table = folder === "resumes" ? "resume" : "profile";
 
             const record = await ctx.prisma[table].findUnique({
-                where: { userId },
+                where: { userId: userId },
                 select: { [column]: true }
             });
 

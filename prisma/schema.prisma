@@ -10,19 +10,18 @@ datasource db {
 }
 
 model User {
-  id                String   @id @default(uuid()) @db.Uuid
-  email             String   @unique
-  fullName          String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
-  profile           Profile?
-  resumes          Resume[]
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  fullName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  profile   Profile?
+  resumes   Resume?
 }
 
 model Profile {
-  id                String    @id @default(uuid()) @db.Uuid
-  userId            String    @unique @db.Uuid // Foreign Key
-  user              User      @relation(fields: [userId], references: [id])
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @unique @db.Uuid
   fullName          String?
   phoneNumber       String?
   gender            String?
@@ -41,15 +40,26 @@ model Profile {
   photo_url         String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now()) @updatedAt
+  linkedinUrl       String?
+  terms             Boolean?
+  user              User     @relation(fields: [userId], references: [id])
 }
 
 model Resume {
   id                 String   @id @default(uuid()) @db.Uuid
-  userId             String   @db.Uuid // Foreign Key
-  user               User     @relation(fields: [userId], references: [id])
-  resume_url         String?  // The URL to the Supabase storage file
-  raw_extracted_text String?  @db.Text // Use @db.Text for large amounts of text
-
+  userId             String   @unique @db.Uuid
+  resume_url         String?
+  raw_extracted_text String?
   uploadedAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
+  updatedAt          DateTime @default(now()) @updatedAt
+  user               User     @relation(fields: [userId], references: [id])
+}
+
+model user_trigger_log {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String?   @db.Uuid
+  email         String?
+  status        String?
+  error_message String?
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
 }

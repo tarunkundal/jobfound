@@ -5,7 +5,7 @@ import MultiSelect from "@/theme/ui/components/multiSelect";
 import Select from "@/theme/ui/components/select";
 import { Textarea } from "@/theme/ui/components/textarea";
 import { cn } from "@/theme/ui/utils/cn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import FileUpload from "./upload/FileUpload";
 
@@ -39,7 +39,8 @@ interface FormFieldProps {
     search?: boolean;
     multiple?: boolean;
     maxSizeMB?: number;
-    fileFormats?: string[]
+    fileFormats?: string[];
+    defaultValue?: any
 }
 
 /**
@@ -61,7 +62,8 @@ export const FormField: React.FC<FormFieldProps> = ({
     search,
     multiple,
     maxSizeMB,
-    fileFormats
+    fileFormats,
+    defaultValue
 }) => {
     const {
         register,
@@ -100,6 +102,7 @@ export const FormField: React.FC<FormFieldProps> = ({
                     {...register(name)}
                     className={cn(baseInputClass, className)}
                     disabled={disabled}
+                    defaultValue={defaultValue}
                 />
             )}
 
@@ -111,6 +114,7 @@ export const FormField: React.FC<FormFieldProps> = ({
                     {...register(name)}
                     className={cn(baseInputClass, "min-h-[80px] resize-none", className)}
                     disabled={disabled}
+                    defaultValue={defaultValue}
                 />
             )}
 
@@ -223,6 +227,20 @@ export const FormField: React.FC<FormFieldProps> = ({
                             Array.isArray(field.value) ? field.value.join(", ") : ""
                         );
 
+                        //Sync field.value into local displayValue state
+                        useEffect(() => {
+                            if (Array.isArray(field.value)) {
+                                // Only update the display if the RHF value is different from the current display value
+                                // to avoid an infinite loop if handleChange is running
+                                const newDisplay = field.value.join(", ");
+                                if (newDisplay !== displayValue) {
+                                    setDisplayValue(newDisplay);
+                                }
+                            } else if (field.value === undefined || field.value === null) {
+                                setDisplayValue("");
+                            }
+                        }, [field.value]);
+
                         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                             const input = e.target.value;
                             setDisplayValue(input);
@@ -232,7 +250,6 @@ export const FormField: React.FC<FormFieldProps> = ({
                                 field.onChange([]);
                                 return;
                             }
-
                             // Convert comma-separated text → array
                             const arr = input
                                 .split(",")
@@ -242,22 +259,13 @@ export const FormField: React.FC<FormFieldProps> = ({
                             field.onChange(arr);
                         };
 
-                        const handleBlur = () => {
-                            // Re-sync UI with form state ONLY when value exists
-                            if (Array.isArray(field.value) && field.value.length > 0) {
-                                setDisplayValue(field.value.join(", "));
-                            } else {
-                                setDisplayValue(""); // fully clear on blur if array is empty
-                            }
-                        };
-
                         return (
                             <Input
                                 id={name}
                                 placeholder={placeholder || "React, Node.js, Next.js"}
                                 value={displayValue}
                                 onChange={handleChange}
-                                onBlur={handleBlur}
+                                // onBlur={handleBlur}
                                 className={cn(baseInputClass, className)}
                                 disabled={disabled}
                                 type="text"
