@@ -18,7 +18,10 @@ const OAuthProviders = () => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${window.location.origin}/auth/callback?redirectedFrom=/${ROUTES.PROTECTED.DASHBOARD.ROOT}`
+                redirectTo: `${window.location.origin}/callback?redirectedFrom=${ROUTES.PROTECTED.DASHBOARD.ROOT}`
+                // redirectTo: `${window.location.origin}${ROUTES.AUTH.AUTH_CALLBACK}?redirectedFrom=${encodeURIComponent(
+                //     ROUTES.PROTECTED.DASHBOARD.ROOT
+                // )}`,
             },
         });
         console.log('dshfgsbds', data, error);

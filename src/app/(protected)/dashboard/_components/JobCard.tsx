@@ -1,107 +1,89 @@
-"use client";
-
 import { useState } from "react";
-import { Check, X } from "lucide-react";
 import { Badge } from "@/theme/ui/components/badge";
 import { Button } from "@/theme/ui/components/button";
-
-interface JobCardProps {
-    title: string;
-    company: string;
-    location: string;
-    seniority: string;
-    postedAt: string;
-    match: number;
-    workType: string; // Remote / On-site / Hybrid
-    autoApplyReady: boolean;
-    description: string;
-    applied?: boolean;
-}
+import CustomModal from "@/components/ui/CustomModal";
+import { FetchJobInterface } from "@/types/jobs";
+import { Icon } from "@/theme/ui/components/icon";
+import { FileBoxIcon } from "lucide-react";
 
 export default function JobCard({
     title,
     company,
     location,
-    seniority,
     postedAt,
-    match,
     workType,
-    autoApplyReady,
     description,
-    applied = true,
-}: JobCardProps) {
+    companyUrl,
+    url,
+    source,
+    salary
+}: FetchJobInterface) {
 
     const [showDescription, setShowDescription] = useState(false);
 
-    return (
-        <div className="bg-secondary p-5 shadow-sm hover:shadow-md transition shadow-card border-card rounded-card">
+    return (<>
+        {showDescription && (
+            <CustomModal open={showDescription} onClose={() => setShowDescription(false)} showFooter title="Job Description">
+                <div className="text-primary">
+                    <p className="text-sm leading-6">
+                        {description}
+                    </p>
+                </div>
+            </CustomModal>
+        )}
 
-            {/* Top */}
+        <div className="mx-auto p-4 flex flex-col gap-3 shadow-sm hover:bg-card  bg-card-hover shadow-card border-card rounded-card">
             <div className="flex items-center justify-between">
-                <span>
-                    {applied ?
-                        <Badge variant='outline'>Applied</Badge> :
-                        <Badge variant='secondary'>Not Applied</Badge>
-                    }
-                </span>
-
-                <span className="text-sm font-semibold text-blue-600">
-                    {match}% Match
-                </span>
+                <Badge variant='purple'>Auto apply ready</Badge>
+                <Badge variant='default'>{source}</Badge>
             </div>
 
-            {/* Company Name */}
-            <p className="mt-2 text-sm text-gray-500">{company}</p>
-            <h2 className="text-lg font-semibold mt-1">{title}</h2>
-
-            {/* Auto-Apply Badge */}
-            {autoApplyReady && (
-                <Badge variant='purple'>Auto apply ready</Badge>
-            )}
+            <div>
+                <p className="text-lg text-brand-foreground">{company}</p>
+                <h2 className="font-semibold text-primary">{title}</h2>
+            </div>
 
             {/* Job Meta */}
-            <div className="mt-3 flex flex-wrap gap-3 text-sm text-gray-600">
+            <div className="flex flex-wrap gap-3 text-sm text-secondary">
                 <p>{workType}</p>
                 <p>{postedAt}</p>
-                <p>{seniority}</p>
                 <p>{location}</p>
             </div>
 
-            {/* Description Toggle */}
+            <div className="flex items-center justify-between">
+                <Badge variant='default'>
+                    {salary ? `₹${salary} / annum` : 'Salary not disclosed'}
+                </Badge>
+                <a
+                    href={companyUrl!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Button variant="outline">
+                        Company
+                    </Button>
+                </a>
+            </div>
             <Button
-                onClick={() => setShowDescription((prev) => !prev)}
-            >
+                variant='outline'
+                prefixNode={<Icon icon={FileBoxIcon} />}
+                onClick={() => setShowDescription((prev) => !prev)}>
                 Job Description
             </Button>
 
-            {showDescription && (
-                <p className="mt-2 text-gray-700 text-sm">{description}</p>
-            )}
-
             {/* Actions */}
-            <div className="mt-5 flex items-center justify-between">
-
-                {/* Left side buttons */}
-                <div className="flex gap-3">
-                    {/* Not Interested */}
-                    <button className="flex items-center gap-1 px-3 py-1 border rounded-lg text-red-600 hover:bg-red-50 transition text-sm">
-                        <X size={16} />
-                        Not Interested
-                    </button>
-
-                    {/* Mark as Applied */}
-                    <button className="flex items-center gap-1 px-3 py-1 border rounded-lg text-gray-700 hover:bg-gray-100 transition text-sm">
-                        <Check size={16} />
-                        Mark as Applied
-                    </button>
-                </div>
+            <div className="flex items-center justify-between">
+                <Button variant='destructive'>
+                    Not Interested
+                </Button>
 
                 {/* Auto Apply Button */}
-                <button className="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700 transition">
+                <Button>
                     Auto Apply
-                </button>
+                </Button>
             </div>
 
         </div>
+    </>
     );
 }

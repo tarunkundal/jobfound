@@ -4,7 +4,7 @@ import { fetchFromJooble } from "./fetchFromJooble";
 import { fetchFromRemotive } from "./fetchFromRemotive";
 import { normalizeJob } from "./normalizeJob";
 import { fetchFromLinkedIn } from "./fetchFromLinkedIn";
-import { paginate, removeDuplicates, sortByDate } from "./helpers";
+import { removeDuplicates, sortByDate } from "./helpers";
 import { FetchJobError } from "@/types/jobs";
 
 interface UserSchema {
@@ -48,9 +48,10 @@ export async function fetchJobsForUser({ user, page = 1, limit = 20, }: UserSche
 
 
     // Paginate
-    return {
-        success: true,
-        errors,
-        data: paginate(allJobs, page, limit),
-    };
+    // return {
+    //     success: true,
+    //     errors,
+    //     data: paginate(allJobs, page, limit),
+    // };
+    return allJobs
 }

@@ -5,6 +5,7 @@ import MultiSelect from "@/theme/ui/components/multiSelect";
 import Select from "@/theme/ui/components/select";
 import { Textarea } from "@/theme/ui/components/textarea";
 import { cn } from "@/theme/ui/utils/cn";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import FileUpload from "./upload/FileUpload";
 
@@ -27,6 +28,7 @@ interface FormFieldProps {
     | "multiSelect"
     | "fileUpload"
     | "checkbox"
+    | "commaSeparatedInput"
     | "radio";
     options?: Option[]; // For select or radio fields
     className?: string;
@@ -37,7 +39,8 @@ interface FormFieldProps {
     search?: boolean;
     multiple?: boolean;
     maxSizeMB?: number;
-    fileFormats?: string[]
+    fileFormats?: string[];
+    defaultValue?: any
 }
 
 /**
@@ -59,7 +62,8 @@ export const FormField: React.FC<FormFieldProps> = ({
     search,
     multiple,
     maxSizeMB,
-    fileFormats
+    fileFormats,
+    defaultValue
 }) => {
     const {
         register,
@@ -98,6 +102,7 @@ export const FormField: React.FC<FormFieldProps> = ({
                     {...register(name)}
                     className={cn(baseInputClass, className)}
                     disabled={disabled}
+                    defaultValue={defaultValue}
                 />
             )}
 
@@ -109,6 +114,7 @@ export const FormField: React.FC<FormFieldProps> = ({
                     {...register(name)}
                     className={cn(baseInputClass, "min-h-[80px] resize-none", className)}
                     disabled={disabled}
+                    defaultValue={defaultValue}
                 />
             )}
 
@@ -211,6 +217,63 @@ export const FormField: React.FC<FormFieldProps> = ({
                 />
             )}
 
+            {/* ---------------- SKILLS INPUT (store array, show comma string) ---------------- */}
+            {type === "commaSeparatedInput" && (
+                <Controller
+                    control={control}
+                    name={name}
+                    render={({ field }) => {
+                        const [displayValue, setDisplayValue] = useState(
+                            Array.isArray(field.value) ? field.value.join(", ") : ""
+                        );
+
+                        //Sync field.value into local displayValue state
+                        useEffect(() => {
+                            if (Array.isArray(field.value)) {
+                                // Only update the display if the RHF value is different from the current display value
+                                // to avoid an infinite loop if handleChange is running
+                                const newDisplay = field.value.join(", ");
+                                if (newDisplay !== displayValue) {
+                                    setDisplayValue(newDisplay);
+                                }
+                            } else if (field.value === undefined || field.value === null) {
+                                setDisplayValue("");
+                            }
+                        }, [field.value]);
+
+                        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                            const input = e.target.value;
+                            setDisplayValue(input);
+
+                            // If input is empty → clear the array
+                            if (input.trim() === "") {
+                                field.onChange([]);
+                                return;
+                            }
+                            // Convert comma-separated text → array
+                            const arr = input
+                                .split(",")
+                                .map(s => s.trim())
+                                .filter(Boolean);
+
+                            field.onChange(arr);
+                        };
+
+                        return (
+                            <Input
+                                id={name}
+                                placeholder={placeholder || "React, Node.js, Next.js"}
+                                value={displayValue}
+                                onChange={handleChange}
+                                // onBlur={handleBlur}
+                                className={cn(baseInputClass, className)}
+                                disabled={disabled}
+                                type="text"
+                            />
+                        );
+                    }}
+                />
+            )}
 
             {/* Helper Text */}
             {

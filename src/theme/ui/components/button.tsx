@@ -13,7 +13,7 @@ const buttonVariants = cva(
                 default: 'bg-brand text-brand-foreground border border-brand hover:bg-brand-hover [&_svg]:!text-brand-foreground',
                 secondary: 'bg-secondary text-primary border border-secondary hover:bg-hover-secondary',
                 outline: 'bg-transparent text-primary border border hover:text-tertiary',
-                destructive: 'bg-destructive text-white hover:bg-destructive/80',
+                destructive: 'bg-destructive text-white hover:bg-red-600',
                 ghost: 'text-secondary hover:bg-hover hover:text-foreground',
                 link: 'text-primary underline-offset-4 hover:text-brand',
                 icon: 'bg-transparent hover:bg-hover rounded-md',

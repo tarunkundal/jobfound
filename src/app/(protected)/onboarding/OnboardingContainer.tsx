@@ -1,7 +1,7 @@
 "use client";;
-import { useState } from "react";
 import FileUpload from "@/components/shared/upload/FileUpload";
 import { trpc } from "@/utils/trpc";
+import { useState } from "react";
 import OnboardingForm from "./OnboardingForm";
 
 interface OnboardingContainerProps {
@@ -13,11 +13,13 @@ interface OnboardingContainerProps {
 }
 
 export default function OnboardingContainer() {
+    // const { data } = trpc.upload.getUploadedFilePath.useQuery('resumes')
+
     const [parsedData, setParsedData] = useState<any>(null);
     const [files, setFiles] = useState<File[]>([]);
 
     // Define tRPC mutation
-    const parseResume = trpc.resume.parsedResume.useMutation({
+    const parseResume = trpc.resume.parseResume.useMutation({
         onSuccess: (data) => {
             setParsedData(data.parsedData);
         },
@@ -25,8 +27,6 @@ export default function OnboardingContainer() {
 
     const handleUploadSuccess = async (uploadedPath: string) => {
         // setFilePath(uploadedPath);
-        console.log('esvdkbldsbd', uploadedPath);
-
         await parseResume.mutateAsync();
     };
 
@@ -42,7 +42,7 @@ export default function OnboardingContainer() {
                     label=""
                     description="Drag & drop or click to upload your resume"
                     folder='resumes'
-                    accept={[".pdf", ".docx"]}
+                    accept={[".pdf", ".docx",]}
                     maxSizeMB={10}
                     files={files}
                     onChange={setFiles}
@@ -55,7 +55,6 @@ export default function OnboardingContainer() {
             <OnboardingForm
                 parsedData={parsedData ?? undefined}
                 parsingResume={parseResume.isPending}
-            // user={user}
             />
         </div>
     );

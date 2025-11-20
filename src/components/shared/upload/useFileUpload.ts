@@ -14,7 +14,7 @@ export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files, on
     const [isUploading, setIsUploading] = useState<boolean>(false)
     const { mutateAsync: updateUserFile } = trpc.upload.updateUserFile.useMutation({
         onSuccess: async () => {
-            await utils.upload.getUserFilePath.invalidate(folder); // ✅ cache invalidation
+            await utils.upload.getUploadedFilePath.invalidate(folder); // cache invalidation
         },
     });
 
@@ -35,8 +35,10 @@ export function useFileUpload({ folder, maxSizeMB, onChange, multiple, files, on
         if (!validateFileSize(file)) return;
         if (!userId) throw new Error("User not authenticated");
         const extension = getFileExtension(file)
-        const uniqueFileName = `${filePathConstructor[folder]}_${Date.now()}.${extension}`;
+        const baseName = file.name.replace(/\.[^/.]+$/, ""); // remove extension
+        const uniqueFileName = `${baseName}_${filePathConstructor[folder]}_${Date.now()}.${extension}`;
         const filePath = `${userId}/${uniqueFileName}`
+
         try {
             setIsUploading(true)
             const { error: uploadError } = await supabase.storage.from(folder).upload(filePath, file, { upsert: false, });
