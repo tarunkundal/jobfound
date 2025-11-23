@@ -42,6 +42,7 @@ export const userFormSchema = z.object({
         .or(z.literal("")),
 
     // 💰 Compensation & Extra
+    preferredJobLocation: z.string().optional().or(z.literal("")),
     minimumSalary: z.string().optional(),
     additionalContext: z
         .string()

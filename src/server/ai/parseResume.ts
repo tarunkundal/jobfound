@@ -4,6 +4,7 @@ import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatGroq } from "@langchain/groq";
 import { Context } from "../trpc/context";
+import { generateEmbedding } from "./createOpenAIEmbeddings";
 
 
 /** 🧹 Clean the extracted resume text for consistency */
@@ -30,16 +31,40 @@ export async function parseResumeFromSupabase(fileUrl: string, ctx: Context) {
     const rawText = docs.map((d) => d.pageContent).join("\n\n");
     const resumeText = cleanResumeText(rawText);
 
-    // update the resume raw text in database for future use
+    /* Generate the embedding vector using OpenAI */
+    const resumeVector = await generateEmbedding(resumeText);
+
+    console.log('resume vector is', resumeVector);
+    // update the resume raw & vector text in database for future use
     if (!ctx.user || !ctx.user.id) {
         console.warn("No authenticated user found; skipping DB update for resume raw text.");
     } else {
-        await ctx.prisma.resume.updateMany({
-            where: { userId: ctx.user.id },
-            data: {
-                raw_extracted_text: resumeText,
-            },
-        });
+        try {
+            // The schema uses a PostgreSQL `vector` column (pgvector) which Prisma marks as Unsupported.
+            // Prisma client cannot write to Unsupported("vector(...)") fields directly, so use a raw SQL update.
+            // Prepare a pgvector literal like: '[0.1,0.2,0.3]'::vector
+            const vectorString = '[' + resumeVector.map((n) => Number(n).toString()).join(',') + ']';
+
+            // Update raw_extracted_text and resume_embeddings using a parameterized query.
+            // We pass the vector as a text parameter and cast it to `vector` in SQL: $2::vector
+            await ctx.prisma.$executeRawUnsafe(
+                `UPDATE "Resume" SET "raw_extracted_text" = $1, "resume_embeddings" = $2::vector, "updatedAt" = now() WHERE "userId" = $3::uuid`,
+                resumeText,
+                vectorString,
+                ctx.user.id
+            );
+        } catch (err) {
+            console.error('Failed to update resume embeddings via raw SQL:', err);
+            // Fallback: try to at least update the raw_extracted_text via Prisma
+            try {
+                await ctx.prisma.resume.updateMany({
+                    where: { userId: ctx.user.id },
+                    data: { raw_extracted_text: resumeText },
+                });
+            } catch (e) {
+                console.error('Failed to update raw_extracted_text fallback:', e);
+            }
+        }
     }
     /** Step 3️⃣ Prepare schema parser */
     const parser = StructuredOutputParser.fromZodSchema(resumeSchema);
@@ -78,8 +103,6 @@ Resume:
             resumeText,
         });
 
-        console.log("🧠 Raw Model Output:", output.content);
-
         // Try to parse model output
         // 🧠 Extract text safely regardless of output type
         const rawText =
@@ -94,8 +117,6 @@ Resume:
                                 : ""
                     )
                     .join(" ");
-
-        console.log("🧠 Raw Model Output:", rawText);
 
         // Try to parse model output
         let parsed;
@@ -112,7 +133,6 @@ Resume:
 
         // Validate + fill defaults
         const validated = resumeSchema.parse(parsed);
-        console.log("✅ Parsed Resume Data:", validated);
 
         return validated;
     } catch (err) {

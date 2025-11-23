@@ -10,10 +10,6 @@ export interface FetchJobInterface {
     postedAt: string;
     workType: string;
 }
-export interface FetchJobError {
-    success: false;
-    provider: string;
-    message: string;
-}
 
-export type FetchJobResult = FetchJobInterface[] | FetchJobError;
+
+export type FetchJobResult = FetchJobInterface[];

@@ -228,6 +228,9 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
                                 />
                             </FormRow>
                             <FormRow>
+                                <FormField name="preferredJobLocation" label="Preferred Job Location" type="text" placeholder="eg USA" helperText="Your Preferred location for work." />
+                            </FormRow>
+                            <FormRow>
                                 <FormField name="minimumSalary" type="text" label="Minimum Salary" placeholder="$150k per year"
                                     helperText="Minimum salary is optional. Setting it to $0 will match with all jobs."
                                 />
@@ -276,7 +279,6 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
                                     name="terms"
                                     type="checkbox"
                                     placeholder="I agree to Terms and Conditions"
-                                    className="w-full"
                                 />
                             </FormRow>
                             <Button type="submit" className="w-full" disabled={updateUserProfile.isPending} isLoading={updateUserProfile.isPending}>Submit</Button>

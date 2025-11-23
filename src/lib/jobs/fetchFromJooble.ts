@@ -1,8 +1,9 @@
-import { FetchJobResult } from "@/types/jobs";
+import { FetchJobInterface } from "@/types/jobs";
 import { isWithin24Hours } from "./helpers";
 
-export async function fetchFromJooble(role: string, location: string): Promise<FetchJobResult> {
-    const API_KEY = process.env.JOOBLE_API_KEY!;
+export async function fetchFromJooble(role: string, location: string): Promise<FetchJobInterface[]> {
+    const API_KEY = process.env.JOOBLE_API_KEY;
+    if (!API_KEY) throw new Error('jooble: missing API key');
 
     try {
         const res = await fetch(`https://jooble.org/api/${API_KEY}`, {
@@ -10,17 +11,16 @@ export async function fetchFromJooble(role: string, location: string): Promise<F
             body: JSON.stringify({ keywords: role, location }),
         });
 
-        const data = await res.json();
-
-
-        if (!data.jobs) {
-            return {
-                success: false,
-                provider: "jooble",
-                message: "No job field in response",
-            };
+        if (!res.ok) {
+            const text = await res.text().catch(() => '');
+            throw new Error(`jooble: unexpected status ${res.status} ${text}`);
         }
 
+        const data = await res.json();
+
+        if (!data?.jobs || !Array.isArray(data.jobs)) {
+            throw new Error('jooble: no jobs array in response');
+        }
         return data.jobs
             .filter((job: any) => isWithin24Hours(job.updated))
             .map((job: any) => ({
@@ -37,10 +37,6 @@ export async function fetchFromJooble(role: string, location: string): Promise<F
             }));
     } catch (err: any) {
         console.error("Error fetching from Jooble:", err);
-        return {
-            success: false,
-            provider: "jooble",
-            message: err.message || "Jooble API error",
-        };
+        throw err instanceof Error ? err : new Error('jooble: unknown error');
     }
 }

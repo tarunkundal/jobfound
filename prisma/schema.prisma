@@ -20,39 +20,41 @@ model User {
 }
 
 model Profile {
-  id                String   @id @default(uuid()) @db.Uuid
-  userId            String   @unique @db.Uuid
-  fullName          String?
-  phoneNumber       String?
-  gender            String?
-  residenceCountry  String?
-  state             String?
-  city              String?
-  experienceLevel   String?
-  experienceYears   String?
-  jobTitles         String[] @default([])
-  workPreference    String[] @default([])
-  skills            String[] @default([])
-  currentEmployer   String?
-  educationLevel    String?
-  minimumSalary     String?
-  additionalContext String?
-  photo_url         String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
-  linkedinUrl       String?
-  terms             Boolean?
-  user              User     @relation(fields: [userId], references: [id])
+  id                   String   @id @default(uuid()) @db.Uuid
+  userId               String   @unique @db.Uuid
+  fullName             String?
+  phoneNumber          String?
+  gender               String?
+  residenceCountry     String?
+  state                String?
+  city                 String?
+  experienceLevel      String?
+  experienceYears      String?
+  jobTitles            String[] @default([])
+  workPreference       String[] @default([])
+  skills               String[] @default([])
+  currentEmployer      String?
+  educationLevel       String?
+  minimumSalary        String?
+  additionalContext    String?
+  photo_url            String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
+  linkedinUrl          String?
+  terms                Boolean?
+  preferredJobLocation String?
+  user                 User     @relation(fields: [userId], references: [id])
 }
 
 model Resume {
-  id                 String   @id @default(uuid()) @db.Uuid
-  userId             String   @unique @db.Uuid
+  id                 String                 @id @default(uuid()) @db.Uuid
+  userId             String                 @unique @db.Uuid
   resume_url         String?
   raw_extracted_text String?
-  uploadedAt         DateTime @default(now())
-  updatedAt          DateTime @default(now()) @updatedAt
-  user               User     @relation(fields: [userId], references: [id])
+  uploadedAt         DateTime               @default(now())
+  updatedAt          DateTime               @default(now()) @updatedAt
+  resume_embeddings  Unsupported("vector(1536)")?
+  user               User                   @relation(fields: [userId], references: [id])
 }
 
 model user_trigger_log {

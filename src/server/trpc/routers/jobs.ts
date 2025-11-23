@@ -1,25 +1,16 @@
 import { fetchJobsForUser } from '@/lib/jobs/fetchJobsForUser';
+import { TRPCError } from '@trpc/server';
 import { protectedProcedure, router } from '../trpc';
 
 export const jobsRouter = router({
     getAllJobs: protectedProcedure.query(async ({ ctx }) => {
-        try {
-            const userData = await ctx.prisma.user.findUnique({
-                where: { id: ctx.user.id }
-            });
-
-            const response = await fetchJobsForUser({ user: userData });
-
-            return response;
-
-        } catch (error: any) {
-            console.log("error while fetching jobs", error);
-            return {
-                success: false,
-                message: error.message || "TRPC route error",
-                data: [],
-                errors: []
-            };
+        const userData = await ctx.prisma.user.findUnique({ where: { id: ctx.user.id } });
+        if (!userData) {
+            throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
         }
+
+        // fetchJobsForUser will throw a TRPCError when providers all fail.
+        const jobs = await fetchJobsForUser({ user: userData });
+        return jobs;
     })
 });
