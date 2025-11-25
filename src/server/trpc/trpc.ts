@@ -18,7 +18,6 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
     const existingUserProfile = await ctx.prisma.profile.findFirst({ where: { userId } });
     if (!existingUserProfile) {
         await ctx.prisma.profile.create({ data: { userId } });
-
     }
     // Ensure resume exists
     // Use a safe existence check and create if missing.

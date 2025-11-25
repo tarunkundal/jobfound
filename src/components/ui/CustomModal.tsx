@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
 import { Button } from "@/theme/ui/components/button";
 import { Separator } from "@/theme/ui/components/separator";
+import * as Dialog from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
+import { ReactNode } from "react";
 
 interface CustomModalProps {
     open: boolean;
@@ -30,7 +30,7 @@ export default function CustomModal({
                 : undefined
             }>
                 {/* Overlay */}
-                <Dialog.Overlay className="fixed inset-0  backdrop-blur-[1px] z-40
+                <Dialog.Overlay className="fixed inset-0  backdrop-blur-[3px] z-40
                     data-[state=open]:animate-in data-[state=open]:fade-in-50
                     data-[state=closed]:animate-out data-[state=closed]:fade-out-50"
                 />
@@ -49,7 +49,11 @@ export default function CustomModal({
                         p-2 z-50
                         rounded-card
                         border-card
-                        mt-[-50px]
+                        max-h-[80vh]
+                        overflow-y-auto
+                        px-2 py-2
+                        data-[state=open]:animate-in 
+                        data-[state=open]:fade-in-50
                     "
                 >
                     {/* Header */}
@@ -67,7 +71,12 @@ export default function CustomModal({
                             )}
                         </div>
 
-                        <Button onClick={onClose} variant="destructive" size="xs">
+                        <Button
+                            onClick={onClose}
+                            variant="destructive"
+                            size="xs"
+                            className="transform transition-transform duration-200 ease-in-out hover:rotate-180"
+                        >
                             <X size={14} />
                         </Button>
                     </div>

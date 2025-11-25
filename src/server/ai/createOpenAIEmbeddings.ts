@@ -2,9 +2,10 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 
 // LangChain automatically reads process.env.OPENAI_API_KEY
 const embeddings = new OpenAIEmbeddings({
-    modelName: "text-embedding-ada-002", // The model you want to use
+    // modelName: "text-embedding-ada-002",
+    modelName: "text-embedding-3-small",
     // You can specify dimensions here if needed, but it's often automatic
-    // dimensions: 1536, 
+    dimensions: 1536,
 });
 
 /**

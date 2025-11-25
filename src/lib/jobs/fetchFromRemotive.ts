@@ -1,4 +1,5 @@
 import { FetchJobInterface } from "@/types/jobs";
+import { isWithin24Hours } from "./helpers";
 
 export async function fetchFromRemotive(role: string, location: string): Promise<FetchJobInterface[]> {
     const categoryMap: Record<string, string> = {
@@ -18,16 +19,14 @@ export async function fetchFromRemotive(role: string, location: string): Promise
             const text = await res.text().catch(() => '');
             throw new Error(`remotive: unexpected status ${res.status} ${text}`);
         }
-
         const data = await res.json();
 
         if (!data?.jobs || !Array.isArray(data.jobs)) {
             throw new Error('remotive: no jobs array in response');
         }
-        console.log('remotive data jobs', data.jobs);
 
         return data.jobs
-            // .filter((job: any) => isWithin24Hours(job.publication_date))
+            .filter((job: any) => isWithin24Hours(job.publication_date))
             .map((job: any) => ({
                 source: "remotive",
                 title: job.title,
@@ -39,6 +38,7 @@ export async function fetchFromRemotive(role: string, location: string): Promise
                 description: job.description,
                 postedAt: job.publication_date,
                 workType: "Remote",
+                externalId: job.id,
             }));
     } catch (err: any) {
         console.error("Error fetching from Remotive:", err);

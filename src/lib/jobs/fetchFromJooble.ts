@@ -18,6 +18,7 @@ export async function fetchFromJooble(role: string, location: string): Promise<F
 
         const data = await res.json();
 
+
         if (!data?.jobs || !Array.isArray(data.jobs)) {
             throw new Error('jooble: no jobs array in response');
         }
@@ -34,6 +35,7 @@ export async function fetchFromJooble(role: string, location: string): Promise<F
                 description: job.snippet,
                 postedAt: job.updated,
                 workType: job.type || "Unknown",
+                externalId: job.id,
             }));
     } catch (err: any) {
         console.error("Error fetching from Jooble:", err);

@@ -9,7 +9,6 @@ export interface FetchJobInterface {
     description: string;
     postedAt: string;
     workType: string;
+    externalId?: string;
 }
 
-
-export type FetchJobResult = FetchJobInterface[];

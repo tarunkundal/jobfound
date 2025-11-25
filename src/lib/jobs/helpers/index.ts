@@ -36,10 +36,10 @@ export function cleanJobDescription(raw: string = "") {
 
 export function isWithin24Hours(dateStr: string) {
     const posted = new Date(dateStr).getTime();
-    if (Number.isNaN(posted)) return false; // invalid input
+    if (Number.isNaN(posted)) return false;
     const now = Date.now();
     const diff = now - posted;
-    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+    const ONE_DAY_MS = 2 * 24 * 60 * 60 * 1000;
     return diff <= ONE_DAY_MS;
 }
 

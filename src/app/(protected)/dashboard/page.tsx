@@ -3,8 +3,8 @@ import { createClient } from "@/lib/supabseClient";
 import { Button } from "@/theme/ui/components/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import JobList from "./_components/JobList";
 import { trpc } from "@/utils/trpc";
+import JobList from "./_components/JobList";
 
 const Dashboard = () => {
     const supabase = createClient();

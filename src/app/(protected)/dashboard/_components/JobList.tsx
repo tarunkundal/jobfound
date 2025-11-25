@@ -1,25 +1,40 @@
+import { trpc } from "@/utils/trpc";
+import JobCard from "./JobCard";
+import JobCardSkeleton from "./skeletons/JobCardSkeleton";
+
 const JobList = () => {
-    // const { data, } = trpc.jobs.getAllJobs.useQuery()
-    // console.log('jobs are d', data); 
+    const fetchAllJobs = trpc.jobs.getAllJobs.useQuery()
+    const data = fetchAllJobs.data;
+
 
     return (
-        <div>
-            {/* {data && data?.map((job: FetchJobInterface, index: number) => (
-                return  <JobCard
-            title="Lead Software Engineer (Full-Stack Developer)"
-            company="Selah Digital"
-            url="mjbhvg"
-            location="Bangalore, Karnataka, India"
-            postedAt="Nov 13"
-            workType="On-site"
-            salary={'47468'}
-            source="linkedin"
-            companyUrl={'https://ecliptiq.vercel.app/'}
-            description="We are looking for a full-stack engineer with strong experience in Next.js, Node.js..."
-        /> 
-            )} */}
+        <div className="w-[95%] mx-auto">
+            <h2 className="text-2xl font-bold mb-4 text-primary">Job Listings</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+                {
+                    fetchAllJobs.isLoading && (
+                        Array.from({ length: 9 }).map((_, i) => (
+                            <JobCardSkeleton key={i} />
+                        ))
+                    )
+                }
+                {data && data.map((job) => (
+                    <JobCard
+                        key={job.externalId}
+                        title={job.title}
+                        company={job.company}
+                        url={job.url}
+                        location={job.location}
+                        postedAt={job.postedAt}
+                        workType={job.workType}
+                        salary={job.salary ?? null}
+                        source={job.source}
+                        companyUrl={job.companyUrl ?? null}
+                        description={job.description}
+                    />
+                ))}
+            </div>
         </div>
     )
 }
-
 export default JobList

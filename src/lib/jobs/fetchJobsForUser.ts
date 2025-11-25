@@ -1,86 +1,29 @@
-// import { userFormSchema } from "@/schema/user.schema";
-// import z from "zod";
-// import { fetchFromJooble } from "./fetchFromJooble";
-// import { fetchFromRemotive } from "./fetchFromRemotive";
-// import { normalizeJob } from "./normalizeJob";
-// import { fetchFromLinkedIn } from "./fetchFromLinkedIn";
-// import { removeDuplicates, sortByDate } from "./helpers";
-// import { FetchJobError } from "@/types/jobs";
-
-// interface UserSchema {
-//     user: z.infer<typeof userFormSchema>
-//     page?: number
-//     limit?: number
-// }
-
-// export async function fetchJobsForUser({ user, page = 1, limit = 20, }: UserSchema) {
-//     const role = user.jobTitles[0] || "software engineer";
-//     const location = user.preferredJobLocation || user.residenceCountry || "Remote";
-
-//     const [remotiveRes, linkedInRes, joobleRes] = await Promise.all([
-//         fetchFromRemotive(role, location),
-//         fetchFromLinkedIn(role, location),
-//         fetchFromJooble(role, location)
-//     ]);
-//     const errors: FetchJobError[] = [];
-
-//     const remotiveJobs = Array.isArray(remotiveRes)
-//         ? remotiveRes
-//         : (errors.push(remotiveRes), []);
-
-//     const linkedinJobs = Array.isArray(linkedInRes)
-//         ? linkedInRes
-//         : (errors.push(linkedInRes), []);
-
-//     const joobleJobs = Array.isArray(joobleRes)
-//         ? joobleRes
-//         : (errors.push(joobleRes), []);
-//     let allJobs = [...(Array.isArray(remotiveJobs) ? remotiveJobs : []), ...linkedinJobs, ...(Array.isArray(joobleJobs) ? joobleJobs : [])];
-
-//     // Normalize
-//     allJobs = allJobs.map(normalizeJob);
-
-//     // Remove duplicates
-//     allJobs = removeDuplicates(allJobs);
-
-//     // Sort by newest first
-//     allJobs = sortByDate(allJobs);
-
-
-//     // Paginate
-//     // return {
-//     //     success: true,
-//     //     errors,
-//     //     data: paginate(allJobs, page, limit),
-//     // };
-//     return allJobs
-// }
 import { userFormSchema } from "@/schema/user.schema";
+import { storeJobsToDb } from "@/server/ai/storeJobsToDb";
+import { Context } from "@/server/trpc/context";
 import { TRPCError } from '@trpc/server';
 import z from "zod";
 import { fetchFromJooble } from "./fetchFromJooble";
-import { fetchFromLinkedIn } from "./fetchFromLinkedIn";
 import { fetchFromRemotive } from "./fetchFromRemotive";
 import { removeDuplicates, sortByDate } from "./helpers";
 import { normalizeJob } from "./normalizeJob";
 
-interface UserSchema {
+interface PageProps {
     user: z.infer<typeof userFormSchema>
     page?: number
     limit?: number
+    ctx: Context
 }
-
-export async function fetchJobsForUser({ user, page = 1, limit = 20, }: UserSchema) {
+// Fetch jobs for a user based on their profile, normalize, dedupe, sort, paginate, and store new jobs to DB
+export async function fetchJobsForUser({ user, page = 1, limit = 1, ctx }: PageProps) {
     const role = user.jobTitles?.[0] || "software engineer";
     const location = user.preferredJobLocation || user.residenceCountry || "Remote";
 
     const results = await Promise.allSettled([
         fetchFromRemotive(role, location),
-        fetchFromLinkedIn(role, location),
+        // fetchFromLinkedIn(role, location),
         fetchFromJooble(role, location),
     ]);
-    console.log('all jobs results', results);
-
 
     const providers = ["remotive", "linkedin", "jooble"];
     const collectedJobs: any[] = [];
@@ -118,5 +61,8 @@ export async function fetchJobsForUser({ user, page = 1, limit = 20, }: UserSche
     const start = (page - 1) * limit;
     const paginated = allJobs.slice(start, start + limit);
 
-    return paginated;
+    console.log('all jobs are', allJobs, allJobs.length);
+    await storeJobsToDb(ctx, paginated)
+
+    return allJobs;
 }

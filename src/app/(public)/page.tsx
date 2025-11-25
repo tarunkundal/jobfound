@@ -1,10 +1,10 @@
 
 'use client';
-import Hero from "./_components/Hero";
 import { Spinner } from "@/theme/ui/components/spinner";
 import { useRouter } from "next/navigation";
 import { lazy, Suspense, useEffect } from "react";
 import { useUser } from "../(auth)/_hooks/useUser";
+import Hero from "./_components/Hero";
 const Features = lazy(() => import("./_components/Features"));
 const Footer = lazy(() => import("./_components/Footer"))
 const Info = lazy(() => import("./_components/Info"))
@@ -16,13 +16,10 @@ export default function Home() {
   const router = useRouter();
   const { loading, session } = useUser()
 
-  console.log('user', session);
-
-
   // User is already logged in → redirect to dashboard this is client side check only to avoid flicker on page load otherwise we handle this in middleware
   useEffect(() => {
     if (!loading && session) {
-      router.replace("/protected/dashboard");
+      router.replace("/dashboard");
     }
   }, [router, loading, session]);
 

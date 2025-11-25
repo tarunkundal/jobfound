@@ -13,5 +13,6 @@ export function normalizeJob(job: FetchJobInterface) {
         postedAt: job.postedAt,
         source: job.source,
         salary: job.salary,
+        externalId: job.externalId,
     };
 }

@@ -13,12 +13,9 @@ export async function fetchFromLinkedIn(role: string, location: string): Promise
         useApifyProxy: true,
         maxItems: 30,
         sort: "recent",
-        limit: 10
     });
     try {
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
-        // console.log('jobs from linkedin', items);
-
 
         return items
             .filter((job: any) => isWithin24Hours(job.posted_at))
@@ -33,6 +30,7 @@ export async function fetchFromLinkedIn(role: string, location: string): Promise
                 description: job.description || "",
                 postedAt: job.posted_at,
                 workType: job.work_type || "Unknown",
+                externalId: job.id,
             }));
     } catch (err: any) {
         console.error("Error fetching from linkedin:", err);

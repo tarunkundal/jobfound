@@ -10,13 +10,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid()) @db.Uuid
-  email     String   @unique
-  fullName  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  profile   Profile?
-  resumes   Resume?
+  id           String       @id @default(uuid()) @db.Uuid
+  email        String       @unique
+  fullName     String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+  profile      Profile?
+  resumes      Resume?
+  applications Application?
 }
 
 model Profile {
@@ -41,8 +42,9 @@ model Profile {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now()) @updatedAt
   linkedinUrl          String?
-  terms                Boolean?
   preferredJobLocation String?
+  terms                Boolean?
+  enable_auto_apply    Boolean? @default(false)
   user                 User     @relation(fields: [userId], references: [id])
 }
 
@@ -64,4 +66,39 @@ model user_trigger_log {
   status        String?
   error_message String?
   created_at    DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model Job {
+  id                 String                 @id @default(uuid()) @db.Uuid
+  externalId         String?                @unique
+  source             String
+  title              String
+  company            String
+  companyUrl         String?
+  location           String?
+  url                String
+  salary             String?
+  description        String
+  description_vector Unsupported("vector(1536)")?
+  postedAt           DateTime
+  workType           String?
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  applications       Application?
+
+  @@map("jobs")
+}
+
+model Application {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @unique @db.Uuid
+  jobId      String   @unique @db.Uuid
+  appliedAt  DateTime @default(now())
+  status     String
+  matchScore Float?
+  logData    String?
+  job        Job      @relation(fields: [jobId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("applications")
 }
