@@ -15,6 +15,7 @@ model User {
   fullName     String?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now()) @updatedAt
+  isOnboarded  Boolean      @default(false)
   profile      Profile?
   resumes      Resume?
   applications Application?
