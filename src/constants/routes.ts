@@ -9,14 +9,10 @@ export const ROUTES = {
         RESET_PASSWORD: "/password/reset",
         AUTH_CALLBACK: "/callback"
     },
-    LOGOUT: '',
-
     PROTECTED: {
-        DASHBOARD: {
-            ROOT: "/dashboard",
-            PROFILE: "/dashboard/profile",
-            SETTINGS: "/dashboard/settings",
-        },
+        DASHBOARD: { ROOT: "/dashboard", },
+        PROFILE: "/onboarding",
+        SETTINGS: "/settings",
         JOBS: {
             ROOT: "/jobs",
             DETAILS: (id: string | number) => `/jobs/${id}`,

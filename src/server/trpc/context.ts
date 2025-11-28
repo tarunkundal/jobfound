@@ -1,8 +1,6 @@
 import { prisma } from "@/db"
 import { createServerClient } from "@supabase/ssr"
 import type { inferAsyncReturnType } from "@trpc/server"
-
-
 interface CreateContextOptions {
     req: Request
 }

@@ -1,3 +1,4 @@
+
 export interface FetchJobInterface {
     source: "linkedin" | "jooble" | "remotive"
     title: string;
@@ -9,11 +10,23 @@ export interface FetchJobInterface {
     description: string;
     postedAt: string;
     workType: string;
-}
-export interface FetchJobError {
-    success: false;
-    provider: string;
-    message: string;
+    externalId?: string;
 }
 
-export type FetchJobResult = FetchJobInterface[] | FetchJobError;
+export interface MatchedJobInterface {
+    id: string;
+    title: string;
+    company: string;
+    url: string;
+    match_score: number;
+    description: string;
+    source: string;
+    companyUrl: string | null;
+    location: string | null;
+    salary: string | null;
+    postedAt: Date;
+    workType: string | null;
+    externalId: string | null;
+    coverLetter?: string
+}
+

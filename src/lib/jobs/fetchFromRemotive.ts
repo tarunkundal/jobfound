@@ -1,7 +1,7 @@
-import { FetchJobResult } from "@/types/jobs";
+import { FetchJobInterface } from "@/types/jobs";
 import { isWithin24Hours } from "./helpers";
 
-export async function fetchFromRemotive(role: string, location: string): Promise<FetchJobResult> {
+export async function fetchFromRemotive(role: string, location: string): Promise<FetchJobInterface[]> {
     const categoryMap: Record<string, string> = {
         "software engineer": "software-dev",
         "frontend engineer": "software-dev",
@@ -11,11 +11,19 @@ export async function fetchFromRemotive(role: string, location: string): Promise
     };
     const category = categoryMap[role.toLowerCase()] || "software-dev";
 
-    const url = `https://remotive.com/api/remote-jobs?category=${category}&search=${location}`;
+    const url = `https://remotive.com/api/remote-jobs?category=${category}&search=${encodeURIComponent(location)}`;
 
     try {
         const res = await fetch(url);
+        if (!res.ok) {
+            const text = await res.text().catch(() => '');
+            throw new Error(`remotive: unexpected status ${res.status} ${text}`);
+        }
         const data = await res.json();
+
+        if (!data?.jobs || !Array.isArray(data.jobs)) {
+            throw new Error('remotive: no jobs array in response');
+        }
 
         return data.jobs
             .filter((job: any) => isWithin24Hours(job.publication_date))
@@ -30,13 +38,10 @@ export async function fetchFromRemotive(role: string, location: string): Promise
                 description: job.description,
                 postedAt: job.publication_date,
                 workType: "Remote",
+                externalId: job.id,
             }));
     } catch (err: any) {
         console.error("Error fetching from Remotive:", err);
-        return {
-            success: false,
-            provider: "remotive",
-            message: err.message || "Remotive API error",
-        };
+        throw err instanceof Error ? err : new Error('remotive: unknown error');
     }
 }

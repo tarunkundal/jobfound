@@ -6,7 +6,7 @@ import AccountManagement from "./_components/AccountManagement";
 import EmailSettings from "./_components/EmailSettings";
 
 const SettingContainer = () => {
-    return (
+    return (<div className="flex">
         <div className="w-[90%] bg-primary px-6 py-4 my-[2%] mx-auto border-card rounded-card">
             <div>
                 <h2 className="text-brand-foreground font-semibold text-2xl">Settings</h2>
@@ -33,6 +33,7 @@ const SettingContainer = () => {
                 </p>
             </div>
         </div>
+    </div>
     )
 }
 

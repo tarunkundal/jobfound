@@ -16,10 +16,10 @@ const Info = () => {
                     {infoData.map((feature, i) => (
                         <div
                             key={i}
-                            className="bg-body text-primary w-full lg:w-[45%] p-6 flex flex-col items-start gap-3 border-card shadow-card rounded-card"
+                            className="bg-body text-primary w-full lg:w-[45%] p-6 flex flex-col items-start gap-3 border-card shadow-card rounded-card "
                         >
                             <div className="flex items-center">
-                                <div className="p-3 rounded-2xl border-brand mr-4">
+                                <div className="p-3 rounded-2xl border-brand mr-4 hover:border-brand-hover">
                                     <Icon icon={feature.icon} className="text-brand" />
                                 </div>
                                 <h2 className="text-xl md:text-2xl text-brand-foreground font-semibold">{feature.title}</h2>

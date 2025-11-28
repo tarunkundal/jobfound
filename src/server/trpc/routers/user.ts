@@ -1,55 +1,27 @@
 import { prisma } from '@/db';
 import { protectedProcedure, router } from '../trpc';
-import z from 'zod';
-import { userFormSchema } from '@/schema/user.schema';
+import { GetUserType } from '@/types/user';
+import { z } from 'zod';
 
 export const userRouter = router({
-    createUserIfNotExists: protectedProcedure
-        .input(
-            z.object({
-                email: z.string().email(),
-                fullName: z.string().optional(),
-            })
-        )
-        .mutation(async ({ ctx, input }) => {
-            const { email, fullName } = input;
-            const userId = ctx.user.id; // comes from Supabase session
-
-            // Check if exists
-            const existing = await ctx.prisma.user.findUnique({
-                where: { id: userId },
-            });
-
-            if (existing) return existing;
-
-            // Create new user
-            const newUser = await ctx.prisma.user.create({
-                data: {
-                    id: userId,
-                    email,
-                    fullName: fullName ?? "",
-                    termsAccepted: false,
-                },
-            });
-
-            return newUser;
-        }),
-    me: protectedProcedure.query(({ ctx }) => ctx.user),
-
-    getUserFormData: protectedProcedure.query(async ({ ctx }) => {
+    getUser: protectedProcedure.query(async ({ ctx }): Promise<GetUserType | null> => {
         const userId = ctx.user.id;
         const user = await prisma.user.findUnique({
             where: { id: userId },
+            select: { isOnboarded: true, email: true, fullName: true, id: true }
         });
+
         return user;
     }),
 
-    updateUserForm: protectedProcedure.input(userFormSchema.partial()).mutation(async ({ ctx, input }) => {
+    updateUserOnboarded: protectedProcedure.input(z.object({ onboarded: z.boolean() })).mutation(async ({ ctx, input }): Promise<GetUserType | null> => {
         const userId = ctx.user.id;
-        return ctx.prisma.user.update({
+        const data = await ctx.prisma.user.update({
             where: { id: userId },
-            data: input,
+            data: { isOnboarded: input.onboarded },
+            select: { isOnboarded: true, email: true, fullName: true, id: true }
         });
+        return data;
     })
 
 });

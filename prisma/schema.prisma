@@ -10,49 +10,54 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid()) @db.Uuid
-  email     String   @unique
-  fullName  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  profile   Profile?
-  resumes   Resume?
+  id           String       @id @default(uuid()) @db.Uuid
+  email        String       @unique
+  fullName     String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+  isOnboarded  Boolean      @default(false)
+  profile      Profile?
+  resumes      Resume?
+  applications Application?
 }
 
 model Profile {
-  id                String   @id @default(uuid()) @db.Uuid
-  userId            String   @unique @db.Uuid
-  fullName          String?
-  phoneNumber       String?
-  gender            String?
-  residenceCountry  String?
-  state             String?
-  city              String?
-  experienceLevel   String?
-  experienceYears   String?
-  jobTitles         String[] @default([])
-  workPreference    String[] @default([])
-  skills            String[] @default([])
-  currentEmployer   String?
-  educationLevel    String?
-  minimumSalary     String?
-  additionalContext String?
-  photo_url         String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
-  linkedinUrl       String?
-  terms             Boolean?
-  user              User     @relation(fields: [userId], references: [id])
+  id                   String   @id @default(uuid()) @db.Uuid
+  userId               String   @unique @db.Uuid
+  fullName             String?
+  phoneNumber          String?
+  gender               String?
+  residenceCountry     String?
+  state                String?
+  city                 String?
+  experienceLevel      String?
+  experienceYears      String?
+  jobTitles            String[] @default([])
+  workPreference       String[] @default([])
+  skills               String[] @default([])
+  currentEmployer      String?
+  educationLevel       String?
+  minimumSalary        String?
+  additionalContext    String?
+  photo_url            String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
+  linkedinUrl          String?
+  preferredJobLocation String?
+  terms                Boolean?
+  enable_auto_apply    Boolean? @default(false)
+  user                 User     @relation(fields: [userId], references: [id])
 }
 
 model Resume {
-  id                 String   @id @default(uuid()) @db.Uuid
-  userId             String   @unique @db.Uuid
+  id                 String                 @id @default(uuid()) @db.Uuid
+  userId             String                 @unique @db.Uuid
   resume_url         String?
   raw_extracted_text String?
-  uploadedAt         DateTime @default(now())
-  updatedAt          DateTime @default(now()) @updatedAt
-  user               User     @relation(fields: [userId], references: [id])
+  uploadedAt         DateTime               @default(now())
+  updatedAt          DateTime               @default(now()) @updatedAt
+  resume_embeddings  Unsupported("vector(1536)")?
+  user               User                   @relation(fields: [userId], references: [id])
 }
 
 model user_trigger_log {
@@ -62,4 +67,39 @@ model user_trigger_log {
   status        String?
   error_message String?
   created_at    DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model Job {
+  id                 String                 @id @default(uuid()) @db.Uuid
+  externalId         String?                @unique
+  source             String
+  title              String
+  company            String
+  companyUrl         String?
+  location           String?
+  url                String
+  salary             String?
+  description        String
+  description_vector Unsupported("vector(1536)")?
+  postedAt           DateTime
+  workType           String?
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  applications       Application?
+
+  @@map("jobs")
+}
+
+model Application {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @unique @db.Uuid
+  jobId      String   @unique @db.Uuid
+  appliedAt  DateTime @default(now())
+  status     String
+  matchScore Float?
+  logData    String?
+  job        Job      @relation(fields: [jobId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("applications")
 }

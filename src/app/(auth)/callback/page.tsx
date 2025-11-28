@@ -1,5 +1,4 @@
-"use client";
-
+"use client";;
 import { ROUTES } from "@/constants/routes";
 import { createClient } from "@/lib/supabseClient";
 import { Spinner } from "@/theme/ui/components/spinner";
