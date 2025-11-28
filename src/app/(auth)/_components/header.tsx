@@ -1,16 +1,31 @@
-import { Button } from "@/theme/ui/components/button"
-import Image from "next/image"
+'use client';
+
+import Logo from "@/components/shared/Logo";
+import { ROUTES } from "@/constants/routes";
+import { Button } from "@/theme/ui/components/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const AuthHeader = () => {
-    return (
-        <div className="flex justify-between items-center border-2 px-[10%]" >
-            <Image src="/logo2.webp" alt="Logo" width={70} height={70} title="dchvd jhsjbh" />
-            <div className="flex items-center justify-center" >
-                <Button variant="link" className="mr-4" >About</Button>
-                <Button variant="default" size='lg' >Sign In</Button>
-            </div>
-        </div>
-    )
-}
+    const currentPathname = usePathname();
 
-export default AuthHeader
+    const isSignUpPage = currentPathname === ROUTES.AUTH.SIGNUP;
+
+    const destinationHref = isSignUpPage ? ROUTES.AUTH.LOGIN : ROUTES.AUTH.SIGNUP;
+    const buttonText = isSignUpPage ? 'Login' : 'Sign Up';
+
+    return (
+        <header className='flex justify-between items-center px-4 py-4 bg-primary'>
+            <Logo />
+            <div className='flex items-center gap-2'>
+                <Button className='font-bold' variant='outline'>
+                    <Link href={destinationHref}>
+                        {buttonText}
+                    </Link>
+                </Button>
+            </div>
+        </header>
+    );
+};
+
+export default AuthHeader;

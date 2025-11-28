@@ -1,25 +1,28 @@
 import CustomModal from "@/components/ui/CustomModal";
+import { Prisma } from "@/generated/prisma";
 import { Badge } from "@/theme/ui/components/badge";
 import { Button } from "@/theme/ui/components/button";
 import { Icon } from "@/theme/ui/components/icon";
-import { FetchJobInterface } from "@/types/jobs";
 import { FileBoxIcon } from "lucide-react";
 import { useState } from "react";
 
-export default function JobCard({
-    title,
-    company,
-    location,
-    postedAt,
-    workType,
-    description,
-    companyUrl,
-    url,
-    source,
-    salary,
-    externalId
-}: FetchJobInterface) {
-
+type JobCardProps = {
+    job: Prisma.JobGetPayload<{}>;
+};
+export default function JobCard({ job }: JobCardProps) {
+    const {
+        title,
+        company,
+        location,
+        postedAt,
+        workType,
+        description,
+        companyUrl,
+        url,
+        source,
+        salary,
+        externalId,
+    } = job;
     const [showDescription, setShowDescription] = useState(false);
 
     return (<>

@@ -1,5 +1,10 @@
+import DashboardHeader from "./_components/header";
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-    return <div className="flex h-auto px-2">
-        {children}
-    </div>
+    return <>
+        <DashboardHeader />
+        <div className="h-auto px-2 pt-20">
+            {children}
+        </div>
+    </>
 }

@@ -1,7 +1,8 @@
 
-import { getUserResumeVector } from '@/utils/helpers/getUserResumeVector';
-import { Context } from '../trpc/context';
+import { getUserResumeVector } from '@/lib/resume/helpers/getUserResumeVector';
 import { MatchedJobInterface } from '@/types/jobs';
+import { Context } from '../trpc/context';
+import { generateCoverLetter } from './generateCoverLetter';
 
 export async function matchJobsByAi(ctx: Context) {
     // user id whose resume we are matching jobs for
@@ -37,7 +38,7 @@ export async function matchJobsByAi(ctx: Context) {
             -- Calculate score: 1 - distance = similarity (0 to 1)
             (1 - ("description_vector" <=> ${vectorString}::vector))::float AS match_score 
         FROM "jobs"
-        WHERE "postedAt" >= NOW() - INTERVAL '3 days' -- Look at recent jobs
+        WHERE "postedAt" >= NOW() - INTERVAL '5 days' -- Look at recent jobs
         AND NOT EXISTS (
             SELECT 1 FROM "applications" a WHERE a."jobId" = "jobs".id AND a."userId" = ${userId}::uuid
         )
@@ -47,10 +48,20 @@ export async function matchJobsByAi(ctx: Context) {
 
     console.log('potentials matches', potentialMatches);
 
-
     // 3. Filter for high-confidence scores (e.g., 80% or higher)
-    const MINIMUM_SCORE_THRESHOLD = 0.01;
+    const MINIMUM_SCORE_THRESHOLD = 0.008;
     const highPriorityJobs = potentialMatches.filter(job => job.match_score >= MINIMUM_SCORE_THRESHOLD);
+    // generate cover letters for each high priority job
+    await Promise.all(highPriorityJobs.map(async (job) => {
+        // generate cover letter
+        const coverLetter = await generateCoverLetter({ context: ctx, job });
+        // attach cover letter to job object
+        job.coverLetter = coverLetter;
+    }));
+
+    // send email to user with high priority jobs
+    // const response = await sendMatchEmail(ctx.user?.email!, highPriorityJobs);
+    console.log('high priorities jobs are',);
 
     return highPriorityJobs;
 }

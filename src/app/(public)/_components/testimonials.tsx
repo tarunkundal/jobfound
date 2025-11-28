@@ -12,7 +12,7 @@ const Testimonials = () => {
             <div className="mt-12 flex flex-wrap gap-4 mx-auto justify-center">
                 {
                     testimonialsData.map((user, i) => {
-                        return <div key={i} className="py-4 px-6 bg-card sm:w-[40%] md:w-[30%] lg:w-[22%] border-card shadow-card rounded-card">
+                        return <div key={i} className="py-4 px-6 bg-card sm:w-[40%] md:w-[30%] lg:w-[22%] border-card shadow-card rounded-card hover:bg-card-hover transition-all duration-200 ease-in-out">
                             <div className="flex items-center">
                                 <Image src={user.avatar} alt="" width={5} height={5} className="inline-block size-8 rounded-full ring-2 ring-brand" />
                                 <div className="flex flex-col ml-3" >

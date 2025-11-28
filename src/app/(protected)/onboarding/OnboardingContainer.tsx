@@ -32,7 +32,6 @@ export default function OnboardingContainer() {
 
     return (
         <div className="flex flex-col">
-            {/* Upload Resume Section */}
             <div className="w-[90%] bg-primary my-[2%] mx-auto px-6 py-6 flex flex-col gap-6 border-card rounded-card ">
                 <div>
                     <h2 className="text-brand-foreground text-2xl font-semibold">Upload Your Resume</h2>

@@ -1,10 +1,11 @@
 
-'use client';
+'use client';;
 import { Spinner } from "@/theme/ui/components/spinner";
 import { useRouter } from "next/navigation";
 import { lazy, Suspense, useEffect } from "react";
 import { useUser } from "../(auth)/_hooks/useUser";
 import Hero from "./_components/Hero";
+import HomeHeader from "./_components/header";
 const Features = lazy(() => import("./_components/Features"));
 const Footer = lazy(() => import("./_components/Footer"))
 const Info = lazy(() => import("./_components/Info"))
@@ -25,16 +26,19 @@ export default function Home() {
 
   if (loading) return <Spinner isFullPage={true} />
   return (
-    <main className="mt-[3%] flex flex-col gap-20 py-6">
-      <Hero />
-      <Suspense fallback={<Spinner />}>
-        <Features />
-        <AutoSliding />
-        <Info />
-        <Testimonials />
-        <FAQS />
-        <Footer />
-      </Suspense>
-    </main>
+    <>
+      <HomeHeader />
+      <main className="mt-[3%] flex flex-col gap-20 py-6">
+        <Hero />
+        <Suspense fallback={<Spinner />}>
+          <Features />
+          <AutoSliding />
+          <Info />
+          <Testimonials />
+          <FAQS />
+          <Footer />
+        </Suspense>
+      </main>
+    </>
   );
 }
