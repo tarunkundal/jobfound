@@ -11,7 +11,7 @@ const HomeHeader = () => {
 
             <div className='flex items-center gap-2'>
                 <Button variant='outline' className='font-bold'>
-                    <Link href={ROUTES.AUTH.SIGNUP}>
+                    <Link href={ROUTES.AUTH.SIGNUP} prefetch={true}>
                         Sign In
                     </Link>
                 </Button>

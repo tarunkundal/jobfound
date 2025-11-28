@@ -132,7 +132,7 @@ const RegisterPage = () => {
                     <b> Terms of Service</b> and <b>Privacy Policy</b></p>
                 <p className='text-xxs text-tertiary'>
                     Already have an account?
-                    <Link href={ROUTES.AUTH.LOGIN}>
+                    <Link href={ROUTES.AUTH.LOGIN} prefetch={true}>
                         <Button variant='link'>Log In</Button>
                     </Link>
                 </p>

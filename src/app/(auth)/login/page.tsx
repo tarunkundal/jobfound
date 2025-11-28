@@ -98,7 +98,7 @@ const LoginPage = () => {
                 </Button>
             </form>
             <Button variant='link' className='mt-2'>
-                <Link href={ROUTES.AUTH.FORGOT_PASSWORD}>
+                <Link href={ROUTES.AUTH.FORGOT_PASSWORD} prefetch={true}>
                     Forget Password
                 </Link>
             </Button>
@@ -107,7 +107,7 @@ const LoginPage = () => {
                 <Separator />
                 <p className='text-xxs text-tertiary'>
                     New to JobFound?
-                    <Link href={ROUTES.AUTH.SIGNUP} >
+                    <Link href={ROUTES.AUTH.SIGNUP} prefetch={true}>
                         <Button variant='link'>Register</Button>
                     </Link>
                 </p><p className='text-primary text-xxs text-center'>This site is protected by reCAPTCHA Enterprise and the Google <span className='underline'> Privacy Policy</span> and <span className='underline' >Terms of Service</span> apply.</p>

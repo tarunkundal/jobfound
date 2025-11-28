@@ -34,7 +34,7 @@ const DashboardHeader = () => {
                     const isActive = currentPathname === item.href;
 
                     return (
-                        <Link key={item.name} href={item.href}>
+                        <Link key={item.name} href={item.href} prefetch={true}>
                             <Button
                                 variant="ghost"
                                 className={isActive ? 'text-primary font-semibold' : 'text-secondary'}

@@ -46,7 +46,7 @@ export async function matchJobsByAi(ctx: Context) {
         LIMIT 50; -- Limit results for performance
     `;
 
-    console.log('potentials matches', potentialMatches);
+    // console.log('potentials matches', potentialMatches);
 
     // 3. Filter for high-confidence scores (e.g., 80% or higher)
     const MINIMUM_SCORE_THRESHOLD = 0.008;
@@ -61,7 +61,7 @@ export async function matchJobsByAi(ctx: Context) {
 
     // send email to user with high priority jobs
     // const response = await sendMatchEmail(ctx.user?.email!, highPriorityJobs);
-    console.log('high priorities jobs are',);
+    console.log('high priorities jobs are', highPriorityJobs);
 
     return highPriorityJobs;
 }

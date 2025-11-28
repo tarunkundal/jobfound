@@ -23,7 +23,7 @@ const Hero = () => {
                 <Button
                     className="px-6 py-5 font-semibold text-lg"
                 >
-                    <Link href={ROUTES.AUTH.SIGNUP}>
+                    <Link href={ROUTES.AUTH.SIGNUP} prefetch={true}>
                         Sign Up Now!
                     </Link>
                 </Button>
