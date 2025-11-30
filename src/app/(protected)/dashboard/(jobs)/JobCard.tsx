@@ -1,3 +1,4 @@
+"use client";
 import CustomModal from "@/components/ui/CustomModal";
 import { Prisma } from "@/generated/prisma";
 import { Badge } from "@/theme/ui/components/badge";
@@ -90,7 +91,7 @@ export default function JobCard({ job }: JobCardProps) {
                     Not Interested
                 </Button>
 
-                {/* Auto Apply Button */}
+                {/*  Apply Button */}
                 <Button>
                     Auto Apply
                 </Button>

@@ -2,7 +2,6 @@
 import { getUserResumeVector } from '@/lib/resume/helpers/getUserResumeVector';
 import { MatchedJobInterface } from '@/types/jobs';
 import { Context } from '../trpc/context';
-import { generateCoverLetter } from './generateCoverLetter';
 
 export async function matchJobsByAi(ctx: Context) {
     // user id whose resume we are matching jobs for
@@ -49,14 +48,14 @@ export async function matchJobsByAi(ctx: Context) {
     // console.log('potentials matches', potentialMatches);
 
     // 3. Filter for high-confidence scores (e.g., 80% or higher)
-    const MINIMUM_SCORE_THRESHOLD = 0.008;
+    const MINIMUM_SCORE_THRESHOLD = 0.35;
     const highPriorityJobs = potentialMatches.filter(job => job.match_score >= MINIMUM_SCORE_THRESHOLD);
     // generate cover letters for each high priority job
     await Promise.all(highPriorityJobs.map(async (job) => {
         // generate cover letter
-        const coverLetter = await generateCoverLetter({ context: ctx, job });
+        // const coverLetter = await generateCoverLetter({ context: ctx, job });
         // attach cover letter to job object
-        job.coverLetter = coverLetter;
+        job.coverLetter = 'coverLetter';
     }));
 
     // send email to user with high priority jobs

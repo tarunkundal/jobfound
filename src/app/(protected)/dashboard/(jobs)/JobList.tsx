@@ -1,10 +1,15 @@
 import { trpc } from "@/utils/trpc";
-import JobCardSkeleton from "../skeletons/JobCardSkeleton";
 import JobCard from "./JobCard";
+import JobCardSkeleton from "./loading";
 
 const JobList = () => {
-    const fetchAllJobs = trpc.jobs.getAllJobs.useQuery()
-    const data = fetchAllJobs.data ?? []
+    const fetchAllJobs = trpc.jobs.getAllJobs.useQuery(undefined, {
+        staleTime: Infinity,
+        gcTime: Infinity,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    })
+    const jobs = fetchAllJobs.data ?? []
 
     return (
         <div className="w-[95%] mx-auto">
@@ -17,12 +22,16 @@ const JobList = () => {
                         ))
                     )
                 }
-                {data.map((job) => (
+                {/* <Suspense fallback={Array.from({ length: 9 }).map((_, i) => (
+                    <JobCardSkeleton key={i} />
+                ))}> */}
+                {jobs.map((job) => (
                     <JobCard
                         key={job.id}
                         job={job}
                     />
                 ))}
+                {/* </Suspense> */}
             </div>
         </div>
     )

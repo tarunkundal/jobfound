@@ -30,7 +30,13 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
     const toast = useCustomToast()
     const { user } = useUser()
 
-    const { data: profileData, isLoading: userProfileIsLoading } = trpc.userProfile.getUserProfileData.useQuery()
+    const { data: profileData, isLoading: userProfileIsLoading } = trpc.userProfile.getUserProfileData.useQuery(undefined, {
+        staleTime: Infinity,        // never becomes stale
+        gcTime: Infinity,           // never garbage collect
+        refetchOnMount: false,      // do not refetch on mount
+        refetchOnReconnect: false,  // do not refetch on reconnect
+        refetchOnWindowFocus: false // do not refetch when tab gains focus
+    })
     const updateUserOnboarded = trpc.user.updateUserOnboarded.useMutation({
         onSuccess: () => { utils.user.getUser.invalidate() }
     });
@@ -45,9 +51,9 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
                 ...prev,
                 ...updatedData,
             }));
-            if (!profileData) {
-                updateUserOnboarded.mutate({ onboarded: true });
-            }
+            // Mark user as onboarded first time when they submit the form.
+            updateUserOnboarded.mutate({ onboarded: true });
+            utils.userProfile.getUserProfileData.invalidate()
         },
         onError: (error) => {
             toast({
@@ -96,7 +102,7 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
             {(parsingResume || userProfileIsLoading) && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xs rounded-card">
                     <p className="text-xl text-primary font-semibold animate-pulse">
-                        {parsingResume ? 'Parsing your resume...' : 'Loading your profile...'}
+                        {parsingResume ? 'Autofilling your resume...' : 'Loading your profile...'}
                     </p>
                 </div>
             )}

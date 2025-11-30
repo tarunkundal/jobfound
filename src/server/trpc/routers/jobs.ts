@@ -1,5 +1,6 @@
 import { matchJobsByAi } from '@/server/ai/matchJobsByAi';
 import { protectedProcedure, router } from '../trpc';
+import { Job } from '@/generated/prisma';
 
 export const jobsRouter = router({
     getAllJobs: protectedProcedure.query(async ({ ctx }) => {
@@ -12,15 +13,15 @@ export const jobsRouter = router({
         // const jobs = await fetchJobsForUser({ user: userData, ctx });
 
         // Used to just fetch & return jobs from db Job table
-        // const jobs: Job[] = await ctx.prisma.job.findMany({
-        //     orderBy: { postedAt: 'desc' },
-        //     take: 50,
-        // });
-        // return jobs
+        const jobs: Job[] = await ctx.prisma.job.findMany({
+            orderBy: { postedAt: 'desc' },
+            take: 50,
+        });
+        return jobs
 
         // This returns a list of jobs that are high priority (>= 80% match)
-        const matches = await matchJobsByAi(ctx);
-        return matches;
+        // const matches = await matchJobsByAi(ctx);
+        // return matches;
 
     }),
     getAutoApplyMatches: protectedProcedure.query(async ({ ctx }) => {

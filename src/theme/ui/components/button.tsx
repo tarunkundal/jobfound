@@ -52,14 +52,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         <span className={cn(isLoading && 'opacity-0')}>{children}</span>
                     </div>
                 ) : (
-                    <>
+                    <div className='flex items-center'>
                         {prefixNode && (
                             <div className="flex items-center h-full mx-2 shrink-0 [&>svg]:size-4">
                                 {prefixNode}
                             </div>
                         )}
                         {children}
-                    </>
+                    </div>
                 )}
             </Comp>
         )

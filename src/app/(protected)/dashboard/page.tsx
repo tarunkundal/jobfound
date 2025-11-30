@@ -1,4 +1,3 @@
-"use client";;
 import DashboardContainer from "./DashboardContainer";
 const Dashboard = () => {
     // const { data, isLoading: filePathLoading, error: erroFilePath } = trpc.upload.getUserFilePath.useQuery("resumes")

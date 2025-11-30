@@ -1,10 +1,16 @@
-import { Spinner } from "@/theme/ui/components/spinner";
-import OnboardingPage from "../onboarding/page";
-import JobList from "./_components/jobs/JobList";
+"use client";
 import { trpc } from "@/utils/trpc";
+import OnboardingPage from "../onboarding/page";
+import JobList from "./(jobs)/JobList";
+import { Spinner } from "@/theme/ui/components/spinner";
 
 const DashboardContainer = () => {
-    const { data: getUserData, isLoading: userDataLoading } = trpc.user.getUser.useQuery();
+    const { data: getUserData, isLoading: userDataLoading } = trpc.user.getUser.useQuery(undefined, {
+        staleTime: Infinity,
+        gcTime: Infinity,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    });
 
     if (userDataLoading) {
         return <Spinner isFullPage={true} />
@@ -14,7 +20,8 @@ const DashboardContainer = () => {
             {
                 !getUserData?.isOnboarded ?
                     <OnboardingPage /> :
-                    <JobList />}
+                    <JobList />
+            }
         </div>
     )
 }

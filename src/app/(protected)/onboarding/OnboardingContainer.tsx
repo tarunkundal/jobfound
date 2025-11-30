@@ -1,16 +1,9 @@
-"use client";;
+"use client";
 import FileUpload from "@/components/shared/upload/FileUpload";
 import { trpc } from "@/utils/trpc";
 import { useState } from "react";
 import OnboardingForm from "./OnboardingForm";
-
-interface OnboardingContainerProps {
-    user: {
-        id: string;
-        email: string;
-        name?: string;
-    };
-}
+// const OnboardingForm = dynamic(() => import('./OnboardingForm'));
 
 export default function OnboardingContainer() {
     // const { data } = trpc.upload.getUploadedFilePath.useQuery('resumes')
