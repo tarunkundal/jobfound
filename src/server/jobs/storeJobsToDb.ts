@@ -1,9 +1,9 @@
-import { FetchJobInterface } from "@/types/jobs";
-import { Context } from "../trpc/context";
+import { prisma } from "@/db";
 import { generateEmbeddingsForDocs } from "@/server/ai/createOpenAIEmbeddings";
+import { FetchJobInterface } from "@/types/jobs";
 
 // save jobs to db with the description_vector field and added the logic to avoid duplicates based on externalId and source
-export const storeJobsToDb = async (ctx: Context, jobs: FetchJobInterface[]) => {
+export const storeJobsToDb = async (jobs: FetchJobInterface[]) => {
 
     if (jobs.length === 0) { console.log("No jobs to process."); return; }
 
@@ -11,14 +11,17 @@ export const storeJobsToDb = async (ctx: Context, jobs: FetchJobInterface[]) => 
     if (validJobs.length === 0) { console.log("No jobs with external IDs found for processing."); return; }
 
     try {
-        const existingJobIds = await ctx.prisma.job.findMany({
+        const existingJobIds = await prisma.job.findMany({
             where: { externalId: { in: validJobs.map(j => String(j.externalId)) } },
             select: { externalId: true }
         });
         const existingIdsSet = new Set(existingJobIds.map((j: { externalId: string; }) => String(j.externalId)));
-        const newJobsToInsert = validJobs.filter(job => !existingIdsSet.has(job.externalId));
+        const newJobsToInsert = validJobs.filter(job => !existingIdsSet.has(String(job.externalId)));
 
-        if (newJobsToInsert.length === 0) { console.log("All jobs fetched were duplicates. No new embeddings."); return; }
+        if (newJobsToInsert.length === 0) {
+            console.log("All jobs already exist. Skipping embeddings and insertion.");
+            return;
+        }
 
         console.log(`Generating embeddings for ${newJobsToInsert.length} NEW jobs...`);
         const descriptions = newJobsToInsert.map(job => job.description);
@@ -72,7 +75,7 @@ export const storeJobsToDb = async (ctx: Context, jobs: FetchJobInterface[]) => 
             `;
 
             // Execute the batch insert
-            const result = await ctx.prisma.$executeRawUnsafe(insertQuery, ...flatParams);
+            const result = await prisma.$executeRawUnsafe(insertQuery, ...flatParams);
             affectedRows += result;
         }
 

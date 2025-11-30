@@ -1,5 +1,5 @@
 import { FetchJobInterface } from "@/types/jobs";
-import { isWithin24Hours } from "./helpers";
+import { isWithin24Hours } from "./jobHelpers";
 
 export async function fetchFromRemotive(role: string, location: string): Promise<FetchJobInterface[]> {
     const categoryMap: Record<string, string> = {

@@ -10,7 +10,7 @@ export const jobsRouter = router({
         // }
 
         // Used to insert jobs into DB after fetching from providers
-        // const jobs = await fetchJobsForUser({ user: userData, ctx });
+        // const jobs = await fetchJobsForUser({ ctx });
 
         // Used to just fetch & return jobs from db Job table
         const jobs: Job[] = await ctx.prisma.job.findMany({

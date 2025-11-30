@@ -1,23 +1,18 @@
-import { userFormSchema } from "@/schema/user.schema";
-import { storeJobsToDb } from "@/server/ai/storeJobsToDb";
-import { Context } from "@/server/trpc/context";
+import { storeJobsToDb } from "@/server/jobs/storeJobsToDb";
 import { TRPCError } from '@trpc/server';
-import z from "zod";
-import { fetchFromJooble } from "./fetchFromJooble";
+import { removeDuplicates, sortByDate } from "./jobHelpers";
 import { fetchFromRemotive } from "./fetchFromRemotive";
-import { removeDuplicates, sortByDate } from "./helpers";
 import { normalizeJob } from "./normalizeJob";
+import { fetchFromJooble } from "./fetchFromJooble";
 
 interface PageProps {
-    user: z.infer<typeof userFormSchema>
     page?: number
     limit?: number
-    ctx: Context
 }
-// Fetch jobs for a user based on their profile, normalize, dedupe, sort, paginate, and store new jobs to DB
-export async function fetchJobsForUser({ user, page = 1, limit = 1, ctx }: PageProps) {
-    const role = user.jobTitles?.[0] || "software engineer";
-    const location = user.preferredJobLocation || user.residenceCountry || "Remote";
+// Fetch jobs form resources and normalize, dedupe, and store new jobs to DB
+export async function fetchJobsFormPlatformsAndSaveTODB({ page = 1, limit = 1 }: PageProps) {
+    const role = "software engineer";
+    const location = "Remote";
 
     const results = await Promise.allSettled([
         fetchFromRemotive(role, location),
@@ -61,8 +56,7 @@ export async function fetchJobsForUser({ user, page = 1, limit = 1, ctx }: PageP
     const start = (page - 1) * limit;
     const paginated = allJobs.slice(start, start + limit);
 
-    console.log('all jobs are', allJobs, allJobs.length);
-    await storeJobsToDb(ctx, paginated)
+    await storeJobsToDb(paginated)
 
     return allJobs;
 }

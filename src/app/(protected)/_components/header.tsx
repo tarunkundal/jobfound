@@ -16,7 +16,6 @@ const DashboardHeader = () => {
     const supabase = createClient();
     const router = useRouter();
 
-
     const navItems = [
         { name: 'Dashboard', href: ROUTES.PROTECTED.DASHBOARD.ROOT },
         { name: 'Profile', href: ROUTES.PROTECTED.PROFILE },
@@ -29,7 +28,6 @@ const DashboardHeader = () => {
         setLoading(false);
         router.push(ROUTES.AUTH.LOGIN);
     };
-    console.log('linkstatus', pending);
 
     return (
         <header className='flex justify-between items-center px-4 py-4 bg-primary fixed top-0 left-0 right-0 z-10 border-b-[1px] border-b-neutral-700'>

@@ -1,6 +1,6 @@
-import { ApifyClient } from "apify-client";
-import { isWithin24Hours } from "./helpers";
 import { FetchJobInterface } from "@/types/jobs";
+import { ApifyClient } from "apify-client";
+import { isWithin24Hours } from "./jobHelpers";
 
 const client = new ApifyClient({
     token: process.env.APIFY_TOKEN,
@@ -9,7 +9,7 @@ const client = new ApifyClient({
 export async function fetchFromLinkedIn(role: string, location: string): Promise<FetchJobInterface[] | []> {
     const run = await client.actor("apimaestro/linkedin-jobs-scraper-api").call({
         keywords: `${role}`,
-        location: location,
+        // location: location,
         useApifyProxy: true,
         maxItems: 30,
         sort: "recent",

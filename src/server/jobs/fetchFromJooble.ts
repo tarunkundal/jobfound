@@ -1,5 +1,5 @@
 import { FetchJobInterface } from "@/types/jobs";
-import { isWithin24Hours } from "./helpers";
+import { isWithin24Hours } from "./jobHelpers";
 
 export async function fetchFromJooble(role: string, location: string): Promise<FetchJobInterface[]> {
     const API_KEY = process.env.JOOBLE_API_KEY;
@@ -8,7 +8,7 @@ export async function fetchFromJooble(role: string, location: string): Promise<F
     try {
         const res = await fetch(`https://jooble.org/api/${API_KEY}`, {
             method: "POST",
-            body: JSON.stringify({ keywords: role, location }),
+            body: JSON.stringify({ keywords: role }),
         });
 
         if (!res.ok) {
@@ -17,7 +17,6 @@ export async function fetchFromJooble(role: string, location: string): Promise<F
         }
 
         const data = await res.json();
-
 
         if (!data?.jobs || !Array.isArray(data.jobs)) {
             throw new Error('jooble: no jobs array in response');

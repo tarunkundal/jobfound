@@ -1,5 +1,5 @@
 import { FetchJobInterface } from "@/types/jobs";
-import { cleanJobDescription } from "./helpers";
+import { cleanJobDescription } from "./jobHelpers";
 
 export function normalizeJob(job: FetchJobInterface) {
     return {
