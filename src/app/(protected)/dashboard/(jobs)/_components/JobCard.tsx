@@ -4,8 +4,10 @@ import { Prisma } from "@/generated/prisma";
 import { Badge } from "@/theme/ui/components/badge";
 import { Button } from "@/theme/ui/components/button";
 import { Icon } from "@/theme/ui/components/icon";
+import { trpc } from "@/utils/trpc";
 import { FileBoxIcon } from "lucide-react";
 import { useState } from "react";
+import AiJobCoverletter from "./AiJobCoverletter";
 
 type JobCardProps = {
     job: Prisma.JobGetPayload<{}>;
@@ -24,11 +26,23 @@ export default function JobCard({ job }: JobCardProps) {
         salary,
         externalId,
     } = job;
+
+    const { data: coverLetter, isLoading: generatingCoverLetter, error: errorGeneratingCoverLetter, refetch: generateCoverLetter } = trpc.jobs.getAiCoverLetterForJob.useQuery(
+        { selectedJob: job },
+        { enabled: false }
+    );
+
     const [showDescription, setShowDescription] = useState(false);
+    const [showCoverLetter, setShowCoverLetter] = useState(false)
+
+    const handleCoverLetterChange = async () => {
+        setShowCoverLetter((prev) => !prev)
+        await generateCoverLetter()
+    }
 
     return (<>
         {showDescription && (
-            <CustomModal open={showDescription} onClose={() => setShowDescription(false)} showFooter title="Job Description">
+            <CustomModal open={showDescription} onClose={() => setShowDescription(false)} showFooter title="Job Description" description={title}>
                 <div className="text-secondary">
                     <p className="text-sm leading-6">
                         {description}
@@ -36,6 +50,15 @@ export default function JobCard({ job }: JobCardProps) {
                 </div>
             </CustomModal>
         )}
+        {
+            showCoverLetter && (
+                <CustomModal open={showCoverLetter} onClose={() => setShowCoverLetter(false)} title="AI Cover Letter" description={`Generating Cover Letter for ${company}`}>
+                    <div className="text-secondary">
+                        <AiJobCoverletter generatingCoverLetter={generatingCoverLetter} coverLetter={coverLetter} errorGeneratingCoverLetter={errorGeneratingCoverLetter} />
+                    </div>
+                </CustomModal>
+            )
+        }
 
         <div className="p-4 flex flex-col gap-3 shadow-sm hover:bg-card bg-card-hover shadow-card border-card rounded-card h-full justify-between">
             <div className="flex items-center justify-between">
@@ -96,7 +119,10 @@ export default function JobCard({ job }: JobCardProps) {
                     Auto Apply
                 </Button>
             </div>
-
+            {/* generate the cover letter for this job */}
+            <Button variant='secondary' onClick={handleCoverLetterChange} >
+                Genereate Ai Cover Letter
+            </Button>
         </div>
     </>
     );

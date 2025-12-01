@@ -1,11 +1,10 @@
-import { Context } from "@/server/trpc/context";
+import { prisma } from "@/db";
 
-export async function getUserResumeVector(ctx: Context) {
-    const userId = ctx.user?.id;
+export async function getUserResumeVector(userId: string) {
     if (!userId) return null;
 
     // Cast vector → text because Prisma cannot deserialize pgvector
-    const rows: Array<{ resume_embeddings: string | null }> = await ctx.prisma.$queryRaw`
+    const rows: Array<{ resume_embeddings: string | null }> = await prisma.$queryRaw`
         SELECT resume_embeddings::text AS resume_embeddings
         FROM "Resume"
         WHERE "userId" = ${userId}::uuid

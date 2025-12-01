@@ -1,9 +1,9 @@
-import { Spinner } from "@/theme/ui/components/spinner"
+import OnboardingContainerSkeleton from "./_skeletons/OnboardingContainerSkeleton"
 
-const OnboardingFormSkeleton = () => {
+const Loading = () => {
     return (
-        <Spinner isFullPage />
+        <OnboardingContainerSkeleton />
     )
 }
 
-export default OnboardingFormSkeleton
+export default Loading

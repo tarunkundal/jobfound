@@ -1,7 +1,8 @@
 import { MatchedJobInterface } from '@/types/jobs';
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatGroq } from "@langchain/groq";
-import { Context } from '../trpc/context';
+import { prisma } from '@/db';
+import { Job } from '@/generated/prisma';
 
 const model = new ChatGroq({
     model: "llama-3.1-8b-instant",
@@ -9,14 +10,13 @@ const model = new ChatGroq({
     temperature: 0,
 });
 interface GenerateCoverLetterParams {
-    context: Context;
-    job: MatchedJobInterface;
+    userId: String;
+    job: MatchedJobInterface | Job
 }
 
-export async function generateCoverLetter({ context, job }: GenerateCoverLetterParams): Promise<string | undefined> {
-    const userId = context.user?.id;
+export async function generateCoverLetter({ userId, job }: GenerateCoverLetterParams): Promise<string | undefined> {
 
-    const resume = await context.prisma.resume.findUnique({
+    const resume = await prisma.resume.findUnique({
         where: { userId: userId! },
         select: { raw_extracted_text: true },
     });

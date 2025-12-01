@@ -1,7 +1,9 @@
 import SettingContainer from "./SettingContainer"
 
 const SettingPage = () => {
-    return <SettingContainer />
+    return <>
+        <SettingContainer />
+    </>
 }
 
 export default SettingPage
