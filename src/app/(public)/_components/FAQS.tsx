@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 import { faqsData } from "@/lib/data/landing/faqsData";
 import { Button } from "@/theme/ui/components/button";
