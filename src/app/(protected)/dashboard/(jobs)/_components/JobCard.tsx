@@ -4,6 +4,7 @@ import { Prisma } from "@/generated/prisma";
 import { Badge } from "@/theme/ui/components/badge";
 import { Button } from "@/theme/ui/components/button";
 import { Icon } from "@/theme/ui/components/icon";
+import { GetUserType } from "@/types/user";
 import { trpc } from "@/utils/trpc";
 import { FileBoxIcon } from "lucide-react";
 import { useState } from "react";
@@ -11,8 +12,9 @@ import AiJobCoverletter from "./AiJobCoverletter";
 
 type JobCardProps = {
     job: Prisma.JobGetPayload<{}>;
+    userData: GetUserType
 };
-export default function JobCard({ job }: JobCardProps) {
+export default function JobCard({ job, userData }: JobCardProps) {
     const {
         title,
         company,
@@ -31,7 +33,6 @@ export default function JobCard({ job }: JobCardProps) {
         { selectedJob: job },
         { enabled: false }
     );
-
     const [showDescription, setShowDescription] = useState(false);
     const [showCoverLetter, setShowCoverLetter] = useState(false)
 
@@ -115,12 +116,18 @@ export default function JobCard({ job }: JobCardProps) {
                 </Button>
 
                 {/*  Apply Button */}
-                <Button>
-                    Auto Apply
-                </Button>
+                <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Button>
+                        Apply Job
+                    </Button>
+                </a>
             </div>
             {/* generate the cover letter for this job */}
-            <Button variant='secondary' onClick={handleCoverLetterChange} >
+            <Button variant='secondary' onClick={handleCoverLetterChange} disabled={!userData.enableAiCoverLetter}>
                 Genereate Ai Cover Letter
             </Button>
         </div>

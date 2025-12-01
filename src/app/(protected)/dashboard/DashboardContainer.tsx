@@ -7,9 +7,6 @@ import DashboardSkeletion from "./loading";
 const DashboardContainer = () => {
     const { data: getUserData, isLoading: userDataLoading } = trpc.user.getUser.useQuery(undefined, {
         staleTime: Infinity,
-        gcTime: Infinity,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
     });
 
     if (userDataLoading) {
@@ -21,7 +18,7 @@ const DashboardContainer = () => {
             {
                 !getUserData?.isOnboarded ?
                     <OnboardingPage /> :
-                    <JobList />
+                    <JobList userData={getUserData} />
             }
         </div>
     )

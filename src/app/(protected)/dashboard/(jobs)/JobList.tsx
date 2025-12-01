@@ -1,13 +1,11 @@
 import { trpc } from "@/utils/trpc";
 import DashboardSkeletion from "../loading";
 import JobCard from "./_components/JobCard";
+import { GetUserType } from "@/types/user";
 
-const JobList = () => {
+const JobList = ({ userData }: { userData: GetUserType }) => {
     const fetchAllJobs = trpc.jobs.getAllJobs.useQuery(undefined, {
         staleTime: Infinity,
-        gcTime: Infinity,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
     })
     const jobs = fetchAllJobs.data ?? []
 
@@ -23,6 +21,7 @@ const JobList = () => {
                     <JobCard
                         key={job.id}
                         job={job}
+                        userData={userData}
                     />
                 ))}
             </div>

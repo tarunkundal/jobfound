@@ -3,9 +3,7 @@ import { Icon } from "@/theme/ui/components/icon";
 import { Separator } from "@/theme/ui/components/separator";
 import { MailIcon, Monitor } from "lucide-react";
 import AccountManagement from "./_components/AccountManagement";
-import EmailSettings from "./_components/EmailSettings";
-import { Suspense } from "react";
-import EmailSettingsSkeleton from "./skeletons/EmailSettingSkeleton";
+import JobsSettingSection from "./_components/JobsSettingSection";
 
 const SettingContainer = () => {
     return (<div className="flex">
@@ -23,9 +21,7 @@ const SettingContainer = () => {
                 <Button>Switch Theme</Button>
             </div>
             <Separator className="my-6" />
-            <Suspense fallback={<EmailSettingsSkeleton />}>
-                <EmailSettings />
-            </Suspense>
+            <JobsSettingSection />
             <Separator className="my-6" />
             <AccountManagement />
             <Separator className="my-6" />
