@@ -8,7 +8,6 @@ import Link, { useLinkStatus } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
-
 const DashboardHeader = () => {
     const { pending } = useLinkStatus()
     const currentPathname = usePathname();
@@ -49,17 +48,6 @@ const DashboardHeader = () => {
                                 {item.name} {pending && <Spinner />}
                             </Link>
                         </Button>
-
-                        // <Link key={item.name} href={item.href} prefetch>
-                        //     <Button
-                        //         variant='ghost'
-                        //         disabled={pending}
-                        //         prefixNode={pending ? <Spinner /> : null}
-                        //         className={isActive ? 'text-primary font-semibold' : 'text-secondary'}
-                        //     >
-                        //         <span>{item.name}</span>
-                        //     </Button>
-                        // </Link>
                     );
                 })}
                 <Button variant="destructive" onClick={handleLogout} isLoading={loading}>

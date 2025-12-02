@@ -18,7 +18,6 @@ export default function OnboardingContainer() {
     });
 
     const handleUploadSuccess = async (uploadedPath: string) => {
-        // setFilePath(uploadedPath);
         await parseResume.mutateAsync();
     };
 

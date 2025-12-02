@@ -1,4 +1,4 @@
-import JobCardSkeleton from "./(jobs)/loading";
+import JobCardSkeleton from "./(jobs)/_components/JobCardSkeleton";
 
 const DashboardSkeletion = () => {
     return (

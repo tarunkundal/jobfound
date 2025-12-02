@@ -1,5 +1,5 @@
 import { prisma } from "@/db";
-import { matchJobsByAi } from "@/server/ai/matchJobsByAi";
+import { sendMatchingJobsEmailCoverletterWithAiScore } from "@/server/ai/sendMatchingJobsEmailCoverletter";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -19,12 +19,14 @@ export async function GET() {
             }
         });
 
+        const results: any[] = [];
         //  Loop all users
         for (const user of users) {
-            await matchJobsByAi({ id: user.id, email: user.email });
+            const response = await sendMatchingJobsEmailCoverletterWithAiScore({ id: user.id, email: user.email });
+            results.push({ 'Users Email': response })
         }
 
-        return NextResponse.json({ success: true, message: "Jobs are being sent successfully on email!" });
+        return NextResponse.json({ success: true, message: "Jobs are being sent successfully on emails!", data: results });
     } catch (err) {
         console.error("Cron error:", err);
         return NextResponse.json({ error: "Cron failed" }, { status: 500 });

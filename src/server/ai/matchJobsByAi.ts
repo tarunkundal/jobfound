@@ -2,8 +2,6 @@
 import { prisma } from '@/db';
 import { getUserResumeVector } from '@/server/resumes/getUserResumeVector';
 import { MatchedJobInterface } from '@/types/jobs';
-import { generateCoverLetter } from './generateCoverLetter';
-import { sendMatchEmail } from './sendEmailMatchedJobs';
 
 interface MatchJobsByAiProps {
     id: string
@@ -19,7 +17,7 @@ export async function matchJobsByAi(user: MatchJobsByAiProps) {
     console.log("User embedding:", userVector);
 
     if (!userVector || userVector.length === 0) {
-        console.warn("User has no resume embeddings. Cannot match jobs.");
+        console.warn("User has no resume. Cannot match jobs.");
         return [];
     }
 
@@ -27,8 +25,7 @@ export async function matchJobsByAi(user: MatchJobsByAiProps) {
     const vectorString = '[' + userVector.map((n: any) => Number(n).toString()).join(',') + ']';
 
     // 2. Use raw SQL to find matching jobs efficiently, returning the score
-    // The query calculates the score on the fly during the matching process
-    const potentialMatches: MatchedJobInterface[] = await prisma.$queryRaw`
+    const potentialJobsWithAIScores: MatchedJobInterface[] = await prisma.$queryRaw`
         SELECT 
             id,
             source,
@@ -42,6 +39,8 @@ export async function matchJobsByAi(user: MatchJobsByAiProps) {
             "postedAt",
             "workType",
             "externalId",
+            "createdAt",
+            "updatedAt",
             -- Calculate score: 1 - distance = similarity (0 to 1)
             (1 - ("description_vector" <=> ${vectorString}::vector))::float AS match_score 
         FROM "jobs"
@@ -52,24 +51,12 @@ export async function matchJobsByAi(user: MatchJobsByAiProps) {
         ORDER BY match_score DESC
         LIMIT 50; -- Limit results for performance
     `;
-
-    console.log('potentials matches', potentialMatches);
+    console.log('potentials matches', potentialJobsWithAIScores);
 
     // 3. Filter for high-confidence scores (e.g., 80% or higher)
-    const MINIMUM_SCORE_THRESHOLD = 0.8;
-    const highPriorityJobs = potentialMatches.filter(job => job.match_score >= MINIMUM_SCORE_THRESHOLD);
+    const MINIMUM_SCORE_THRESHOLD = 0.003;
+    const highPriorityJobs = potentialJobsWithAIScores.filter(job => job.match_score >= MINIMUM_SCORE_THRESHOLD);
 
-    if (highPriorityJobs.length) {
-        // generate cover letters for each high priority job
-        await Promise.all(highPriorityJobs.map(async (job) => {
-            // generate cover letter
-            const coverLetter = await generateCoverLetter({ userId, job });
-            // attach cover letter to job object
-            job.coverLetter = coverLetter;
-        }));
-        // send email to user with high priority jobs
-        await sendMatchEmail(userEmail, highPriorityJobs);
-    }
     console.log('high priorities jobs are', highPriorityJobs);
 
     return highPriorityJobs;
