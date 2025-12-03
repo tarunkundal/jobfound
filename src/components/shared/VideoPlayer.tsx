@@ -1,7 +1,6 @@
-"use client"
-
-import React from "react"
-import clsx from "clsx"
+"use client";
+import React from "react";
+import { cn } from "@/theme/ui/utils/cn";
 
 interface VideoPlayerProps {
     src: string
@@ -34,7 +33,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 }) => {
     return (
         <div
-            className={clsx(
+            className={cn(
                 "flex flex-col items-center justify-start bg-primary",
                 className
             )}
@@ -42,7 +41,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         >
             {/* ✅ VIDEO CONTAINER */}
             <div
-                className={clsx("w-full overflow-hidden", className)}
+                className={cn("w-full overflow-hidden", className)}
                 style={{
                     height,
                     backgroundColor: background ? "black" : undefined,

@@ -1,33 +1,49 @@
+import { prisma } from '@/db';
+import { Job, Profile } from '@/generated/prisma';
+import { generateCoverLetter } from '@/server/ai/generateCoverLetter';
 import { matchJobsByAi } from '@/server/ai/matchJobsByAi';
+import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
 
 export const jobsRouter = router({
     getAllJobs: protectedProcedure.query(async ({ ctx }) => {
-        // const userData = await ctx.prisma.user.findUnique({ where: { id: ctx.user.id } });
-        // if (!userData) {
-        //     throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
-        // }
+        // get user profile
+        const profile: Profile = await prisma.profile.findUnique({
+            where: { userId: ctx.user.id },
+        });
 
-        // Used to insert jobs into DB after fetching from providers
-        // const jobs = await fetchJobsForUser({ user: userData, ctx });
+        if (!profile) return [];
 
-        // Used to just fetch & return jobs from db Job table
-        // const jobs: Job[] = await ctx.prisma.job.findMany({
-        //     orderBy: { postedAt: 'desc' },
-        //     take: 50,
-        // });
-        // return jobs
+        // build filters dynamically
+        const filters: any = {};
 
-        // This returns a list of jobs that are high priority (>= 80% match)
-        const matches = await matchJobsByAi(ctx);
-        return matches;
+        // if (profile.jobTitles?.length) filters.title = { in: profile.jobTitles, mode: "insensitive" };
+        // if (profile.workPreference?.length) filters.workType = { in: profile.workPreference, mode: "insensitive" };
+        // if (profile.skills?.length) filters.skills = { in: profile.skills };
+        if (profile.preferredJobLocation?.length) filters.location = { in: [profile.preferredJobLocation], mode: "insensitive" };
 
+        console.log('filters are', filters)
+
+        // Used to just fetch & return jobs from db Job table with the filters
+        const jobs: Job[] = await prisma.job.findMany({
+            orderBy: { postedAt: 'desc' },
+            take: 50,
+            where: filters,
+        });
+        return jobs || []
     }),
-    getAutoApplyMatches: protectedProcedure.query(async ({ ctx }) => {
-        // This runs the AI matching logic
-        const matches = await matchJobsByAi(ctx);
-
-        // This returns a list of jobs that are high priority (>= 80% match)
-        return matches;
+    // This runs the AI matching logic
+    getJobsWithAIScore: protectedProcedure.query(async ({ ctx }) => {
+        const matchedJobs = await matchJobsByAi({ id: ctx.user.id, email: ctx.user.email! });
+        return matchedJobs;
     }),
+    getAiCoverLetterForJob: protectedProcedure.input(z.object({ selectedJobId: z.string() })).query(async ({ ctx, input }) => {
+        const selectedJob = await prisma.job.findFirst({
+            where: { id: input.selectedJobId },
+        });
+        if (!selectedJob) throw new TRPCError({ code: "NOT_FOUND" });
+        const coverLetter = await generateCoverLetter({ userId: ctx.user.id, job: selectedJob })
+        return coverLetter
+    })
 });

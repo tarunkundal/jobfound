@@ -3,9 +3,10 @@ import { Icon } from "@/theme/ui/components/icon";
 import { Separator } from "@/theme/ui/components/separator";
 import { MailIcon, Monitor } from "lucide-react";
 import AccountManagement from "./_components/AccountManagement";
-import EmailSettings from "./_components/EmailSettings";
+import JobsSettingSection from "./_components/JobsSettingSection";
 
-const SettingContainer = () => {
+const SettingContainer = async () => {
+
     return (<div className="flex">
         <div className="w-[90%] bg-primary px-6 py-4 my-[2%] mx-auto border-card rounded-card">
             <div>
@@ -21,7 +22,7 @@ const SettingContainer = () => {
                 <Button>Switch Theme</Button>
             </div>
             <Separator className="my-6" />
-            <EmailSettings />
+            <JobsSettingSection />
             <Separator className="my-6" />
             <AccountManagement />
             <Separator className="my-6" />

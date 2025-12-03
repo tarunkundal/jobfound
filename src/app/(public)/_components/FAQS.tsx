@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
-import clsx from "clsx";
 import { faqsData } from "@/lib/data/landing/faqsData";
 import { Button } from "@/theme/ui/components/button";
+import { cn } from "@/theme/ui/utils/cn";
 const FAQS = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(null)
 
@@ -30,7 +30,7 @@ const FAQS = () => {
                                 {faq.question}
                             </span>
                             <ChevronDown
-                                className={clsx(
+                                className={cn(
                                     "w-5 h-5 text-brand transition-transform duration-100",
                                     openIndex === i && "rotate-180"
                                 )}
@@ -38,7 +38,7 @@ const FAQS = () => {
                         </Button>
 
                         <div
-                            className={clsx(
+                            className={cn(
                                 "overflow-hidden transition-all duration-100 px-5",
                                 openIndex === i ? "max-h-40 pb-4" : "max-h-0"
                             )}

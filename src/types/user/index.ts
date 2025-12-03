@@ -3,4 +3,7 @@ export type GetUserType = {
     email: string;
     fullName: string | null;
     isOnboarded: boolean;
+    enableAiCoverLetter: boolean
+    enableDailyJobMatchesEmail: boolean
+    filterAiMatchedJobs: boolean
 };

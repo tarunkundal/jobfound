@@ -20,7 +20,7 @@ export default function CustomModal({
     title,
     description,
     children,
-    showFooter = true,
+    showFooter,
     footerContent,
 }: CustomModalProps) {
     return (
@@ -87,9 +87,9 @@ export default function CustomModal({
                         {children}
                     </div>
 
-                    <Separator />
                     {/* Footer */}
-                    {showFooter && (
+                    {showFooter && (<>
+                        <Separator />
                         <div className="flex justify-end mt-1">
                             {footerContent ? (
                                 footerContent
@@ -99,6 +99,7 @@ export default function CustomModal({
                                 </Button>
                             )}
                         </div>
+                    </>
                     )}
                 </Dialog.Content>
             </Dialog.Portal>

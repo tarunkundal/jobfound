@@ -36,5 +36,9 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "types": [
+    "node",
+    "prisma/client"
+  ],
 }

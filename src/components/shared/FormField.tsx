@@ -2,12 +2,15 @@
 
 import { Input } from "@/theme/ui/components/input";
 import MultiSelect from "@/theme/ui/components/multiSelect";
-import Select from "@/theme/ui/components/select";
 import { Textarea } from "@/theme/ui/components/textarea";
 import { cn } from "@/theme/ui/utils/cn";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import FileUpload from "./upload/FileUpload";
+const Select = dynamic(() => import("@/theme/ui/components/select"), {
+    ssr: false,
+});
 
 interface Option {
     label: string;

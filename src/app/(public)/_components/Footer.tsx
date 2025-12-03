@@ -21,7 +21,7 @@ const Footer = () => {
                 <span className="text-brand">
 
                     <Link href={''}>
-                        {' '} support@jobfound.ai
+                        {' '} jobfound.ai@gmail.com
                     </Link>
                 </span>
             </h2>

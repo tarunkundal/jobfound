@@ -27,6 +27,8 @@ export interface MatchedJobInterface {
     postedAt: Date;
     workType: string | null;
     externalId: string | null;
-    coverLetter?: string
+    coverLetter?: string;
+    createdAt: Date;
+    "updatedAt": Date
 }
 

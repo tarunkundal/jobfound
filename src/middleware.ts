@@ -27,7 +27,7 @@ export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname
     const isProtectedRoute = path.startsWith("/dashboard") || path.startsWith("/settings") || path.startsWith("/onboarding")
 
-    // Example: Protect protected routes
+    //  Protect protected routes
     if (!user && isProtectedRoute) {
         const redirectUrl = req.nextUrl.clone()
         redirectUrl.pathname = "/login"
@@ -35,14 +35,14 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(redirectUrl)
     }
 
-    // 🚀 Redirect logged-in users away from landing page
+    // Redirect logged-in users away from landing page
     if (user && (path === "/login" || path === "/register" || path === "/")) {
         const redirectUrl = req.nextUrl.clone()
         redirectUrl.pathname = "/dashboard"
         return NextResponse.redirect(redirectUrl)
     }
 
-    // Return the response (always required)
+    // Return the response
     return res
 }
 
@@ -52,5 +52,5 @@ export const config = {
         "/register",
         "/dashboard/:path*",
         "/settings/:path*",
-        "/onboarding/:path*",], // Protects everything under /proteceted folder
+        "/onboarding/:path*",],
 }

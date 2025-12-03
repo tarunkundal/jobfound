@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/fetch-jobs",
+      "schedule": "0 */12 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-jobs",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/email-topmatching-jobs",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}

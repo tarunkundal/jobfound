@@ -1,18 +1,23 @@
 
-import { getUserResumeVector } from '@/lib/resume/helpers/getUserResumeVector';
+import { prisma } from '@/db';
+import { getUserResumeVector } from '@/server/resumes/getUserResumeVector';
 import { MatchedJobInterface } from '@/types/jobs';
-import { Context } from '../trpc/context';
-import { generateCoverLetter } from './generateCoverLetter';
 
-export async function matchJobsByAi(ctx: Context) {
+interface MatchJobsByAiProps {
+    id: string
+    email: string
+}
+
+export async function matchJobsByAi(user: MatchJobsByAiProps) {
     // user id whose resume we are matching jobs for
-    const userId = ctx.user?.id
+    const userId = user.id
+    const userEmail = user.email
     // 1. Get user's resume vector embeddings
-    const userVector = await getUserResumeVector(ctx);
+    const userVector = await getUserResumeVector(userId!);
     console.log("User embedding:", userVector);
 
     if (!userVector || userVector.length === 0) {
-        console.warn("User has no resume embeddings. Cannot match jobs.");
+        console.warn("User has no resume. Cannot match jobs.");
         return [];
     }
 
@@ -20,8 +25,7 @@ export async function matchJobsByAi(ctx: Context) {
     const vectorString = '[' + userVector.map((n: any) => Number(n).toString()).join(',') + ']';
 
     // 2. Use raw SQL to find matching jobs efficiently, returning the score
-    // The query calculates the score on the fly during the matching process
-    const potentialMatches: MatchedJobInterface[] = await ctx.prisma.$queryRaw`
+    const potentialJobsWithAIScores: MatchedJobInterface[] = await prisma.$queryRaw`
         SELECT 
             id,
             source,
@@ -35,6 +39,8 @@ export async function matchJobsByAi(ctx: Context) {
             "postedAt",
             "workType",
             "externalId",
+            "createdAt",
+            "updatedAt",
             -- Calculate score: 1 - distance = similarity (0 to 1)
             (1 - ("description_vector" <=> ${vectorString}::vector))::float AS match_score 
         FROM "jobs"
@@ -45,23 +51,13 @@ export async function matchJobsByAi(ctx: Context) {
         ORDER BY match_score DESC
         LIMIT 50; -- Limit results for performance
     `;
-
-    console.log('potentials matches', potentialMatches);
+    console.log('potentials matches', potentialJobsWithAIScores);
 
     // 3. Filter for high-confidence scores (e.g., 80% or higher)
-    const MINIMUM_SCORE_THRESHOLD = 0.008;
-    const highPriorityJobs = potentialMatches.filter(job => job.match_score >= MINIMUM_SCORE_THRESHOLD);
-    // generate cover letters for each high priority job
-    await Promise.all(highPriorityJobs.map(async (job) => {
-        // generate cover letter
-        const coverLetter = await generateCoverLetter({ context: ctx, job });
-        // attach cover letter to job object
-        job.coverLetter = coverLetter;
-    }));
+    const MINIMUM_SCORE_THRESHOLD = 0.003;
+    const highPriorityJobs = potentialJobsWithAIScores.filter(job => job.match_score >= MINIMUM_SCORE_THRESHOLD);
 
-    // send email to user with high priority jobs
-    // const response = await sendMatchEmail(ctx.user?.email!, highPriorityJobs);
-    console.log('high priorities jobs are',);
+    console.log('high priorities jobs are', highPriorityJobs);
 
     return highPriorityJobs;
 }

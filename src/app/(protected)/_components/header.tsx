@@ -1,14 +1,15 @@
-'use client';
-
+'use client';;
 import Logo from "@/components/shared/Logo";
 import { ROUTES } from "@/constants/routes";
 import { createClient } from "@/lib/supabseClient";
 import { Button } from "@/theme/ui/components/button";
-import Link from "next/link";
+import { Spinner } from "@/theme/ui/components/spinner";
+import Link, { useLinkStatus } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const DashboardHeader = () => {
+    const { pending } = useLinkStatus()
     const currentPathname = usePathname();
     const [loading, setLoading] = useState<boolean>(false);
     const supabase = createClient();
@@ -24,8 +25,9 @@ const DashboardHeader = () => {
         setLoading(true);
         await supabase.auth.signOut();
         setLoading(false);
-        router.push("/login");
+        router.push(ROUTES.AUTH.LOGIN);
     };
+
     return (
         <header className='flex justify-between items-center px-4 py-4 bg-primary fixed top-0 left-0 right-0 z-10 border-b-[1px] border-b-neutral-700'>
             <Logo />
@@ -34,14 +36,18 @@ const DashboardHeader = () => {
                     const isActive = currentPathname === item.href;
 
                     return (
-                        <Link key={item.name} href={item.href}>
-                            <Button
-                                variant="ghost"
-                                className={isActive ? 'text-primary font-semibold' : 'text-secondary'}
-                            >
-                                {item.name}
-                            </Button>
-                        </Link>
+                        <Button
+                            key={item.name}
+                            asChild
+                            variant='ghost'
+                            disabled={pending}
+                            prefixNode={pending ? <Spinner /> : null}
+                            className={isActive ? 'text-primary font-semibold' : 'text-secondary'}
+                        >
+                            <Link href={item.href} prefetch>
+                                {item.name} {pending && <Spinner />}
+                            </Link>
+                        </Button>
                     );
                 })}
                 <Button variant="destructive" onClick={handleLogout} isLoading={loading}>
