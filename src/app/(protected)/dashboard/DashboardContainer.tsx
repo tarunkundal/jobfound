@@ -2,6 +2,7 @@ import { api } from "@/server/trpc/server";
 import { Suspense } from "react";
 import OnboardingPage from "../onboarding/page";
 import JobList from "./(jobs)/_components/JobList";
+import JobFilter from "./(jobs)/jobfilters/JobFilter";
 import DashboardSkeletion from "./loading";
 
 const DashboardContainer = async () => {
@@ -14,6 +15,7 @@ const DashboardContainer = async () => {
                 !userData?.isOnboarded ?
                     <OnboardingPage /> : (
                         <Suspense fallback={<DashboardSkeletion />}>
+                            <JobFilter userData={userData} />
                             <JobList userData={userData} />
                         </Suspense>
                     )

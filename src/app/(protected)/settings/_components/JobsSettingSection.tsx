@@ -1,6 +1,6 @@
 import { Suspense } from "react"
-import EmailSettings from "./EmailSettings"
 import EmailSettingsSkeleton from "../skeletons/EmailSettingSkeleton"
+import EmailSettings from "./EmailSettings"
 
 const JobsSettingSection = () => {
     return (

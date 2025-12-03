@@ -5,7 +5,8 @@ import { MailIcon, Monitor } from "lucide-react";
 import AccountManagement from "./_components/AccountManagement";
 import JobsSettingSection from "./_components/JobsSettingSection";
 
-const SettingContainer = () => {
+const SettingContainer = async () => {
+
     return (<div className="flex">
         <div className="w-[90%] bg-primary px-6 py-4 my-[2%] mx-auto border-card rounded-card">
             <div>
