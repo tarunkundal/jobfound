@@ -1,16 +1,16 @@
 import { storeJobsToDb } from "@/server/jobs/storeJobsToDb";
 import { TRPCError } from '@trpc/server';
-import { removeDuplicates, sortByDate } from "./jobHelpers";
-import { fetchFromRemotive } from "./fetchFromRemotive";
-import { normalizeJob } from "./normalizeJob";
 import { fetchFromJooble } from "./fetchFromJooble";
+import { fetchFromRemotive } from "./fetchFromRemotive";
+import { removeDuplicates, sortByDate } from "./jobHelpers";
+import { normalizeJob } from "./normalizeJob";
 
 interface PageProps {
     page?: number
     limit?: number
 }
 // Fetch jobs form resources and normalize, dedupe, and store new jobs to DB
-export async function fetchJobsFormPlatformsAndSaveTODB({ page = 1, limit = 1 }: PageProps) {
+export async function fetchJobsFormPlatformsAndSaveTODB({ page = 1, limit = 2 }: PageProps) {
     const role = "software engineer";
     const location = "Remote";
 
@@ -56,7 +56,7 @@ export async function fetchJobsFormPlatformsAndSaveTODB({ page = 1, limit = 1 }:
     const start = (page - 1) * limit;
     const paginated = allJobs.slice(start, start + limit);
 
-    await storeJobsToDb(paginated)
+    const newJobsToInsert = await storeJobsToDb(paginated)
 
-    return allJobs;
+    return newJobsToInsert;
 }

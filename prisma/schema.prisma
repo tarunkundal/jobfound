@@ -49,7 +49,7 @@ model Profile {
   preferredJobLocation String?
   terms                Boolean?
   enable_auto_apply    Boolean? @default(false)
-  user                 User     @relation(fields: [userId], references: [id])
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Resume {
@@ -60,7 +60,7 @@ model Resume {
   uploadedAt         DateTime               @default(now())
   updatedAt          DateTime               @default(now()) @updatedAt
   resume_embeddings  Unsupported("vector(1536)")?
-  user               User                   @relation(fields: [userId], references: [id])
+  user               User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model user_trigger_log {
@@ -90,6 +90,7 @@ model Job {
   updatedAt          DateTime               @updatedAt
   applications       Application?
 
+ @@unique([createdAt, id])
   @@map("jobs")
 }
 
@@ -101,8 +102,8 @@ model Application {
   status     String
   matchScore Float?
   logData    String?
-  job        Job      @relation(fields: [jobId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
+  job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("applications")
 }

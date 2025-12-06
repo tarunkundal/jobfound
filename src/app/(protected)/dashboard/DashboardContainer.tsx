@@ -1,23 +1,19 @@
-import { api } from "@/server/trpc/server";
-import { Suspense } from "react";
+"use client"
+import { trpc } from "@/utils/trpc";
 import OnboardingPage from "../onboarding/page";
-import JobList from "./(jobs)/_components/JobList";
-import JobFilter from "./(jobs)/jobfilters/JobFilter";
+import JobsWrapper from "./(jobs)/_components/JobsWrapper";
 import DashboardSkeletion from "./loading";
 
-const DashboardContainer = async () => {
-    const caller = await api();
-    const userData = await caller.user.getUser()
+const DashboardContainer = () => {
+    const { data: userData, isLoading } = trpc.user.getUser.useQuery(undefined, { staleTime: Infinity })
 
+    if (isLoading) return <DashboardSkeletion />
     return (
         <div className="flex flex-col p-2 gap-4">
             {
                 !userData?.isOnboarded ?
                     <OnboardingPage /> : (
-                        <Suspense fallback={<DashboardSkeletion />}>
-                            <JobFilter userData={userData} />
-                            <JobList userData={userData} />
-                        </Suspense>
+                        <JobsWrapper userData={userData} />
                     )
             }
         </div>
