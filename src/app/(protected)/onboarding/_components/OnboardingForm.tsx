@@ -31,8 +31,7 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
     const { user } = useUser()
 
     const { data: profileData, isLoading: userProfileIsLoading } = trpc.userProfile.getUserProfileData.useQuery(undefined, {
-        staleTime: Infinity,        // never becomes stale
-        gcTime: Infinity,           // never garbage collect
+        staleTime: Infinity,
     })
     const updateUserOnboarded = trpc.user.updateUserOnboarded.useMutation({
         onSuccess: () => { utils.user.getUser.invalidate() }

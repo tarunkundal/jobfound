@@ -80,7 +80,7 @@ export const storeJobsToDb = async (jobs: FetchJobInterface[]) => {
         }
 
         console.log(`Bulk insert finished. Total rows inserted/affected: ${affectedRows}. Jobs processed in total: ${jobs.length}.`);
-
+        return newJobsToInsert
     } catch (error) {
         console.error("Error inserting jobs into Supabase via raw SQL:", error);
         throw new Error("Failed to store jobs in the database.");

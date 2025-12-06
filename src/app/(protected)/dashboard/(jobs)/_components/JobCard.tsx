@@ -33,7 +33,7 @@ export default function JobCard({ job, userData }: JobCardProps) {
 
     const { data: coverLetter, isLoading: generatingCoverLetter, error: errorGeneratingCoverLetter, refetch: generateCoverLetter } = trpc.jobs.getAiCoverLetterForJob.useQuery(
         { selectedJobId: job.id },
-        { enabled: false, staleTime: Infinity, gcTime: Infinity },
+        { enabled: false, staleTime: Infinity },
     );
     const [showDescription, setShowDescription] = useState(false);
     const [showCoverLetter, setShowCoverLetter] = useState(false)

@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabseClient";
 import { Button } from "@/theme/ui/components/button";
 import { Spinner } from "@/theme/ui/components/spinner";
 import Link, { useLinkStatus } from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
 
 const DashboardHeader = () => {
@@ -13,7 +13,6 @@ const DashboardHeader = () => {
     const currentPathname = usePathname();
     const [loading, setLoading] = useState<boolean>(false);
     const supabase = createClient();
-    const router = useRouter();
 
     const navItems = [
         { name: 'Dashboard', href: ROUTES.PROTECTED.DASHBOARD.ROOT },
@@ -25,7 +24,7 @@ const DashboardHeader = () => {
         setLoading(true);
         await supabase.auth.signOut();
         setLoading(false);
-        router.push(ROUTES.AUTH.LOGIN);
+        redirect(ROUTES.AUTH.LOGIN)
     };
 
     return (

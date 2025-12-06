@@ -4,14 +4,15 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        // 1️⃣ Load all users who uploaded a resume
+        // Load all users who uploaded a resume and enable the enableDailyJobMatchesEmail to true
         const users = await prisma.user.findMany({
             where: {
                 resumes: {
                     raw_extracted_text: {
                         not: null,
                     }
-                }
+                },
+                enableDailyJobMatchesEmail: true
             },
             select: {
                 id: true,
