@@ -136,26 +136,26 @@ This project is built using the **T3 Stack**, extended with **LLM pipelines**, *
 
 # ⚙️ Environment Variables
 
-# Connect to Supabase via connection pooling
+* Connect to Supabase via connection pooling
 DATABASE_URL=""
 
-# Direct connection to the database. Used for migrations
+* Direct connection to the database. Used for migrations
 DIRECT_URL=""
 
 NEXT_PUBLIC_SUPABASE_URL=""
 NEXT_PUBLIC_SUPABASE_ANON_KEY=""
 
-# Private (backend only)
+* Private (backend only)
 SUPABASE_SERVICE_ROLE_KEY=""
 
-# OPENAI_API_KEY=""
+* OPENAI_API_KEY=""
 OPENAI_API_KEY=""
 GROQ_API_KEY=""
 
 JOOBLE_API_KEY=""
 APIFY_TOKEN=""
 
-# For sending emails
+* For sending emails
 GMAIL_APP_PASSWORD=""
 
 
@@ -177,8 +177,8 @@ pnpx prisma generate
 npm run dev
 pnpm run dev
 
-
-🤝 Contributing
+---
+# 🤝 Contributing
 
 Fork the repo
 Create a feature branch
@@ -190,9 +190,10 @@ Embedding optimization
 AI improvements
 UI enhancements
 
-📜 License
+---
+# 📜 License
 MIT License © 2025 Tarun Chauhan
 
-
-⭐ If you like this project
+---
+# ⭐ If you like this project
 Consider giving the repo a star ⭐ — it helps a lot!
