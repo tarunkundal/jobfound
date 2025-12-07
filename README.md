@@ -176,3 +176,23 @@ pnpx prisma generate
 # Start dev server
 npm run dev
 pnpm run dev
+
+
+🤝 Contributing
+
+Fork the repo
+Create a feature branch
+Commit changes
+Open a PR
+We welcome contributions for:
+New job sources
+Embedding optimization
+AI improvements
+UI enhancements
+
+📜 License
+MIT License © 2025 Tarun Chauhan
+
+
+⭐ If you like this project
+Consider giving the repo a star ⭐ — it helps a lot!
