@@ -1,8 +1,9 @@
 import NextTopLoader from "nextjs-toploader";
 import ClientLayout from './(public)/ClientLayout';
-import { ToastProvider } from './context/ToastContext';
 import './globals.css';
-import { TRPCProvider } from './providers';
+import { ToastProvider } from './providers/ToastProvider';
+import { TRPCProvider } from './providers/TRPCProvider';
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 export const metadata = {
   title: 'Job Found',
@@ -22,11 +23,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           showSpinner={false}
         />
         <div id="modal-root"></div>
-        <TRPCProvider>
-          <ToastProvider>
-            <ClientLayout>{children}</ClientLayout>
-          </ToastProvider>
-        </TRPCProvider>
+        <ThemeProvider>
+          <TRPCProvider>
+            <ToastProvider>
+              <ClientLayout>{children}</ClientLayout>
+            </ToastProvider>
+          </TRPCProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
