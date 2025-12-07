@@ -4,7 +4,7 @@ import { Button } from '@/theme/ui/components/button';
 import { useTheme } from 'next-themes';
 import { useState, useEffect } from 'react';
 
-export default function ThemeSwitcher() {
+export default function ThemeToogle() {
     const [mounted, setMounted] = useState(false);
     const { theme, setTheme } = useTheme();
 

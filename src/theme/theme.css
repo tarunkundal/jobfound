@@ -44,7 +44,7 @@
 /* ====================
    🌙 Dark Theme
    ==================== */
-@theme .dark {
+.dark {
   --color-brand: hsl(var(--orange-600));
   --color-brand-hover: hsl(var(--orange-700));
 

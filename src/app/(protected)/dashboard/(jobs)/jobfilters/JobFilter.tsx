@@ -37,7 +37,7 @@ export const features = [
 
 const JobFilter = () => {
     return (
-        <div className="flex flex-col gap-4 mt-2 mb-4 bg-card rounded-card p-4 w-[95%] mx-auto shadow-card border-card">
+        <div className="flex flex-col gap-4 mt-2 mb-4 bg-primary rounded-card p-4 w-[95%] mx-auto shadow-card border-card">
             <HeaderToDisplayName />
             <div className="flex flex-col gap-2">
                 <p className="text-primary">Your personalized job feed is ready.<br></br>

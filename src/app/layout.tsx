@@ -1,9 +1,9 @@
 import NextTopLoader from "nextjs-toploader";
 import ClientLayout from './(public)/ClientLayout';
 import './globals.css';
+import { ThemeProvider } from "./providers/ThemeProvider";
 import { ToastProvider } from './providers/ToastProvider';
 import { TRPCProvider } from './providers/TRPCProvider';
-import { ThemeProvider } from "./providers/ThemeProvider";
 
 export const metadata = {
   title: 'Job Found',
@@ -15,7 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <NextTopLoader
           color="gray"

@@ -1,9 +1,9 @@
+import ThemeToogle from "@/components/shared/ThemeToggle";
 import { Icon } from "@/theme/ui/components/icon";
 import { Separator } from "@/theme/ui/components/separator";
 import { MailIcon, Monitor } from "lucide-react";
 import AccountManagement from "./_components/AccountManagement";
 import JobsSettingSection from "./_components/JobsSettingSection";
-import { Button } from "@/theme/ui/components/button";
 
 const SettingContainer = async () => {
 
@@ -19,17 +19,7 @@ const SettingContainer = async () => {
                         <span><Icon icon={Monitor} className="w-4 h-4" /></span> Theme</h2>
                     <p className="text-secondary text-sm"> Manage your account preferences and notifications </p>
                 </div>
-                {/* <ThemeToggle /> */}
-                <div className="relative group">
-                    <Button>Switch Theme</Button>
-                    <div
-                        // Hide by default, show when the parent group is hovered
-                        className="absolute w-[150px] text-xs text-center bottom-full left-1/2 transform -translate-x-1/2 text-tertiary 
-                   rounded opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none"
-                    >
-                        Currently Availabe Dark Mode Only
-                    </div>
-                </div>
+                <ThemeToogle />
             </div>
             <Separator className="my-6" />
             <JobsSettingSection />
