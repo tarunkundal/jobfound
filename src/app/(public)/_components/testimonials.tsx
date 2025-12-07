@@ -4,7 +4,14 @@ import Image from "next/image"
 const Testimonials = () => {
     return (
         <div className="w-[90%] md:w-[80%] lg:w-[80%] mx-auto">
-            <h2 className="text-brand-foreground text-4xl font-bold text-center">
+            <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6 text-center">
+                Loved by{" "}
+                <span className="bg-linear-to-r from-pink-500 to-pink-300 bg-clip-text text-transparent">
+                    Job Seekers
+                </span>
+                <br />Worldwide
+            </h2>
+            <h2 className="text-secondary text-lg text-center">
                 50,000+ job seekers are using
                 JobFound
             </h2>
@@ -17,15 +24,12 @@ const Testimonials = () => {
                                 <Image src={user.avatar} alt="" width={5} height={5} className="inline-block size-8 rounded-full ring-2 ring-brand" />
                                 <div className="flex flex-col ml-3" >
                                     <p className="font-semibold text-brand-foreground">{user.name}</p>
-                                    <p className="text-primary text-xs">{user.role}</p>
+                                    <p className="text-secondary text-xs">{user.role}</p>
                                 </div>
                             </div>
                             <h2 className="text-tertiary mt-2">
                                 {user.quote}
                             </h2>
-                            <p className="text-primary text-xs mt-6">
-                                {user.date}
-                            </p>
                         </div>
                     })
                 }

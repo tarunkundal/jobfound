@@ -11,8 +11,10 @@ const FAQS = () => {
 
     return (
         <div className="w-[90%] md:w-[80%] lg:w-[70%] mx-auto">
-            <h2 className="text-brand-foreground text-4xl font-bold text-center">Frequently Asked Questions</h2>
-            <h2 className="text-2xl text-primary text-center">Let's answer some questions!</h2>
+            <h2 className="text-brand-foreground text-4xl font-bold text-center">Frequently Asked <span className="bg-linear-to-r from-brand to-orange-300 bg-clip-text text-transparent">
+                Questions
+            </span></h2>
+            <h2 className="text-xl text-secondary text-center">Everything you need to know about JobFound.ai</h2>
 
             <div className="space-y-4 mt-6">
                 <h2 className="text-primary text-2xl font-semibold">General Questions</h2>
@@ -26,7 +28,7 @@ const FAQS = () => {
                             onClick={() => setOpenIndex(openIndex === i ? null : i)}
                             className="w-full flex justify-between items-center p-5 text-left"
                         >
-                            <span className="text-sm lg:text-lg font-semibold text-brand-foreground">
+                            <span className="text-sm lg:text-lg font-semibold text-brand-foreground hover:text-brand">
                                 {faq.question}
                             </span>
                             <ChevronDown

@@ -16,22 +16,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     return (
         <div className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-body min-h-screen`}>
-            {/* <header className='flex justify-between items-center px-4 py-4 bg-primary' >
-                <Logo />
-
-                <div className='flex items-center gap-2'>
-                    <Button
-                        onClick={() => setDarkMode(!darkMode)}
-                    >{darkMode ? 'Switch to Light' : 'Switch to Dark'}
-                    </Button>
-                    <Button variant='outline' className='font-bold'>
-                        <Link href={ROUTES.AUTH.SIGNUP}>
-                            Sign In
-                        </Link>
-                    </Button>
-                </div>
-            </header>
-            <Separator /> */}
             {children}
         </div>
     );
