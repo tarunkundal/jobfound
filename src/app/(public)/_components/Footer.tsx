@@ -1,31 +1,37 @@
-import { ROUTES } from "@/constants/routes"
-import { Button } from "@/theme/ui/components/button"
 import { Separator } from "@/theme/ui/components/separator"
 import Link from "next/link"
 
 const Footer = () => {
-    return (
-        <div className="w-full flex flex-col gap-6 justify-center items-center text-center">
-            <Separator />
-            <div className="mt-8">
-                <Button
-                    className="px-6 py-5 font-semibold text-lg"
-                >
-                    <Link href={ROUTES.AUTH.SIGNUP}>
-                        Sign Up Now!
-                    </Link>
-                </Button>
+    return (<>
+        {/* Bottom */}
+        <Separator />
+        <div className="flex items-center justify-between w-[90%] mx-auto">
+            <div>
+                <a href="#" className="flex  gap-2 ">
+                    <span className="text-lg font-bold text-brand-foreground">
+                        JobFound<span className="text-brand">.ai</span>
+                    </span>
+                </a>
+                <p className="text-secondary text-sm max-w-sm text-left">
+                    AI-powered career automation that helps you find, match, and apply to your dream jobs 10x faster.
+                </p>
             </div>
-            <h2 className="text-4xl font-bold text-brand-foreground">Contact Us</h2>
-            <h2 className="text-2xl text-primary">Have questions? Reach out to us at
-                <span className="text-brand">
-
-                    <Link href={''}>
-                        {' '} jobfound.ai@gmail.com
-                    </Link>
-                </span>
-            </h2>
+            <p className="text-sm text-secondary text-center">
+                © 2025 JobFound.ai. All rights reserved.
+            </p>
+            <div>
+                <h2 className="text-xl font-bold text-brand-foreground mb-2">Contact Us</h2>
+                <h2 className="text-sm text-secondary text-left">Have questions? Reach out to us at
+                    <br></br>
+                    <span className="text-brand">
+                        <Link href={''}>
+                            {' '} jobfound.ai@gmail.com
+                        </Link>
+                    </span>
+                </h2>
+            </div>
         </div>
+    </>
     )
 }
 

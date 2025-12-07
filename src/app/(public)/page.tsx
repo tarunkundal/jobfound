@@ -6,6 +6,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { useUser } from "../(auth)/_hooks/useUser";
 import Hero from "./_components/Hero";
 import HomeHeader from "./_components/header";
+import CTASection from "./_components/CTASection";
 const Features = lazy(() => import("./_components/Features"));
 const Footer = lazy(() => import("./_components/Footer"))
 const Info = lazy(() => import("./_components/Info"))
@@ -28,7 +29,7 @@ export default function Home() {
   return (
     <>
       <HomeHeader />
-      <main className="mt-[3%] flex flex-col gap-20 py-6">
+      <main className="mt-[3%] flex flex-col gap-16 py-6">
         <Hero />
         <Suspense fallback={<Spinner />}>
           <Features />
@@ -36,6 +37,7 @@ export default function Home() {
           <Info />
           <Testimonials />
           <FAQS />
+          <CTASection />
           <Footer />
         </Suspense>
       </main>
