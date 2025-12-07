@@ -1,36 +1,178 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 JobFound.ai  
+### AI-Powered Job Matching, Resume Parsing & Automated Job Applications
 
-## Getting Started
+JobFound.ai is an end-to-end AI-powered job automation platform.  
+It parses resumes, fetches jobs from multiple platforms, scores them using embeddings, generates custom cover letters, and even emails the top-matching jobs to users.
 
-First, run the development server:
+This project is built using the **T3 Stack**, extended with **LLM pipelines**, **cron jobs**, **job scrapers**, **vector embeddings**, and **full automation workflows**.
+
+---
+
+# 🧰 Tech Stack
+
+### **Framework & Frontend**
+- **Next.js 15 (App Router)**
+- **TypeScript**
+- **Tailwind CSS v4**
+- **Client + Server Components**
+- **Next Middleware**
+
+### **Backend**
+- **tRPC** (fully type-safe API)
+- **Prisma ORM**
+- **Supabase** (Auth + DB + Storage)
+- **Cron Jobs (via API Routes / Scheduled Workers)**
+
+### **AI / LLM**
+- **LangChain** (resume parsing pipeline, job scoring workflows)
+- **OpenAI SDK** (LLMs, embeddings)
+- **Groq** (ultra-fast inference)
+- **Vector Embeddings** (resume/job similarity scoring)
+- **Custom AI templates** (emails, cover letters)
+
+### **Job Sources**
+- LinkedIn (scraping)
+- Jobble
+- Remotive
+
+---
+
+# 🌟 Features
+
+### ✅ Smart Resume Parsing  
+- Upload PDF resume  
+- AI extracts:
+  - Experience  
+  - Skills  
+  - Education  
+  - Tech stack  
+  - Job titles  
+  - Seniority  
+  - Achievements  
+- Autofills onboarding form automatically  
+- Uses **LangChain** for structured JSON extraction
+
+---
+
+### ✅ Unified Job Aggregation Engine  
+- Fetch jobs from:
+  - LinkedIn (scraped)
+  - Jobble API
+  - Remotive API  
+- Normalize every job into a **standardized format**  
+- Store in database via Prisma  
+- Provides clean & consistent job cards
+
+---
+
+### ✅ AI Match Score (Embedding Similarity)  
+- Resume → embedding  
+- Job description → embedding  
+- Cosine similarity → **Match Score (0–100)**  
+- Filter by top matches / recommended / new jobs  
+
+---
+
+### ✅ AI-Powered Cover Letters  
+- One-click generation  
+- Uses resume + job description  
+- Custom tone + ATS-friendly  
+- Fully personalized
+
+---
+
+### ✅ Automated Job Application + Email Sending  
+- Email top matching jobs to the user  
+- Attach cover letters  
+- Fully AI-generated & automated  
+- Daily or triggered via user action
+
+---
+
+### ✅ Cron Jobs  
+- Fetch new jobs every **6 hours**  
+- Delete jobs older than **15 days**  
+- Recompute match scores  
+- Send daily match emails  
+
+---
+
+# 🧩 Project Architecture (High Level)
+
+
+                      ┌──────────────────────────┐
+                      │        Landing Page       │
+                      └──────────────┬───────────┘
+                                     │
+                  ┌──────────────────┴──────────────────┐
+                  │        Auth (Supabase)               │
+                  └──────────────────┬──────────────────┘
+                                     │
+                     Onboarding (Resume Upload)
+                                     │
+                             LangChain Parser
+                                     │
+                            Parsed User Profile
+                                     │
+                               Job Fetcher
+        ┌───────────────LinkedIn───────────────┐
+        │                 Jooble                 │
+        └──────────────Remotive────────────────┘
+                                     │
+                      Normalization + Storing (Prisma)
+                                     │
+                   Embeddings (OpenAI/Groq) Engine
+                                     │
+                           Match Score Ranking
+                                     │
+                     Dashboard UI (Next.js + tRPC)
+                                     │
+              Cover Letter Generator + Email Automation
+
+---
+
+
+---
+
+# ⚙️ Environment Variables
+
+# Connect to Supabase via connection pooling
+DATABASE_URL=""
+
+# Direct connection to the database. Used for migrations
+DIRECT_URL=""
+
+NEXT_PUBLIC_SUPABASE_URL=""
+NEXT_PUBLIC_SUPABASE_ANON_KEY=""
+
+# Private (backend only)
+SUPABASE_SERVICE_ROLE_KEY=""
+
+# OPENAI_API_KEY=""
+OPENAI_API_KEY=""
+GROQ_API_KEY=""
+
+JOOBLE_API_KEY=""
+APIFY_TOKEN=""
+
+# For sending emails
+GMAIL_APP_PASSWORD=""
+
+
+---
+
+# 🧪 Local Development Setup
 
 ```bash
+git clone https://github.com/<yourname>/jobfound-ai
+cd jobfound-ai
+
+pnpm install
+
+# Generates Prisma Client
+npx prisma generate
+pnpx prisma generate
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+pnpm run dev
