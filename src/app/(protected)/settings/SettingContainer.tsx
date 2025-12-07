@@ -1,4 +1,4 @@
-import { Button } from "@/theme/ui/components/button";
+import ThemeToogle from "@/components/shared/ThemeToggle";
 import { Icon } from "@/theme/ui/components/icon";
 import { Separator } from "@/theme/ui/components/separator";
 import { MailIcon, Monitor } from "lucide-react";
@@ -19,7 +19,7 @@ const SettingContainer = async () => {
                         <span><Icon icon={Monitor} className="w-4 h-4" /></span> Theme</h2>
                     <p className="text-secondary text-sm"> Manage your account preferences and notifications </p>
                 </div>
-                <Button>Switch Theme</Button>
+                <ThemeToogle />
             </div>
             <Separator className="my-6" />
             <JobsSettingSection />

@@ -1,4 +1,4 @@
-import { useToastContext } from "@/app/context/ToastContext";
+import { useToastContext } from "@/app/providers/ToastProvider";
 
 type CustomToastOptions = {
     title: string;

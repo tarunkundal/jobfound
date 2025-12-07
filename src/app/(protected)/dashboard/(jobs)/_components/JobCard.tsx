@@ -65,7 +65,7 @@ export default function JobCard({ job, userData }: JobCardProps) {
             )
         }
 
-        <div className="p-4 flex flex-col gap-3 shadow-sm hover:bg-card bg-body shadow-card border-card rounded-card h-full justify-between">
+        <div className="p-4 flex flex-col gap-3 shadow-sm hover:bg-card bg-primary shadow-card border-card rounded-card h-full justify-between">
             <div className="flex items-center justify-between">
                 <Badge variant='purple'>Auto apply ready</Badge>
                 <Badge variant='default' className="text-sm">{source}</Badge>
