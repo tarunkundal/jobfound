@@ -6,7 +6,7 @@ const client = new ApifyClient({
     token: process.env.APIFY_TOKEN,
 });
 
-export async function fetchFromLinkedIn(role: string, location: string): Promise<FetchJobInterface[] | []> {
+export async function fetchFromLinkedIn(role: string,): Promise<FetchJobInterface[] | []> {
     const run = await client.actor("apimaestro/linkedin-jobs-scraper-api").call({
         keywords: `${role}`,
         // location: location,
