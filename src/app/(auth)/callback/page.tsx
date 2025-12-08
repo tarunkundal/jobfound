@@ -1,4 +1,6 @@
 "use client";;
+export const dynamic = "force-dynamic";
+
 import { ROUTES } from "@/constants/routes";
 import { createClient } from "@/lib/supabaseClient";
 import { Spinner } from "@/theme/ui/components/spinner";
