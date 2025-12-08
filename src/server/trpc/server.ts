@@ -1,11 +1,12 @@
 import { prisma } from "@/db";
 import { appRouter } from "@/server/trpc/routers";
 import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 // FOR SERVER COMPONENTS ONLY
 export async function serverContext() {
     // Read cookies using Next.js server APIs
-    const cookieStore = await require("next/headers").cookies();
+    const cookieStore = await cookies();
 
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,

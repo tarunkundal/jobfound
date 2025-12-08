@@ -1,5 +1,6 @@
 "use client";;
 import { ROUTES } from '@/constants/routes';
+import useCustomToast from '@/hooks/useCustomToast';
 import { createClient } from '@/lib/supabseClient';
 import { Button } from '@/theme/ui/components/button';
 import { Icon } from '@/theme/ui/components/icon';
@@ -9,14 +10,9 @@ import { Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { z } from 'zod';
 import OAuthProviders from '../_components/OAuthProviders';
-import useCustomToast from '@/hooks/useCustomToast';
-
-export const schema = z.object({
-    email: z.string().email(),
-    password: z.string().min(7, 'To short password').max(32, 'To long password'),
-})
+import { registerSchema } from '@/schema/register.schema';
+export const runtime = "nodejs";
 
 const RegisterPage = () => {
     const supabase = createClient();
@@ -31,7 +27,7 @@ const RegisterPage = () => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const result = schema.safeParse({ email, password });
+        const result = registerSchema.safeParse({ email, password });
         if (!result.success) {
             toast({
                 title: 'Invalid input',
