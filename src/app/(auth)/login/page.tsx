@@ -8,8 +8,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import OAuthProviders from '../_components/OAuthProviders';
-import { schema } from '../register/page';
 import useCustomToast from '@/hooks/useCustomToast';
+import { registerSchema } from '@/schema/register.schema';
 
 const LoginPage = () => {
     const supabase = createClient();
@@ -24,7 +24,7 @@ const LoginPage = () => {
         e.preventDefault();
         setLoading(true);
 
-        const result = schema.safeParse({ email, password });
+        const result = registerSchema.safeParse({ email, password });
         if (!result.success) {
             setLoading(false);
             toast({
