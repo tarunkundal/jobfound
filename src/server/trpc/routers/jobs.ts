@@ -1,10 +1,10 @@
 import { prisma } from '@/db';
-import { Job } from '@/generated/prisma';
 import { generateCoverLetter } from '@/server/ai/generateCoverLetter';
 import { matchJobsByAi } from '@/server/ai/matchJobsByAi';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
+import { Job } from '@prisma/client';
 interface JobCursor {
     createdAt: string;
     id: string;

@@ -2,7 +2,7 @@ import { MatchedJobInterface } from '@/types/jobs';
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatGroq } from "@langchain/groq";
 import { prisma } from '@/db';
-import { Job } from '@/generated/prisma';
+import { Job } from '@prisma/client';
 
 const model = new ChatGroq({
     model: "llama-3.1-8b-instant",

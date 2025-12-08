@@ -1,6 +1,5 @@
 "use client";;
 import CustomModal from "@/components/ui/CustomModal";
-import { Job } from "@/generated/prisma";
 import { Badge } from "@/theme/ui/components/badge";
 import { Button } from "@/theme/ui/components/button";
 import { Icon } from "@/theme/ui/components/icon";
@@ -10,6 +9,7 @@ import { trpc } from "@/utils/trpc";
 import { Calendar, FileBoxIcon, Home, LetterTextIcon } from "lucide-react";
 import { useState } from "react";
 import AiJobCoverletter from "./AiJobCoverletter";
+import { Job } from "@prisma/client";
 
 type JobCardProps = {
     job: Job | MatchedJobInterface
