@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { ToastProvider } from './providers/ToastProvider';
 import { TRPCProvider } from './providers/TRPCProvider';
+export const runtime = "nodejs";
 
 export const metadata = {
   title: 'Job Found',

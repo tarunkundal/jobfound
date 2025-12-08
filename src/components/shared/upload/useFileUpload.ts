@@ -1,6 +1,6 @@
 import { useUser } from "@/app/(auth)/_hooks/useUser";
 import useCustomToast from "@/hooks/useCustomToast";
-import { createClient } from "@/lib/supabseClient";
+import { createClient } from "@/lib/supabaseClient";
 import { useFileUploadProps } from "@/types/Upload";
 import { filePathConstructor, getFileExtension } from "@/utils";
 import { trpc } from "@/utils/trpc";

@@ -1,6 +1,8 @@
 "use client";;
 import { ROUTES } from '@/constants/routes';
-import { createClient } from '@/lib/supabseClient';
+import useCustomToast from '@/hooks/useCustomToast';
+import { createClient } from '@/lib/supabaseClient';
+import { registerSchema } from '@/schema/register.schema';
 import { Button } from '@/theme/ui/components/button';
 import { Input } from '@/theme/ui/components/input';
 import { Separator } from '@/theme/ui/components/separator';
@@ -8,8 +10,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import OAuthProviders from '../_components/OAuthProviders';
-import useCustomToast from '@/hooks/useCustomToast';
-import { registerSchema } from '@/schema/register.schema';
 
 const LoginPage = () => {
     const supabase = createClient();

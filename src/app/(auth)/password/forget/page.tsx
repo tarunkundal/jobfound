@@ -2,7 +2,7 @@
 
 import { ROUTES } from "@/constants/routes";
 import useCustomToast from "@/hooks/useCustomToast";
-import { createClient } from "@/lib/supabseClient";
+import { createClient } from "@/lib/supabaseClient";
 import { Button } from "@/theme/ui/components/button";
 import { Input } from "@/theme/ui/components/input";
 import { useRouter } from "next/navigation";

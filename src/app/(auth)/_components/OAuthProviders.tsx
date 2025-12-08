@@ -1,7 +1,7 @@
 "use client";
 import { ROUTES } from '@/constants/routes';
 import useCustomToast from '@/hooks/useCustomToast';
-import { createClient } from '@/lib/supabseClient';
+import { createClient } from '@/lib/supabaseClient';
 import { Button } from '@/theme/ui/components/button';
 import { Icon } from '@/theme/ui/components/icon';
 import { AppleIcon, Github } from 'lucide-react';

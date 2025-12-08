@@ -1,6 +1,6 @@
 "use client";;
 import { ROUTES } from "@/constants/routes";
-import { createClient } from "@/lib/supabseClient";
+import { createClient } from "@/lib/supabaseClient";
 import { Spinner } from "@/theme/ui/components/spinner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -12,7 +12,12 @@ const AuthCallback = () => {
 
     useEffect(() => {
         const checkSession = async () => {
-            const { data } = await supabase.auth.getSession();
+            const { data, error } = await supabase.auth.getSession();
+            if (error) {
+                console.error("Supabase session error:", error);
+                router.replace(ROUTES.AUTH.LOGIN);
+                return;
+            }
             const redirectedFrom = searchParams.get("redirectedFrom");
 
             if (data.session) {

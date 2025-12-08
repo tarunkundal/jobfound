@@ -1,7 +1,7 @@
 'use client';;
 import Logo from "@/components/shared/Logo";
 import { ROUTES } from "@/constants/routes";
-import { createClient } from "@/lib/supabseClient";
+import { createClient } from "@/lib/supabaseClient";
 import { Button } from "@/theme/ui/components/button";
 import { Spinner } from "@/theme/ui/components/spinner";
 import Link, { useLinkStatus } from "next/link";

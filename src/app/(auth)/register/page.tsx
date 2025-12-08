@@ -1,7 +1,8 @@
 "use client";;
 import { ROUTES } from '@/constants/routes';
 import useCustomToast from '@/hooks/useCustomToast';
-import { createClient } from '@/lib/supabseClient';
+import { createClient } from '@/lib/supabaseClient';
+import { registerSchema } from '@/schema/register.schema';
 import { Button } from '@/theme/ui/components/button';
 import { Icon } from '@/theme/ui/components/icon';
 import { Input } from '@/theme/ui/components/input';
@@ -11,7 +12,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import OAuthProviders from '../_components/OAuthProviders';
-import { registerSchema } from '@/schema/register.schema';
 export const runtime = "nodejs";
 
 const RegisterPage = () => {
