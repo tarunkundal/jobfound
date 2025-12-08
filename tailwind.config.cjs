@@ -1,15 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-import tailwindAnimate from "tailwindcss-animate";
-
-export default {
+module.exports = {
     content: [
         './src/app/**/*.{js,ts,jsx,tsx,mdx}',
         './src/components/**/*.{js,ts,jsx,tsx,mdx}',
         './src/**/*.{html,js,ts,jsx,tsx,mdx}',
     ],
-
     darkMode: 'class',
-
     theme: {
         extend: {
             colors: {
@@ -207,6 +203,6 @@ export default {
             },
         },
     },
-
-    plugins: [tailwindAnimate]
-};
+    plugins: [
+        require('tailwindcss-animate')],
+}

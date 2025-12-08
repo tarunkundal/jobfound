@@ -1,5 +1,4 @@
 import { FlatCompat } from "@eslint/eslintrc";
-import tseslint from "@typescript-eslint/eslint-plugin";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -10,7 +9,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-export default [
+const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     ignores: [
@@ -21,7 +20,7 @@ export default [
       "next-env.d.ts",
     ],
     plugins: {
-      "@typescript-eslint": tseslint
+      "@typescript-eslint": require("@typescript-eslint/eslint-plugin")
     },
     rules: {
       "@typescript-eslint/no-unused-vars": ["warn"],
@@ -30,3 +29,4 @@ export default [
   },
 ];
 
+export default eslintConfig;
