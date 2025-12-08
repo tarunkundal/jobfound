@@ -144,9 +144,6 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.2.3(@types/react@19.2.7)
-      '@types/react-textarea-autosize':
-        specifier: ^8.0.0
-        version: 8.0.0(@types/react@19.2.7)(react@19.1.0)
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.46.1
         version: 8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
@@ -1853,10 +1850,6 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react-textarea-autosize@8.0.0':
-    resolution: {integrity: sha512-KVqk+/+RMQB3ZDpk7ZTpYHauU3Ue+Y0f09POvGaEpaGb+izzbpoM47tkDGlbF37iT7JYZ8QFwLzqiOPYbQaztA==}
-    deprecated: This is a stub types definition. react-textarea-autosize provides its own type definitions, so you do not need this installed.
-
   '@types/react@19.2.7':
     resolution: {integrity: sha512-MWtvHrGZLFttgeEj28VXHxpmwYbor/ATPYbBfSFZEIRK0ecCFLl2Qo55z52Hss+UV9CRN7trSeq1zbgx7YDWWg==}
 
@@ -3266,6 +3259,7 @@ packages:
   next@15.5.5:
     resolution: {integrity: sha512-OQVdBPtpBfq7HxFN0kOVb7rXXOSIkt5lTzDJDGRBcOyVvNRIWFauMqi1gIHd1pszq1542vMOGY0HP4CaiALfkA==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -5767,13 +5761,6 @@ snapshots:
   '@types/react-dom@19.2.3(@types/react@19.2.7)':
     dependencies:
       '@types/react': 19.2.7
-
-  '@types/react-textarea-autosize@8.0.0(@types/react@19.2.7)(react@19.1.0)':
-    dependencies:
-      react-textarea-autosize: 8.5.9(@types/react@19.2.7)(react@19.1.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
 
   '@types/react@19.2.7':
     dependencies:
