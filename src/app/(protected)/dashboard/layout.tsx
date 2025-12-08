@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 import { ReactNode } from 'react';
 import JobFilter from './(jobs)/jobfilters/JobFilter';
 
