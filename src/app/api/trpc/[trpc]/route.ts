@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import { appRouter } from '@/server/trpc/routers';
 import { createContext } from '@/server/trpc/context';

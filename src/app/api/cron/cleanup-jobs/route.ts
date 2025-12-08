@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+export const runtime = 'nodejs';
 import { removeJobsOlderThan15Days } from "@/server/jobs/removeJobsOlderThan15Days";
+import { NextResponse } from "next/server";
 
 export async function GET() {
     // runs once in 24hours 

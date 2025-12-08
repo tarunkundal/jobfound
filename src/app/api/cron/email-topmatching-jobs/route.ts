@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { prisma } from "@/db";
 import { sendMatchingJobsEmailCoverletterWithAiScore } from "@/server/ai/sendMatchingJobsEmailCoverletter";
 import { NextResponse } from "next/server";
