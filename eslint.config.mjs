@@ -1,7 +1,6 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import tseslint from "@typescript-eslint/eslint-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,7 +20,7 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
     plugins: {
-      "@typescript-eslint": tseslint
+      "@typescript-eslint": require("@typescript-eslint/eslint-plugin")
     },
     rules: {
       "@typescript-eslint/no-unused-vars": ["warn"],
