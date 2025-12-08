@@ -5,22 +5,12 @@ import { removeJobsOlderThan15Days } from "@/server/jobs/removeJobsOlderThan15Da
 
 export async function GET() {
     try {
-        const now = new Date();
-        const hourUTC = now.getUTCHours();
-
-        console.log("⏱ Cron running at UTC hour:", hourUTC);
-        let result;
-
         // morning at 6
-        if (hourUTC === 6) {
-            console.log("🚀 Running job fetch");
-            result = await fetchJobsFormPlatformsAndSaveTODB({ page: 1, limit: 2 });
-        }
-        //  Once per day (00:00 UTC)
-        if (hourUTC === 0) {
-            console.log("🧹 Running cleanup");
-            await removeJobsOlderThan15Days();
-        }
+        console.log("🚀 Running job fetch");
+        let result = await fetchJobsFormPlatformsAndSaveTODB({ page: 1, limit: 2 });
+
+        console.log("🧹 Running cleanup");
+        await removeJobsOlderThan15Days();
         return NextResponse.json({ success: true, total: result });
     } catch (err: any) {
         console.error("Cron job failed:", err);
