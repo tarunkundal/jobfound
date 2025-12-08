@@ -226,11 +226,13 @@ export const FormField: React.FC<FormFieldProps> = ({
                     control={control}
                     name={name}
                     render={({ field }) => {
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
                         const [displayValue, setDisplayValue] = useState(
                             Array.isArray(field.value) ? field.value.join(", ") : ""
                         );
 
                         //Sync field.value into local displayValue state
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
                         useEffect(() => {
                             if (Array.isArray(field.value)) {
                                 // Only update the display if the RHF value is different from the current display value

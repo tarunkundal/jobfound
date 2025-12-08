@@ -86,7 +86,6 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
 
     const { control, setValue } = form;
     const { stateOptions, cityOptions } = useLocationOptions(control, setValue);
-    console.log('user', user);
 
     const onSubmit = async (data: UserFormValues) => {
         await updateUserProfile.mutateAsync(data);
@@ -106,7 +105,7 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
                 }`}>
                 <div>
                     <h2 className="text-brand-foreground text-2xl font-semibold">Set up Your Profile</h2>
-                    <p className="text-secondary">This is the last time you'll need to enter this information! Our AI agent will use it to apply to hundreds of jobs for you!</p>
+                    <p className="text-secondary">{"This is the last time you'll need to enter this information! Our AI agent will use it to apply to hundreds of jobs for you!"}</p>
                 </div>
                 <div className="flex flex-col gap-1 w-[90%] md:w-[50%] lg:w-[50%]">
                     <label className="text-sm font-medium text-brand-foreground">Email</label>
@@ -279,7 +278,7 @@ const OnboardingForm = ({ parsedData, parsingResume }: OnBoardingProps) => {
                         <FormRow>
                             <FormField name="additionalContext" type="textarea" label="Additional Context"
                                 placeholder="Share any additional information that might help with job matches"
-                                helperText="We suggest providing the equivalent of a 'cover letter' here. The AI Agent will use this information to improve your job matches, and to answer questions in job applications."
+                                helperText="We suggest providing the equivalent of a cover letter here. The AI Agent will use this information to improve your job matches, and to answer questions in job applications."
                             />
                         </FormRow>
                         <FormRow>

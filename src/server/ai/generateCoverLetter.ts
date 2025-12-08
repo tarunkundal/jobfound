@@ -10,7 +10,7 @@ const model = new ChatGroq({
     temperature: 0,
 });
 interface GenerateCoverLetterParams {
-    userId: String;
+    userId: string;
     job: MatchedJobInterface | Job
 }
 

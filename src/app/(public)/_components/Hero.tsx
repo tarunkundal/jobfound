@@ -20,7 +20,7 @@ const Hero = () => {
                     Upload your resume once. Our AI parses your skills, matches you to the perfect jobs across the internet, and generates tailored cover letters—all automatically.
                 </p>
                 <p className="text-xxl w-[90%]">
-                    We'll Get You the Interviews, You Save Countless Hours Each Week
+                    {" We'll Get You the Interviews, You Save Countless Hours Each Week"}
                 </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">

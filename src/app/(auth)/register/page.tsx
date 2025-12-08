@@ -124,7 +124,7 @@ const RegisterPage = () => {
                     </Button>
                 </form>}
                 <Separator />
-                <p className='text-primary text-xxs text-center'>By continuing, you agree to JobFound's
+                <p className='text-primary text-xxs text-center'>{"By continuing, you agree to JobFound's"}
                     <b> Terms of Service</b> and <b>Privacy Policy</b></p>
                 <p className='text-xxs text-tertiary'>
                     Already have an account?

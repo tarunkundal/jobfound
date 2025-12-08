@@ -6,7 +6,7 @@ const OnboardingFormSkeleton = () => (
         <div className={`mx-auto px-6 py-6 flex flex-col gap-6 `}>
             <div>
                 <h2 className="text-brand-foreground text-2xl font-semibold">Set up Your Profile</h2>
-                <p className="text-secondary">This is the last time you'll need to enter this information! Our AI agent will use it to apply to hundreds of jobs for you!</p>
+                <p className="text-secondary">{"This is the last time you'll need to enter this information! Our AI agent will use it to apply to hundreds of jobs for you!"}</p>
             </div>
             {/* Skeleton Email field area */}
             <div className="flex flex-col gap-1 w-[90%] md:w-[50%] lg:w-[50%]">

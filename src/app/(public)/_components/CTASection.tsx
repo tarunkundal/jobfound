@@ -27,7 +27,7 @@ const CTASection = () => {
                     </h2>
 
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-                        Join thousands of professionals who've transformed their job search with AI.
+                        Join thousands of professionals {"who've "} transformed their job search with AI.
                         Upload your resume and get matched to perfect opportunities in minutes.
                     </p>
 
