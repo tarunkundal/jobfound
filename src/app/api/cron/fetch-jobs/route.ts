@@ -1,7 +1,6 @@
 export const runtime = 'nodejs';
 import { NextResponse } from "next/server";
 import { fetchJobsFormPlatformsAndSaveTODB } from "@/server/jobs/fetchJobsFormPlatformsAndSaveTODB";
-import { removeJobsOlderThan15Days } from "@/server/jobs/removeJobsOlderThan15Days";
 
 export async function GET() {
     try {
@@ -9,8 +8,8 @@ export async function GET() {
         console.log("🚀 Running job fetch");
         const result = await fetchJobsFormPlatformsAndSaveTODB({ page: 1, limit: 2 });
 
-        console.log("🧹 Running cleanup");
-        await removeJobsOlderThan15Days();
+        // console.log("🧹 Running cleanup");
+        // await removeJobsOlderThan15Days();
         return NextResponse.json({ success: true, total: result });
     } catch (err: any) {
         console.error("Cron job failed:", err);
