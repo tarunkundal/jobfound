@@ -4,8 +4,9 @@ import { fetchJobsFormPlatformsAndSaveTODB } from "@/server/jobs/fetchJobsFormPl
 
 export async function GET() {
     try {
-        // morning at 6
-        console.log("🚀 Running job fetch");
+        if (process.env.CRON_ENABLED !== "true") {
+            return new Response("Cron disabled", { status: 200 });
+        }
         const result = await fetchJobsFormPlatformsAndSaveTODB({ page: 1, limit: 2 });
 
         // console.log("🧹 Running cleanup");
